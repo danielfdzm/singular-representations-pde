@@ -22,24 +22,32 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
 import matplotlib as mpl
+
+mpl.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from matplotlib.patches import FancyArrowPatch
 
+from artifact_paths import (
+    COMPLETION_DATA_DIRECTORY,
+    GALLERY_DIRECTORY,
+    experiment_output_directory,
+)
 
-ROOT = Path(__file__).resolve().parent
 OUT_STEM = "boundary_completion_third_derivative_atoms"
-OUT_PDF = ROOT / f"{OUT_STEM}.pdf"
-OUT_PNG = ROOT / f"{OUT_STEM}.png"
-OUT_JSON = ROOT / f"{OUT_STEM}.json"
 OUT_REP_STEM = "boundary_completion_third_derivative_representation"
-OUT_REP_PDF = ROOT / f"{OUT_REP_STEM}.pdf"
-OUT_REP_PNG = ROOT / f"{OUT_REP_STEM}.png"
+OUTPUT_DIRECTORY = experiment_output_directory("completion")
+OUT_PDF = OUTPUT_DIRECTORY / f"{OUT_STEM}.pdf"
+OUT_PNG = OUTPUT_DIRECTORY / f"{OUT_STEM}.png"
+OUT_JSON = COMPLETION_DATA_DIRECTORY / f"{OUT_STEM}.json"
+OUT_REP_PDF = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}.pdf"
+OUT_REP_PNG = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}.png"
 
 WIDTHS = (9, 10, 12)
 BETA = 0.6
@@ -1109,6 +1117,13 @@ def main() -> None:
     parser.add_argument("--record-every", type=int, default=RECORD_EVERY)
     parser.add_argument("--initial-weight-scale", type=float, default=INITIAL_WEIGHT_SCALE)
     parser.add_argument("--output-suffix", default="")
+    parser.add_argument(
+        "--sync-figures",
+        "--sync-paper",
+        dest="sync_figures",
+        action="store_true",
+        help="update the two PNG previews in figures/gallery",
+    )
     parser.add_argument("--final-stage-optimizer", choices=["adam", "lbfgs"], default="adam")
     parser.add_argument("--final-stage-polish-steps", type=int, default=1000)
     parser.add_argument("--final-stage-lbfgs-iter", type=int, default=200)
@@ -1119,6 +1134,7 @@ def main() -> None:
         help="redraw both figures from a saved JSON payload without optimization",
     )
     args = parser.parse_args()
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     collapse_ratios = tuple(float(v) for v in args.collapse_ratios)
     if len(collapse_ratios) != 3 or any(v <= 0.0 or v >= 1.0 for v in collapse_ratios):
@@ -1131,11 +1147,11 @@ def main() -> None:
         raise ValueError("final-stage LBFGS learning rate must be positive")
     if args.output_suffix:
         suffix = args.output_suffix if args.output_suffix.startswith("_") else f"_{args.output_suffix}"
-        OUT_PDF = ROOT / f"{OUT_STEM}{suffix}.pdf"
-        OUT_PNG = ROOT / f"{OUT_STEM}{suffix}.png"
-        OUT_JSON = ROOT / f"{OUT_STEM}{suffix}.json"
-        OUT_REP_PDF = ROOT / f"{OUT_REP_STEM}{suffix}.pdf"
-        OUT_REP_PNG = ROOT / f"{OUT_REP_STEM}{suffix}.png"
+        OUT_PDF = OUTPUT_DIRECTORY / f"{OUT_STEM}{suffix}.pdf"
+        OUT_PNG = OUTPUT_DIRECTORY / f"{OUT_STEM}{suffix}.png"
+        OUT_JSON = COMPLETION_DATA_DIRECTORY / f"{OUT_STEM}{suffix}.json"
+        OUT_REP_PDF = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}{suffix}.pdf"
+        OUT_REP_PNG = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}{suffix}.png"
     if args.plot_from_cache is not None:
         payload = json.loads(args.plot_from_cache.read_text())
         results = payload["results"]
@@ -1143,6 +1159,10 @@ def main() -> None:
         plot_results(results, fixed_results)
         x_plot = np.linspace(-1.35, 2.65, 2201)
         plot_representation_evolution(results[0], x_plot, target_fn(x_plot))
+        if args.sync_figures:
+            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            for source in (OUT_PNG, OUT_REP_PNG):
+                shutil.copy2(source, GALLERY_DIRECTORY / source.name)
         print(f"Wrote {OUT_PDF} from {args.plot_from_cache}")
         print(f"Wrote {OUT_PNG} from {args.plot_from_cache}")
         print(f"Wrote {OUT_REP_PDF} from {args.plot_from_cache}")
@@ -1223,7 +1243,12 @@ def main() -> None:
         "results": results,
         "fixed_translated_control": fixed_results,
     }
+    COMPLETION_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(payload, indent=2) + "\n")
+    if args.sync_figures:
+        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        for source in (OUT_PNG, OUT_REP_PNG):
+            shutil.copy2(source, GALLERY_DIRECTORY / source.name)
 
     print(f"Wrote {OUT_PDF}")
     print(f"Wrote {OUT_PNG}")

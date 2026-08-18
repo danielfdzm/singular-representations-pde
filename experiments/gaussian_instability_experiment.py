@@ -13,18 +13,19 @@ Gaussian collapse sequence:
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import experiment_output_directory
 
-ROOT = Path(__file__).resolve().parent
-OUT_FIG = ROOT / "gaussian_instability_diagnostics.pdf"
-OUT_PNG = ROOT / "gaussian_instability_diagnostics.png"
-OUT_JSON = ROOT / "gaussian_instability_diagnostics.json"
-OUT_TABLE = ROOT / "gaussian_instability_table.tex"
+
+GAUSSIAN_OUTPUT_DIRECTORY = experiment_output_directory("gaussian")
+OUT_FIG = GAUSSIAN_OUTPUT_DIRECTORY / "gaussian_instability_diagnostics.pdf"
+OUT_PNG = GAUSSIAN_OUTPUT_DIRECTORY / "gaussian_instability_diagnostics.png"
+OUT_JSON = GAUSSIAN_OUTPUT_DIRECTORY / "gaussian_instability_diagnostics.json"
+OUT_TABLE = GAUSSIAN_OUTPUT_DIRECTORY / "gaussian_instability_table.tex"
 
 SQRT_2PI = np.sqrt(2.0 * np.pi)
 GRAM_C = 1.0 / (2.0 * np.sqrt(np.pi))
@@ -282,6 +283,7 @@ def observed_training_errors(
 
 
 def main() -> None:
+    GAUSSIAN_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
     mpl.rcParams.update(
         {
             "font.family": "serif",

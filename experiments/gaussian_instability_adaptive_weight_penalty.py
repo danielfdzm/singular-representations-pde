@@ -1,6 +1,6 @@
-"""Adaptive weight-penalty variant of the Figure 5 Gaussian RBF diagnostic.
+"""Adaptive weight-penalty variant of the Gaussian RBF collision diagnostic.
 
-This uses the same two-neuron first-difference problem as Figure 5,
+This uses the same two-neuron first-difference collision problem,
 
     u_{a,h}(x) = a (K(x-h/2) - K(x+h/2)),     u*(x)=xK(x),
 
@@ -22,9 +22,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import GAUSSIAN_DATA_DIRECTORY, experiment_output_directory
 from gaussian_instability_experiment import (
     GRAM_C,
-    ROOT,
     TARGET_NORM_SQ,
     gaussian,
     relative_l2_error,
@@ -36,11 +36,16 @@ DEFAULT_LAMBDAS = [10.0 ** (-k) for k in range(5, 13)]
 Q_INIT = 2.0
 ERROR_FLOOR = 1e-16
 ERROR_CAP = 1e2
+GAUSSIAN_OUTPUT_DIRECTORY = experiment_output_directory("gaussian")
 
 
 def output_paths(lambdas: list[float]) -> tuple[Path, Path, Path]:
     stem = f"gaussian_instability_weight_penalty_adaptive_{lambda_suffix(lambdas[0])}_to_{lambda_suffix(lambdas[-1])}"
-    return ROOT / f"{stem}.pdf", ROOT / f"{stem}.png", ROOT / f"{stem}.json"
+    return (
+        GAUSSIAN_OUTPUT_DIRECTORY / f"{stem}.pdf",
+        GAUSSIAN_OUTPUT_DIRECTORY / f"{stem}.png",
+        GAUSSIAN_DATA_DIRECTORY / f"{stem}.json",
+    )
 
 
 def target_fn(x: np.ndarray) -> np.ndarray:
@@ -276,6 +281,8 @@ def main() -> None:
         help="redraw the PDF and PNG from an existing JSON trace without optimization",
     )
     args = parser.parse_args()
+    GAUSSIAN_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    GAUSSIAN_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     cached_payload = None
     if args.plot_from_json is not None:

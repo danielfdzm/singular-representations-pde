@@ -1,4 +1,4 @@
-name: coercivity-artifact
+name: singular-representations-pde
 channels:
   - conda-forge
 dependencies:

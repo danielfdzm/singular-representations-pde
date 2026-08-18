@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: >-
   If you use this numerical artifact, please cite the associated article and
-  the archived artifact version.
+  this software artifact.
 title: >-
   Numerical artifact for Stable Solutions and Singular Representations in
   Neural PDE Models

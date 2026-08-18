@@ -7,23 +7,33 @@ and manuscript-facing figures without duplicating the manuscript source.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import hashlib
 import importlib.metadata
 import json
 import os
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import sys
 import tempfile
 
 
-HERE = Path(__file__).resolve().parent
-WORKSPACE = HERE.parent
-FIGURE_DIRECTORY = WORKSPACE / "figures" / "manuscript"
-DESCRIPTIVE_FIGURE_DIRECTORY = WORKSPACE / "figures" / "descriptive"
-REPRODUCTION_OUTPUT_DIRECTORY = WORKSPACE / "reproduced"
+TOOLS_DIRECTORY = Path(__file__).resolve().parent
+WORKSPACE = TOOLS_DIRECTORY.parent
+EXPERIMENT_DIRECTORY = WORKSPACE / "experiments"
+REFERENCE_DATA_DIRECTORY = WORKSPACE / "data" / "reference"
+TANH_DATA_DIRECTORY = REFERENCE_DATA_DIRECTORY / "tanh"
+GAUSSIAN_DATA_DIRECTORY = REFERENCE_DATA_DIRECTORY / "gaussian"
+COMPLETION_DATA_DIRECTORY = REFERENCE_DATA_DIRECTORY / "completion"
+WEAK_PDE_DATA_DIRECTORY = REFERENCE_DATA_DIRECTORY / "weak_pde"
+INGHAM_DATA_DIRECTORY = REFERENCE_DATA_DIRECTORY / "ingham"
+NATIVE_DIRECTORY = WORKSPACE / "native"
+OUTPUT_DIRECTORY = WORKSPACE / "outputs"
+MATCHED_CONTROL_OUTPUT_DIRECTORY = OUTPUT_DIRECTORY / "matched-controls"
+MANUSCRIPT_FIGURE_DIRECTORY = WORKSPACE / "figures" / "manuscript"
+GALLERY_DIRECTORY = WORKSPACE / "figures" / "gallery"
+SUPPLEMENTARY_FIGURE_DIRECTORY = WORKSPACE / "figures" / "supplementary"
 
 EXPECTED_VERSIONS = {
     "numpy": "2.4.2",
@@ -31,110 +41,114 @@ EXPECTED_VERSIONS = {
     "torch": "2.10.0",
 }
 
-# Every PDF reachable through \includegraphics in the canonical source must
-# have an entry here.  Entries list the executable source and raw/cache inputs
-# needed to audit or reproduce the displayed result.
-FIGURE_PROVENANCE: dict[str, dict[str, tuple[Path, ...]]] = {
-    "matched_elliptic_completion.pdf": {
-        "scripts": (HERE / "matched_elliptic_completion.py",),
-        "data": (
-            HERE / "matched_elliptic_completion.json",
-            HERE / "matched_elliptic_completion_summary.csv",
+
+@dataclass(frozen=True)
+class FigureProvenance:
+    """Executable sources, reference data, and browser preview for one figure."""
+
+    scripts: tuple[Path, ...]
+    data: tuple[Path, ...]
+    preview: Path
+
+
+# Each immutable publication PDF maps directly to the material needed to audit
+# its computation and to the PNG used for browser-friendly repository previews.
+FIGURE_PROVENANCE: dict[str, FigureProvenance] = {
+    "Fig1.pdf": FigureProvenance(
+        scripts=(
+            EXPERIMENT_DIRECTORY / "tanh_parameter_escape_loss.py",
+            EXPERIMENT_DIRECTORY / "tanh_wb_trajectories.py",
         ),
-    },
-    "wb_trajectories.pdf": {
-        "scripts": (
-            HERE / "tanh_parameter_escape_loss.py",
-            HERE / "tanh_wb_trajectories.py",
+        data=(
+            TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss.json",
+            TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss_float32.json",
         ),
-        "data": (
-            HERE / "tanh_parameter_escape_loss.json",
-            HERE / "tanh_parameter_escape_loss_float32.json",
+        preview=GALLERY_DIRECTORY / "wb_trajectories.png",
+    ),
+    "Fig2.pdf": FigureProvenance(
+        scripts=(EXPERIMENT_DIRECTORY / "tanh_slope_collision_snapshots.py",),
+        data=(TANH_DATA_DIRECTORY / "tanh_x_tanhprime_energy_minimization.json",),
+        preview=GALLERY_DIRECTORY / "tanh_x_tanhprime_energy_minimization.png",
+    ),
+    "Fig3.pdf": FigureProvenance(
+        scripts=(
+            EXPERIMENT_DIRECTORY / "gaussian_collision_mixed_precision.py",
+            EXPERIMENT_DIRECTORY / "gaussian_rbf_trace_diagnostics.py",
+            EXPERIMENT_DIRECTORY / "tanh_collision_mixed_precision.py",
+            EXPERIMENT_DIRECTORY / "tanh_collision_diagnostics.py",
+            NATIVE_DIRECTORY / "tanh_second_derivative_optimizer.c",
         ),
-    },
-    "tanh_x_tanhprime_energy_minimization.pdf": {
-        "scripts": (HERE / "tanh_slope_collision_snapshots.py",),
-        "data": (HERE / "tanh_x_tanhprime_energy_minimization.json",),
-    },
-    "gaussian_rbf_instability_unpenalized_mixed_precision.pdf": {
-        "scripts": (
-            HERE / "gaussian_rbf_instability_figure5_mixed_precision.py",
-            HERE / "tanh_instability_figure5_mixed_precision.py",
-            HERE / "tanh_instability_figure5.py",
-            HERE / "tanh_second_derivative_optimizer.c",
+        data=(
+            GAUSSIAN_DATA_DIRECTORY
+            / "gaussian_rbf_instability_unpenalized_mixed_precision.json",
+            GAUSSIAN_DATA_DIRECTORY
+            / "gaussian_rbf_confluent_order1_profile_cache_v1_qm16_0p5_n6000_N20001.npz",
         ),
-        "data": (HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json",),
-    },
-    "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.pdf": {
-        "scripts": (HERE / "gaussian_rbf_trace_diagnostics.py",),
-        "data": (HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json",),
-    },
-    "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.pdf": {
-        "scripts": (
-            HERE / "gaussian_instability_adaptive_weight_penalty.py",
-            HERE / "gaussian_instability_weight_penalty.py",
-            HERE / "gaussian_instability_experiment.py",
+        preview=(
+            GALLERY_DIRECTORY
+            / "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.png"
         ),
-        "data": (HERE / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json",),
-    },
-    "boundary_completion_third_derivative_atoms_lbfgs_plateau.pdf": {
-        "scripts": (
-            HERE / "boundary_completion_experiment.py",
-            HERE / "boundary_completion_matched_control_lbfgs.py",
+    ),
+    "Fig4.pdf": FigureProvenance(
+        scripts=(
+            EXPERIMENT_DIRECTORY / "gaussian_instability_adaptive_weight_penalty.py",
+            EXPERIMENT_DIRECTORY / "gaussian_instability_weight_penalty.py",
+            EXPERIMENT_DIRECTORY / "gaussian_instability_experiment.py",
         ),
-        "data": (
-            HERE / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json",
-            HERE / "boundary_completion_matched_control_lbfgs.json",
+        data=(
+            GAUSSIAN_DATA_DIRECTORY
+            / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json",
         ),
-    },
-    "boundary_completion_third_derivative_representation_lbfgs_plateau.pdf": {
-        "scripts": (HERE / "boundary_completion_experiment.py",),
-        "data": (HERE / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json",),
-    },
-    "boundary_completion_2d_representation_adam.pdf": {
-        "scripts": (
-            HERE / "boundary_completion_2d_experiment.py",
-            HERE / "boundary_completion_2d_matched_control_lbfgs.py",
+        preview=(
+            GALLERY_DIRECTORY
+            / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.png"
         ),
-        "data": (
-            HERE / "boundary_completion_2d_atoms_adam.json",
-            HERE / "boundary_completion_2d_matched_control_lbfgs.json",
+    ),
+    "Fig5.pdf": FigureProvenance(
+        scripts=(
+            EXPERIMENT_DIRECTORY / "boundary_completion_experiment.py",
+            EXPERIMENT_DIRECTORY / "boundary_completion_matched_control_lbfgs.py",
         ),
-    },
-    "boundary_completion_2d_representation.pdf": {
-        "scripts": (
-            HERE / "boundary_completion_2d_experiment.py",
-            HERE / "boundary_completion_2d_matched_control_lbfgs.py",
+        data=(
+            COMPLETION_DATA_DIRECTORY
+            / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json",
+            COMPLETION_DATA_DIRECTORY / "boundary_completion_matched_control_lbfgs.json",
         ),
-        "data": (
-            HERE / "boundary_completion_2d_atoms_adam.json",
-            HERE / "boundary_completion_2d_matched_control_lbfgs.json",
+        preview=(
+            GALLERY_DIRECTORY
+            / "boundary_completion_third_derivative_atoms_lbfgs_plateau.png"
         ),
-    },
-    "ingham_panel_T_2_5_10_an1_styled.pdf": {
-        "scripts": (HERE / "ingham_illustration.py",),
-        "data": (HERE / "ingham_panel_T_2_5_10_an1_styled.json",),
-    },
+    ),
+    "Fig6.pdf": FigureProvenance(
+        scripts=(EXPERIMENT_DIRECTORY / "boundary_completion_experiment.py",),
+        data=(
+            COMPLETION_DATA_DIRECTORY
+            / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json",
+        ),
+        preview=(
+            GALLERY_DIRECTORY
+            / "boundary_completion_third_derivative_representation_lbfgs_plateau.png"
+        ),
+    ),
+    "Fig7.pdf": FigureProvenance(
+        scripts=(
+            EXPERIMENT_DIRECTORY / "boundary_completion_2d_experiment.py",
+            EXPERIMENT_DIRECTORY / "boundary_completion_2d_matched_control_lbfgs.py",
+        ),
+        data=(
+            COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json",
+            COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_matched_control_lbfgs.json",
+        ),
+        preview=GALLERY_DIRECTORY / "boundary_completion_2d_representation_adam.png",
+    ),
+    "Fig8.pdf": FigureProvenance(
+        scripts=(EXPERIMENT_DIRECTORY / "ingham_illustration.py",),
+        data=(INGHAM_DATA_DIRECTORY / "ingham_panel_T_2_5_10_an1_styled.json",),
+        preview=GALLERY_DIRECTORY / "ingham_panel_T_2_5_10_an1_styled.png",
+    ),
 }
 
-NUMBERED_FIGURES = {
-    "Fig1.pdf": "wb_trajectories.pdf",
-    "Fig2.pdf": "tanh_x_tanhprime_energy_minimization.pdf",
-    "Fig3.pdf": "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.pdf",
-    "Fig4.pdf": "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.pdf",
-    "Fig5.pdf": "boundary_completion_third_derivative_atoms_lbfgs_plateau.pdf",
-    "Fig6.pdf": "boundary_completion_third_derivative_representation_lbfgs_plateau.pdf",
-    "Fig7.pdf": "boundary_completion_2d_representation_adam.pdf",
-    "Fig8.pdf": "ingham_panel_T_2_5_10_an1_styled.pdf",
-}
-
-# The manuscript PDFs are preserved separately from regenerated audit output.
-# Figures 1--7 retain the selected wide presentation; preserving Figure 8 also
-# prevents harmless PDF metadata changes from altering its publication bytes.
-PRESERVED_FIGURE_DIRECTORY = WORKSPACE / "figures" / "preserved"
-PRESERVED_MANUSCRIPT_FIGURES = frozenset(NUMBERED_FIGURES.values())
-
-# Expected MediaBox widths for the seven preserved wide figures and the
+# Expected MediaBox widths for the seven wide publication figures and the
 # journal-width Ingham illustration. Ranges allow harmless PDF writer rounding.
 EXPECTED_FIGURE_WIDTHS = {
     "Fig1.pdf": (519.0, 521.0),
@@ -146,8 +160,6 @@ EXPECTED_FIGURE_WIDTHS = {
     "Fig7.pdf": (810.0, 812.0),
     "Fig8.pdf": (330.0, 340.0),
 }
-for numbered_name, descriptive_name in NUMBERED_FIGURES.items():
-    FIGURE_PROVENANCE[numbered_name] = FIGURE_PROVENANCE[descriptive_name]
 
 
 def read_json(path: Path) -> dict[str, object]:
@@ -197,16 +209,13 @@ def check_checksum_manifest(path: Path) -> int:
 
 def included_figures() -> set[str]:
     """Return the eight numbered figures included in the submitted paper."""
-    return set(NUMBERED_FIGURES)
+    return set(FIGURE_PROVENANCE)
 
 
 def check_figure_provenance() -> set[str]:
     figures = included_figures()
-    unmapped = figures.difference(FIGURE_PROVENANCE)
-    if unmapped:
-        raise ValueError(f"manuscript figures without provenance entries: {sorted(unmapped)}")
     for figure in sorted(figures):
-        manuscript_figure = FIGURE_DIRECTORY / figure
+        manuscript_figure = MANUSCRIPT_FIGURE_DIRECTORY / figure
         require_file(manuscript_figure, minimum_size=1_000)
         pdf_bytes = manuscript_figure.read_bytes()
         if re.search(rb"/Subtype\s*/Type3\b", pdf_bytes):
@@ -225,34 +234,19 @@ def check_figure_provenance() -> set[str]:
                 f"{lower_width:.0f}--{upper_width:.0f} pt"
             )
         provenance = FIGURE_PROVENANCE[figure]
-        for script in provenance["scripts"]:
+        for script in provenance.scripts:
             require_file(script)
-        for data in provenance["data"]:
+        for data in provenance.data:
             require_file(data)
-        if figure in NUMBERED_FIGURES:
-            descriptive = DESCRIPTIVE_FIGURE_DIRECTORY / NUMBERED_FIGURES[figure]
-            require_file(descriptive, minimum_size=1_000)
-            if sha256(manuscript_figure) != sha256(descriptive):
-                raise ValueError(
-                    f"{figure} is stale relative to its descriptive source copy "
-                    f"{descriptive.name}"
-                )
-            if descriptive.name in PRESERVED_MANUSCRIPT_FIGURES:
-                preserved = PRESERVED_FIGURE_DIRECTORY / descriptive.name
-                require_file(preserved, minimum_size=1_000)
-                if sha256(descriptive) != sha256(preserved):
-                    raise ValueError(
-                        f"{descriptive.name} no longer matches its preserved "
-                        "pre-revision presentation"
-                    )
+        require_file(provenance.preview, minimum_size=1_000)
     return figures
 
 
 def check_tanh_offset() -> tuple[int, int]:
     counts: list[int] = []
     for precision, path in (
-        ("float64", HERE / "tanh_parameter_escape_loss.json"),
-        ("float32", HERE / "tanh_parameter_escape_loss_float32.json"),
+        ("float64", TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss.json"),
+        ("float32", TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss_float32.json"),
     ):
         payload = read_json(path)
         history = payload.get("history")
@@ -267,7 +261,17 @@ def check_tanh_offset() -> tuple[int, int]:
 
 
 def check_matched_pde() -> tuple[float, float]:
-    payload = read_json(HERE / "matched_elliptic_completion.json")
+    source = WEAK_PDE_DATA_DIRECTORY / "matched_elliptic_completion.json"
+    require_file(EXPERIMENT_DIRECTORY / "matched_elliptic_completion.py")
+    require_file(WEAK_PDE_DATA_DIRECTORY / "matched_elliptic_completion_summary.csv")
+    require_file(
+        GALLERY_DIRECTORY / "matched_elliptic_completion.png", minimum_size=1_000
+    )
+    require_file(
+        SUPPLEMENTARY_FIGURE_DIRECTORY / "matched_elliptic_completion.pdf",
+        minimum_size=1_000,
+    )
+    payload = read_json(source)
     results = payload.get("results")
     if not isinstance(results, list) or len(results) != 2:
         raise ValueError("matched PDE cache must contain two coordinate systems")
@@ -286,7 +290,9 @@ def check_matched_pde() -> tuple[float, float]:
 
 
 def check_tanh_slope() -> int:
-    payload = read_json(HERE / "tanh_x_tanhprime_energy_minimization.json")
+    payload = read_json(
+        TANH_DATA_DIRECTORY / "tanh_x_tanhprime_energy_minimization.json"
+    )
     snapshots = payload.get("snapshots")
     if not isinstance(snapshots, list) or len(snapshots) != 4:
         raise ValueError("tanh slope cache must contain four displayed snapshots")
@@ -299,7 +305,10 @@ def check_tanh_slope() -> int:
 
 
 def check_gaussian() -> tuple[float, float]:
-    payload = read_json(HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json")
+    payload = read_json(
+        GAUSSIAN_DATA_DIRECTORY
+        / "gaussian_rbf_instability_unpenalized_mixed_precision.json"
+    )
     orders = payload.get("orders")
     if not isinstance(orders, list) or len(orders) != 1 or int(orders[0]["order"]) != 1:
         raise ValueError("the paper Gaussian cache must contain exactly the order-one run")
@@ -317,7 +326,10 @@ def check_gaussian() -> tuple[float, float]:
 
 
 def check_penalty() -> tuple[float, float]:
-    payload = read_json(HERE / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json")
+    payload = read_json(
+        GAUSSIAN_DATA_DIRECTORY
+        / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json"
+    )
     runs = payload.get("runs")
     if not isinstance(runs, dict) or set(runs) != {"float32", "float64"}:
         raise ValueError("adaptive penalty cache must contain both precision runs")
@@ -331,13 +343,18 @@ def check_penalty() -> tuple[float, float]:
 
 
 def check_completion() -> tuple[list[int], float]:
-    source = read_json(HERE / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json")
+    source = read_json(
+        COMPLETION_DATA_DIRECTORY
+        / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"
+    )
     widths = [int(value) for value in source.get("widths", [])]
     if widths != [9, 10, 12]:
         raise ValueError(f"unexpected one-dimensional completion widths: {widths}")
     if len(source.get("event_iterations", [])) != 3:
         raise ValueError("invalid one-dimensional completion histories")
-    matched = read_json(HERE / "boundary_completion_matched_control_lbfgs.json")
+    matched = read_json(
+        COMPLETION_DATA_DIRECTORY / "boundary_completion_matched_control_lbfgs.json"
+    )
     controls = matched.get("matched_fixed_controls")
     completed = matched.get("completed_stage_3_validation")
     if not isinstance(controls, list) or [int(row["width"]) for row in controls] != widths:
@@ -345,11 +362,13 @@ def check_completion() -> tuple[list[int], float]:
     if not isinstance(completed, list) or [int(row["width"]) for row in completed] != widths:
         raise ValueError("invalid completed one-dimensional validation cache")
 
-    source_2d_path = HERE / "boundary_completion_2d_atoms_adam.json"
+    source_2d_path = COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json"
     source_2d = read_json(source_2d_path)
     if int(source_2d.get("seed", -1)) != 80_209:
         raise ValueError("unexpected two-dimensional completion seed")
-    matched_2d = read_json(HERE / "boundary_completion_2d_matched_control_lbfgs.json")
+    matched_2d = read_json(
+        COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_matched_control_lbfgs.json"
+    )
     embedded_source = matched_2d.get("source")
     if not isinstance(embedded_source, dict):
         raise ValueError("matched two-dimensional cache has no source record")
@@ -368,7 +387,7 @@ def check_completion() -> tuple[list[int], float]:
 
 
 def check_ingham() -> int:
-    payload = read_json(HERE / "ingham_panel_T_2_5_10_an1_styled.json")
+    payload = read_json(INGHAM_DATA_DIRECTORY / "ingham_panel_T_2_5_10_an1_styled.json")
     if payload.get("windows") != [2.0, 5.0, 10.0]:
         raise ValueError("unexpected T values in the Ingham illustration")
     node_count = int(payload.get("delta_points", 0))
@@ -460,29 +479,6 @@ def run(command: list[str], environment: dict[str, str]) -> None:
     subprocess.run(command, cwd=WORKSPACE, env=environment, check=True)
 
 
-def sync_from_code(names: tuple[str, ...]) -> None:
-    DESCRIPTIVE_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    for name in names:
-        shutil.copy2(HERE / name, DESCRIPTIVE_FIGURE_DIRECTORY / name)
-
-
-def sync_numbered_figures() -> None:
-    FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    for numbered_name, descriptive_name in NUMBERED_FIGURES.items():
-        shutil.copy2(
-            DESCRIPTIVE_FIGURE_DIRECTORY / descriptive_name,
-            FIGURE_DIRECTORY / numbered_name,
-        )
-
-
-def sync_preserved_figure_layouts() -> None:
-    DESCRIPTIVE_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    for descriptive_name in sorted(PRESERVED_MANUSCRIPT_FIGURES):
-        source = PRESERVED_FIGURE_DIRECTORY / descriptive_name
-        require_file(source, minimum_size=1_000)
-        shutil.copy2(source, DESCRIPTIVE_FIGURE_DIRECTORY / descriptive_name)
-
-
 def configured_environment(cache_directory: str) -> dict[str, str]:
     environment = os.environ.copy()
     environment["MPLCONFIGDIR"] = cache_directory
@@ -493,12 +489,15 @@ def configured_environment(cache_directory: str) -> dict[str, str]:
 
 
 def run_fast_plots() -> None:
-    with tempfile.TemporaryDirectory(prefix="coercivity-mpl-") as cache_directory:
+    """Render deterministic and cache-backed audit figures under outputs/."""
+
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="singular-representations-mpl-") as cache_directory:
         environment = configured_environment(cache_directory)
         run(
             [
                 sys.executable,
-                str(HERE / "matched_elliptic_completion.py"),
+                str(EXPERIMENT_DIRECTORY / "matched_elliptic_completion.py"),
                 "--plot-from-cache",
             ],
             environment,
@@ -506,74 +505,98 @@ def run_fast_plots() -> None:
         run(
             [
                 sys.executable,
-                str(HERE / "tanh_slope_collision_snapshots.py"),
+                str(EXPERIMENT_DIRECTORY / "tanh_slope_collision_snapshots.py"),
                 "--plot-from-cache",
             ],
             environment,
         )
-        run([sys.executable, str(HERE / "tanh_wb_trajectories.py")], environment)
+        run(
+            [sys.executable, str(EXPERIMENT_DIRECTORY / "tanh_wb_trajectories.py")],
+            environment,
+        )
         run(
             [
                 sys.executable,
-                str(HERE / "gaussian_rbf_trace_diagnostics.py"),
+                str(EXPERIMENT_DIRECTORY / "gaussian_rbf_trace_diagnostics.py"),
                 "--input",
-                str(HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json"),
+                str(
+                    GAUSSIAN_DATA_DIRECTORY
+                    / "gaussian_rbf_instability_unpenalized_mixed_precision.json"
+                ),
                 "--output-directory",
-                str(HERE),
+                str(OUTPUT_DIRECTORY / "gaussian"),
             ],
             environment,
         )
         run(
             [
                 sys.executable,
-                str(HERE / "gaussian_instability_adaptive_weight_penalty.py"),
+                str(
+                    EXPERIMENT_DIRECTORY
+                    / "gaussian_instability_adaptive_weight_penalty.py"
+                ),
                 "--plot-from-json",
-                str(HERE / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json"),
+                str(
+                    GAUSSIAN_DATA_DIRECTORY
+                    / "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.json"
+                ),
             ],
             environment,
         )
         run(
             [
                 sys.executable,
-                str(HERE / "boundary_completion_experiment.py"),
+                str(EXPERIMENT_DIRECTORY / "boundary_completion_experiment.py"),
                 "--output-suffix",
                 "lbfgs_plateau",
                 "--plot-from-cache",
-                str(HERE / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"),
+                str(
+                    COMPLETION_DATA_DIRECTORY
+                    / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"
+                ),
             ],
             environment,
         )
         run(
             [
                 sys.executable,
-                str(HERE / "boundary_completion_2d_experiment.py"),
+                str(EXPERIMENT_DIRECTORY / "boundary_completion_2d_experiment.py"),
                 "--plot-from-cache",
+                str(COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json"),
                 "--output-directory",
-                str(HERE),
+                str(OUTPUT_DIRECTORY / "completion"),
                 "--output-suffix",
                 "adam",
             ],
             environment,
         )
-        run([sys.executable, str(HERE / "ingham_illustration.py")], environment)
-        sync_preserved_figure_layouts()
-        sync_numbered_figures()
-    print("Regenerated the deterministic and cached-state figures.")
+        run(
+            [
+                sys.executable,
+                str(EXPERIMENT_DIRECTORY / "ingham_illustration.py"),
+                "--plot-from-cache",
+            ],
+            environment,
+        )
+    print(f"Regenerated deterministic and cached-state audit figures in {OUTPUT_DIRECTORY}.")
 
 
 def run_matched_controls() -> None:
-    REPRODUCTION_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="coercivity-mpl-") as cache_directory:
+    MATCHED_CONTROL_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="singular-representations-mpl-") as cache_directory:
         environment = configured_environment(cache_directory)
         run(
             [
                 sys.executable,
-                str(HERE / "boundary_completion_matched_control_lbfgs.py"),
+                str(EXPERIMENT_DIRECTORY / "boundary_completion_matched_control_lbfgs.py"),
                 "--input",
-                str(HERE / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"),
+                str(
+                    COMPLETION_DATA_DIRECTORY
+                    / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"
+                ),
                 "--output",
                 str(
-                    REPRODUCTION_OUTPUT_DIRECTORY
+                    MATCHED_CONTROL_OUTPUT_DIRECTORY
                     / "boundary_completion_matched_control_lbfgs.json"
                 ),
             ],
@@ -582,42 +605,56 @@ def run_matched_controls() -> None:
         run(
             [
                 sys.executable,
-                str(HERE / "boundary_completion_2d_matched_control_lbfgs.py"),
+                str(
+                    EXPERIMENT_DIRECTORY
+                    / "boundary_completion_2d_matched_control_lbfgs.py"
+                ),
                 "--input",
-                str(HERE / "boundary_completion_2d_atoms_adam.json"),
+                str(COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json"),
                 "--output",
                 str(
-                    REPRODUCTION_OUTPUT_DIRECTORY
+                    MATCHED_CONTROL_OUTPUT_DIRECTORY
                     / "boundary_completion_2d_matched_control_lbfgs.json"
                 ),
             ],
             environment,
         )
-    print(f"Regenerated matched-polish controls in {REPRODUCTION_OUTPUT_DIRECTORY}.")
+    print(f"Regenerated matched-polish controls in {MATCHED_CONTROL_OUTPUT_DIRECTORY}.")
 
 
 def run_full() -> None:
     """Run every optimizer trajectory used by the paper's numerical section."""
-    with tempfile.TemporaryDirectory(prefix="coercivity-mpl-") as cache_directory:
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="singular-representations-mpl-") as cache_directory:
         environment = configured_environment(cache_directory)
         for precision in ("float64", "float32"):
             run(
-                [sys.executable, str(HERE / "tanh_parameter_escape_loss.py"), "--dtype", precision],
+                [
+                    sys.executable,
+                    str(EXPERIMENT_DIRECTORY / "tanh_parameter_escape_loss.py"),
+                    "--dtype",
+                    precision,
+                ],
                 environment,
             )
-        run([sys.executable, str(HERE / "tanh_wb_trajectories.py")], environment)
-        sync_from_code(("wb_trajectories.pdf", "wb_trajectories.png"))
-        run([sys.executable, str(HERE / "tanh_slope_collision_snapshots.py")], environment)
-        sync_from_code(
-            (
-                "tanh_x_tanhprime_energy_minimization.pdf",
-                "tanh_x_tanhprime_energy_minimization.png",
-            )
+        run(
+            [sys.executable, str(EXPERIMENT_DIRECTORY / "tanh_wb_trajectories.py")],
+            environment,
         )
         run(
             [
                 sys.executable,
-                str(HERE / "gaussian_rbf_instability_figure5_mixed_precision.py"),
+                str(EXPERIMENT_DIRECTORY / "tanh_slope_collision_snapshots.py"),
+            ],
+            environment,
+        )
+        run(
+            [
+                sys.executable,
+                str(
+                    EXPERIMENT_DIRECTORY
+                    / "gaussian_collision_mixed_precision.py"
+                ),
                 "--orders",
                 "1",
                 "--float32-iter",
@@ -639,33 +676,27 @@ def run_full() -> None:
             ],
             environment,
         )
-        sync_from_code(
-            (
-                "gaussian_rbf_instability_unpenalized_mixed_precision.pdf",
-                "gaussian_rbf_instability_unpenalized_mixed_precision.png",
-            )
-        )
         run(
             [
                 sys.executable,
-                str(HERE / "gaussian_rbf_trace_diagnostics.py"),
+                str(EXPERIMENT_DIRECTORY / "gaussian_rbf_trace_diagnostics.py"),
                 "--input",
-                str(HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json"),
+                str(
+                    GAUSSIAN_DATA_DIRECTORY
+                    / "gaussian_rbf_instability_unpenalized_mixed_precision.json"
+                ),
                 "--output-directory",
-                str(HERE),
+                str(OUTPUT_DIRECTORY / "gaussian"),
             ],
             environment,
         )
-        sync_from_code(
-            (
-                "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.pdf",
-                "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.png",
-            )
-        )
         run(
             [
                 sys.executable,
-                str(HERE / "gaussian_instability_adaptive_weight_penalty.py"),
+                str(
+                    EXPERIMENT_DIRECTORY
+                    / "gaussian_instability_adaptive_weight_penalty.py"
+                ),
                 "--start-exp",
                 "5",
                 "--end-exp",
@@ -681,16 +712,10 @@ def run_full() -> None:
             ],
             environment,
         )
-        sync_from_code(
-            (
-                "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.pdf",
-                "gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.png",
-            )
-        )
         run(
             [
                 sys.executable,
-                str(HERE / "boundary_completion_experiment.py"),
+                str(EXPERIMENT_DIRECTORY / "boundary_completion_experiment.py"),
                 "--final-stage-optimizer",
                 "lbfgs",
                 "--output-suffix",
@@ -698,36 +723,34 @@ def run_full() -> None:
             ],
             environment,
         )
-        sync_from_code(
-            (
-                "boundary_completion_third_derivative_atoms_lbfgs_plateau.pdf",
-                "boundary_completion_third_derivative_atoms_lbfgs_plateau.png",
-                "boundary_completion_third_derivative_representation_lbfgs_plateau.pdf",
-                "boundary_completion_third_derivative_representation_lbfgs_plateau.png",
-            )
-        )
         run(
-            [sys.executable, str(HERE / "boundary_completion_2d_experiment.py")],
+            [
+                sys.executable,
+                str(EXPERIMENT_DIRECTORY / "boundary_completion_2d_experiment.py"),
+                "--output-directory",
+                str(OUTPUT_DIRECTORY / "completion"),
+                "--cache-output",
+                str(COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json"),
+            ],
             environment,
         )
-        sync_from_code(
-            (
-                "boundary_completion_2d_atoms_adam.pdf",
-                "boundary_completion_2d_atoms_adam.png",
-                "boundary_completion_2d_representation_adam.pdf",
-                "boundary_completion_2d_representation_adam.png",
-            )
+        run(
+            [
+                sys.executable,
+                str(EXPERIMENT_DIRECTORY / "matched_elliptic_completion.py"),
+            ],
+            environment,
         )
-        run([sys.executable, str(HERE / "matched_elliptic_completion.py")], environment)
-        sync_from_code(("matched_elliptic_completion.pdf", "matched_elliptic_completion.png"))
-        run([sys.executable, str(HERE / "ingham_illustration.py")], environment)
-        sync_from_code(
-            ("ingham_panel_T_2_5_10_an1_styled.pdf", "ingham_panel_T_2_5_10_an1_styled.png")
+        run(
+            [sys.executable, str(EXPERIMENT_DIRECTORY / "ingham_illustration.py")],
+            environment,
         )
     run_matched_controls()
-    sync_preserved_figure_layouts()
-    sync_numbered_figures()
-    print("Completed the full reproduction workflow.")
+    print(
+        "Completed the full reproduction workflow; reference histories were updated "
+        f"under {REFERENCE_DATA_DIRECTORY}, generated results are under "
+        f"{OUTPUT_DIRECTORY}, and immutable manuscript PDFs were not modified."
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -737,7 +760,7 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument(
         "--fast",
         action="store_true",
-        help="regenerate deterministic/cached-state figures, synchronize them, then check",
+        help="render deterministic/cached-state audit figures under outputs, then check",
     )
     mode.add_argument(
         "--matched-controls",

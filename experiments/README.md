@@ -1,29 +1,28 @@
-# Experiment sources and authoritative caches
+# Experiment sources
 
-This directory intentionally keeps the standalone drivers and their imported
-helpers together. It contains only the sources and cached results needed for
-the paper's numerical section.
+This directory contains only executable experiment, plotting, and numerical
+helper sources. The drivers stay flat because several of them import
+neighboring modules and are designed to run directly from the repository root.
 
 ## Source groups
 
-- Matched weak-PDE coordinates: `matched_elliptic_completion.py`
+- Matched weak-form PDE coordinates: `matched_elliptic_completion.py`
 - Tanh collisions: `tanh_parameter_escape_loss.py`,
-  `tanh_wb_trajectories.py`, `tanh_slope_collision_snapshots.py`
-- Gaussian collision: `gaussian_rbf_instability_figure5_mixed_precision.py`,
-  `tanh_instability_figure5_mixed_precision.py`,
-  `tanh_instability_figure5.py`, `tanh_second_derivative_optimizer.c`, and
+  `tanh_wb_trajectories.py`, and `tanh_slope_collision_snapshots.py`
+- Gaussian collision: `gaussian_collision_mixed_precision.py`,
+  its neighboring tanh numerical helpers, and
   `gaussian_rbf_trace_diagnostics.py`
-- Penalization: `gaussian_instability_adaptive_weight_penalty.py` with its two
+- Penalization: `gaussian_instability_adaptive_weight_penalty.py` and its two
   neighboring helper modules
 - Derivative completion: the one- and two-dimensional
-  `boundary_completion*` scripts
+  `boundary_completion*` drivers
 - Analytic illustration: `ingham_illustration.py`
-- Orchestration and validation: `reproduce.py`
 
-JSON files are the authoritative histories or analytic metadata. The single
-NPZ file is a deterministic Gaussian profile cache. Generated native libraries
-and Python bytecode are ignored by Git.
+Shared repository locations are defined in `artifact_paths.py`. Authoritative
+records live under [`../data/reference/`](../data/reference/), native source
+under [`../native/`](../native/), and generated plots and rerun results under
+the ignored `../outputs/` directory.
 
-Run commands from the repository root so relative output and figure paths stay
-consistent. The preferred interface is `python reproduce.py ...`; exact
-standalone commands are listed in `../docs/figure-provenance.md`.
+The preferred interface is `python reproduce.py ...`. Exact standalone
+commands are listed in
+[`../docs/figure-provenance.md`](../docs/figure-provenance.md).

@@ -11,12 +11,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 
+from artifact_paths import TANH_DATA_DIRECTORY, experiment_output_directory
 
-ROOT = Path(__file__).resolve().parent
-TRACE64_PATH = ROOT / "tanh_parameter_escape_loss.json"
-TRACE32_PATH = ROOT / "tanh_parameter_escape_loss_float32.json"
-OUT_PDF = ROOT / "wb_trajectories.pdf"
-OUT_PNG = ROOT / "wb_trajectories.png"
+
+OUTPUT_DIRECTORY = experiment_output_directory("tanh")
+TRACE64_PATH = TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss.json"
+TRACE32_PATH = TANH_DATA_DIRECTORY / "tanh_parameter_escape_loss_float32.json"
+OUT_PDF = OUTPUT_DIRECTORY / "wb_trajectories.pdf"
+OUT_PNG = OUTPUT_DIRECTORY / "wb_trajectories.png"
 
 BLUE = "#0000FF"
 RED = "#FF0000"
@@ -91,6 +93,7 @@ def plot_panel(ax: plt.Axes, trace: dict[str, np.ndarray], title: str) -> None:
 
 
 def main() -> None:
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
     trace64 = load_trace(TRACE64_PATH)
     trace32 = load_trace(TRACE32_PATH)
 

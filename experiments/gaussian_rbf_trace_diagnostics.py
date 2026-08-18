@@ -1,7 +1,7 @@
 """Plot Gaussian collision and direct H1 Gramian diagnostics from cached traces.
 
 This postprocessing script does not retrain the model. It reads the JSON trace
-produced by gaussian_rbf_instability_figure5_mixed_precision.py and evaluates
+produced by gaussian_collision_mixed_precision.py and evaluates
 the exact two-center H1 Gramian formulas along the recorded separations.
 """
 
@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 from pathlib import Path
 
 import matplotlib as mpl
@@ -17,12 +18,19 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import (
+    GALLERY_DIRECTORY,
+    GAUSSIAN_DATA_DIRECTORY,
+    experiment_output_directory,
+)
 
-HERE = Path(__file__).resolve().parent
-WORKSPACE = HERE.parent
+
 STEM = "gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics"
-DEFAULT_INPUT = HERE / "gaussian_rbf_instability_unpenalized_mixed_precision.json"
-FIGURE_OUTPUT = WORKSPACE / "figures" / "descriptive"
+DEFAULT_INPUT = (
+    GAUSSIAN_DATA_DIRECTORY
+    / "gaussian_rbf_instability_unpenalized_mixed_precision.json"
+)
+DEFAULT_OUTPUT_DIRECTORY = experiment_output_directory("gaussian")
 
 COLORS = {"float32": "#FF0000", "float64": "#0000FF"}
 PRECISION_LABELS = {"float32": "single precision", "float64": "double precision"}
@@ -76,7 +84,9 @@ def load_order_one(path: Path) -> dict[str, dict[str, np.ndarray]]:
     return result
 
 
-def make_figure(data: dict[str, dict[str, np.ndarray]], output_directory: Path) -> None:
+def make_figure(
+    data: dict[str, dict[str, np.ndarray]], output_directory: Path
+) -> tuple[Path, Path]:
     mpl.rcParams.update(
         {
             "font.family": "serif",
@@ -158,16 +168,17 @@ def make_figure(data: dict[str, dict[str, np.ndarray]], output_directory: Path) 
             f"lambda_min/g0={record['normalized_lambda_min'][-1]:.6e}, "
             f"condition={record['condition_number'][-1]:.6e}"
         )
+    return out_pdf, out_png
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    parser.add_argument("--output-directory", type=Path, default=HERE)
+    parser.add_argument("--output-directory", type=Path, default=DEFAULT_OUTPUT_DIRECTORY)
     parser.add_argument(
         "--sync-figures",
         action="store_true",
-        help="also write the figure into figures/descriptive",
+        help="copy the rendered PNG preview to figures/gallery",
     )
     return parser.parse_args()
 
@@ -175,9 +186,10 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     data = load_order_one(args.input)
-    make_figure(data, args.output_directory)
+    _, output_png = make_figure(data, args.output_directory)
     if args.sync_figures:
-        make_figure(data, FIGURE_OUTPUT)
+        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
 
 
 if __name__ == "__main__":

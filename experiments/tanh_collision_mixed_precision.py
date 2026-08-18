@@ -1,4 +1,4 @@
-"""Mixed-precision Figure 5 for confluent tanh finite-difference sequences."""
+"""Mixed-precision diagnostics for confluent tanh finite-difference sequences."""
 
 from __future__ import annotations
 
@@ -17,16 +17,21 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from tanh_instability_figure5 import max_iter_latex, relative_l2_error
+from artifact_paths import (
+    NATIVE_DIRECTORY,
+    OUTPUT_DIRECTORY as REPOSITORY_OUTPUT_DIRECTORY,
+    experiment_output_directory,
+)
+from tanh_collision_diagnostics import max_iter_latex, relative_l2_error
 
 
-ROOT = Path(__file__).resolve().parent
+TANH_OUTPUT_DIRECTORY = experiment_output_directory("tanh")
 OUT_STEM = "tanh_instability_unpenalized_mixed_precision"
-OUT_PDF = ROOT / f"{OUT_STEM}.pdf"
-OUT_PNG = ROOT / f"{OUT_STEM}.png"
-OUT_JSON = ROOT / f"{OUT_STEM}.json"
-C_SRC = ROOT / "tanh_second_derivative_optimizer.c"
-BUILD_DIRECTORY = ROOT / ".build"
+OUT_PDF = TANH_OUTPUT_DIRECTORY / f"{OUT_STEM}.pdf"
+OUT_PNG = TANH_OUTPUT_DIRECTORY / f"{OUT_STEM}.png"
+OUT_JSON = TANH_OUTPUT_DIRECTORY / f"{OUT_STEM}.json"
+C_SRC = NATIVE_DIRECTORY / "tanh_second_derivative_optimizer.c"
+BUILD_DIRECTORY = REPOSITORY_OUTPUT_DIRECTORY / ".build"
 SHARED_LIBRARY_SUFFIX = ".dylib" if platform.system() == "Darwin" else ".so"
 C_LIB = BUILD_DIRECTORY / f"tanh_second_derivative_optimizer{SHARED_LIBRARY_SUFFIX}"
 
@@ -185,7 +190,7 @@ def record_iters(max_iter: int) -> np.ndarray:
 def cache_path(order: int, q_min: float, q_max: float, n_profile: int, n_quad: int) -> Path:
     q_min_s = f"{q_min:g}".replace("-", "m").replace(".", "p")
     q_max_s = f"{q_max:g}".replace("-", "m").replace(".", "p")
-    return ROOT / (
+    return TANH_OUTPUT_DIRECTORY / (
         f"tanh_confluent_order{order}_profile_cache_v{CACHE_VERSION}_"
         f"q{q_min_s}_{q_max_s}_n{n_profile}_N{n_quad}.npz"
     )
@@ -871,6 +876,7 @@ def main() -> None:
     parser.add_argument("--n-quad", type=int, default=20001)
     parser.add_argument("--workers", type=int, default=min(4, len(ORDERS)))
     args = parser.parse_args()
+    TANH_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     load_optimizer_lib()
     if args.workers > 1:

@@ -1,4 +1,4 @@
-"""Penalized variant of the Figure 5 Gaussian cancellation diagnostic.
+"""Penalized variant of the Gaussian cancellation diagnostic.
 
 This runs the same profiled two-Gaussian experiment as
 gaussian_instability_experiment.py, but adds lambda * ||w||_2 to the profiled
@@ -16,9 +16,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import experiment_output_directory
 from gaussian_instability_experiment import (
     GRAM_C,
-    ROOT,
     TARGET_NORM_SQ,
     antisymmetric_model_float32,
     antisymmetric_model_float64,
@@ -28,6 +28,7 @@ from gaussian_instability_experiment import (
 
 
 DEFAULT_LAMBDA = 1e-3
+GAUSSIAN_OUTPUT_DIRECTORY = experiment_output_directory("gaussian")
 
 
 def lambda_suffix(lam: float) -> str:
@@ -48,7 +49,11 @@ def output_paths(lam: float, threshold_weight_norm: float | None = None) -> tupl
     if threshold_weight_norm is not None:
         threshold_suffix = f"{threshold_weight_norm:g}".replace(".", "p")
         stem += f"_threshold_{threshold_suffix}"
-    return ROOT / f"{stem}.pdf", ROOT / f"{stem}.png", ROOT / f"{stem}.json"
+    return (
+        GAUSSIAN_OUTPUT_DIRECTORY / f"{stem}.pdf",
+        GAUSSIAN_OUTPUT_DIRECTORY / f"{stem}.png",
+        GAUSSIAN_OUTPUT_DIRECTORY / f"{stem}.json",
+    )
 
 
 def penalized_reduced_loss_and_grad(
@@ -210,6 +215,7 @@ def main() -> None:
     parser.add_argument("--max-iter", type=int, default=1_000_000)
     parser.add_argument("--lr", type=float, default=5e-1)
     args = parser.parse_args()
+    GAUSSIAN_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
     lam = float(args.lam)
     threshold_weight_norm = None if args.threshold_weight_norm is None else float(args.threshold_weight_norm)
     out_fig, out_png, out_json = output_paths(lam, threshold_weight_norm)

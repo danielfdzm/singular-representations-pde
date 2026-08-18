@@ -13,4 +13,4 @@
 - Recorded wall times are descriptive single-machine measurements, not
   hardware-independent benchmarks.
 - Strict byte equality of regenerated PDFs is not promised across platforms;
-  the preserved files record the exact selected manuscript layouts.
+  `figures/manuscript/` records the exact selected publication layouts.

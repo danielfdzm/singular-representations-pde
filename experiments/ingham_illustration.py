@@ -19,11 +19,15 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import (
+    GALLERY_DIRECTORY,
+    INGHAM_DATA_DIRECTORY,
+    experiment_output_directory,
+)
 
-HERE = Path(__file__).resolve().parent
-WORKSPACE = HERE.parent
-FIGURE_OUTPUT = WORKSPACE / "figures" / "descriptive"
 STEM = "ingham_panel_T_2_5_10_an1_styled"
+OUTPUT_DIRECTORY = experiment_output_directory("ingham")
+REFERENCE_JSON = INGHAM_DATA_DIRECTORY / f"{STEM}.json"
 N = 10
 WINDOWS = (2.0, 5.0, 10.0)
 
@@ -134,43 +138,59 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--points", type=int, default=1500)
     parser.add_argument(
+        "--plot-from-cache",
+        action="store_true",
+        help="redraw from the reference metadata without rewriting it",
+    )
+    parser.add_argument(
         "--sync-figures",
         "--sync-paper",
         dest="sync_figures",
         action="store_true",
-        help="copy the rendered PDF and PNG to figures/descriptive",
+        help="update the PNG preview in figures/gallery",
     )
     args = parser.parse_args()
-    if args.points < 50:
-        raise ValueError("--points must be at least 50")
+    if args.plot_from_cache:
+        payload = json.loads(REFERENCE_JSON.read_text())
+        delta = np.linspace(
+            float(payload["delta_min"]),
+            float(payload["delta_max"]),
+            int(payload["delta_points"]),
+        )
+    else:
+        if args.points < 50:
+            raise ValueError("--points must be at least 50")
+        delta = np.linspace(0.15, 15.0, args.points)
+        payload = {
+            "frequencies": f"lambda_n=n*delta, |n|<={N}",
+            "coefficients": "a_n=1",
+            "windows": list(WINDOWS),
+            "delta_min": float(delta[0]),
+            "delta_max": float(delta[-1]),
+            "delta_points": int(delta.size),
+            "exact_integral_formula": (
+                "2*T*M + 4*sum_{k=1}^{M-1}(M-k)*sin(k*delta*T)/(k*delta), M=2*N+1"
+            ),
+            "lower_bound_formula": (
+                "(4*T/pi)*(1-pi^2/(T^2*delta^2))*sum_n|a_n|^2, valid for T>pi/delta"
+            ),
+        }
+        INGHAM_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        REFERENCE_JSON.write_text(json.dumps(payload, indent=2) + "\n")
 
-    delta = np.linspace(0.15, 15.0, args.points)
-    make_figure(delta, HERE)
-    payload = {
-        "frequencies": f"lambda_n=n*delta, |n|<={N}",
-        "coefficients": "a_n=1",
-        "windows": list(WINDOWS),
-        "delta_min": float(delta[0]),
-        "delta_max": float(delta[-1]),
-        "delta_points": int(delta.size),
-        "exact_integral_formula": (
-            "2*T*M + 4*sum_{k=1}^{M-1}(M-k)*sin(k*delta*T)/(k*delta), M=2*N+1"
-        ),
-        "lower_bound_formula": (
-            "(4*T/pi)*(1-pi^2/(T^2*delta^2))*sum_n|a_n|^2, valid for T>pi/delta"
-        ),
-    }
-    (HERE / f"{STEM}.json").write_text(json.dumps(payload, indent=2) + "\n")
+    make_figure(delta, OUTPUT_DIRECTORY)
 
     if args.sync_figures:
-        FIGURE_OUTPUT.mkdir(parents=True, exist_ok=True)
-        for suffix in ("pdf", "png"):
-            source = HERE / f"{STEM}.{suffix}"
-            shutil.copy2(source, FIGURE_OUTPUT / source.name)
+        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        source = OUTPUT_DIRECTORY / f"{STEM}.png"
+        shutil.copy2(source, GALLERY_DIRECTORY / source.name)
 
-    print(f"Wrote {HERE / f'{STEM}.pdf'}")
-    print(f"Wrote {HERE / f'{STEM}.png'}")
-    print(f"Wrote {HERE / f'{STEM}.json'}")
+    print(f"Wrote {OUTPUT_DIRECTORY / f'{STEM}.pdf'}")
+    print(f"Wrote {OUTPUT_DIRECTORY / f'{STEM}.png'}")
+    if args.plot_from_cache:
+        print(f"Read {REFERENCE_JSON}")
+    else:
+        print(f"Wrote {REFERENCE_JSON}")
 
 
 if __name__ == "__main__":

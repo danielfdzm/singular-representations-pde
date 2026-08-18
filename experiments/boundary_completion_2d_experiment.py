@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -34,15 +35,19 @@ import numpy as np
 import torch
 from matplotlib.patches import FancyArrowPatch
 
+from artifact_paths import (
+    COMPLETION_DATA_DIRECTORY,
+    GALLERY_DIRECTORY,
+    experiment_output_directory,
+)
 
-ROOT = Path(__file__).resolve().parent
 OUT_STEM = "boundary_completion_2d_atoms"
 OUT_REP_STEM = "boundary_completion_2d_representation"
-OUT_PDF = ROOT / f"{OUT_STEM}_adam.pdf"
-OUT_PNG = ROOT / f"{OUT_STEM}_adam.png"
-OUT_JSON = ROOT / f"{OUT_STEM}_adam.json"
-OUT_REP_PDF = ROOT / f"{OUT_REP_STEM}_adam.pdf"
-OUT_REP_PNG = ROOT / f"{OUT_REP_STEM}_adam.png"
+OUTPUT_DIRECTORY = experiment_output_directory("completion")
+OUT_PDF = OUTPUT_DIRECTORY / f"{OUT_STEM}_adam.pdf"
+OUT_PNG = OUTPUT_DIRECTORY / f"{OUT_STEM}_adam.png"
+OUT_REP_PDF = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}_adam.pdf"
+OUT_REP_PNG = OUTPUT_DIRECTORY / f"{OUT_REP_STEM}_adam.png"
 
 WIDTH = 9
 BETA = 0.6
@@ -1087,14 +1092,13 @@ def plot_representation_evolution(
 
 
 def configure_outputs(output_directory: Path, output_suffix: str) -> None:
-    global OUT_PDF, OUT_PNG, OUT_JSON, OUT_REP_PDF, OUT_REP_PNG
+    global OUT_PDF, OUT_PNG, OUT_REP_PDF, OUT_REP_PNG
     output_directory.mkdir(parents=True, exist_ok=True)
     suffix = output_suffix.strip()
     if suffix and not suffix.startswith("_"):
         suffix = f"_{suffix}"
     OUT_PDF = output_directory / f"{OUT_STEM}{suffix}.pdf"
     OUT_PNG = output_directory / f"{OUT_STEM}{suffix}.png"
-    OUT_JSON = output_directory / f"{OUT_STEM}{suffix}.json"
     OUT_REP_PDF = output_directory / f"{OUT_REP_STEM}{suffix}.pdf"
     OUT_REP_PNG = output_directory / f"{OUT_REP_STEM}{suffix}.png"
 
@@ -1118,13 +1122,29 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--final-stage-polish-steps", type=int, default=1000)
     parser.add_argument("--final-stage-lbfgs-iter", type=int, default=200)
     parser.add_argument("--final-stage-lbfgs-lr", type=float, default=1.0)
-    parser.add_argument("--output-directory", type=Path, default=ROOT)
+    parser.add_argument("--output-directory", type=Path, default=OUTPUT_DIRECTORY)
+    parser.add_argument(
+        "--cache-output",
+        type=Path,
+        help=(
+            "JSON record written by a full run; defaults to data/reference/completion "
+            "with the selected output suffix"
+        ),
+    )
     parser.add_argument("--output-suffix", default="adam")
     parser.add_argument("--no-plots", action="store_true")
     parser.add_argument(
-        "--plot-from-cache",
+        "--sync-figures",
+        "--sync-paper",
+        dest="sync_figures",
         action="store_true",
-        help="redraw the representation figure from the existing JSON without training",
+        help="update the representation PNG preview in figures/gallery",
+    )
+    parser.add_argument(
+        "--plot-from-cache",
+        type=Path,
+        metavar="JSON",
+        help="redraw the representation figure from this JSON without training",
     )
     return parser.parse_args()
 
@@ -1132,18 +1152,27 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     configure_outputs(args.output_directory, args.output_suffix)
-    if args.plot_from_cache:
-        if not OUT_JSON.is_file():
-            raise FileNotFoundError(OUT_JSON)
-        cached = json.loads(OUT_JSON.read_text())
+    cache_output = args.cache_output
+    if cache_output is None:
+        suffix = args.output_suffix.strip()
+        if suffix and not suffix.startswith("_"):
+            suffix = f"_{suffix}"
+        cache_output = COMPLETION_DATA_DIRECTORY / f"{OUT_STEM}{suffix}.json"
+    if args.plot_from_cache is not None:
+        if not args.plot_from_cache.is_file():
+            raise FileNotFoundError(args.plot_from_cache)
+        cached = json.loads(args.plot_from_cache.read_text())
         cached_results = cached.get("results")
         if not isinstance(cached_results, list) or len(cached_results) != 1:
             raise ValueError("cached JSON must contain exactly one completed result")
         plot_representation_evolution(
             cached_results[0], args.plot_domain_radius, args.plot_grid
         )
-        print(f"Wrote {OUT_REP_PDF} from {OUT_JSON}")
-        print(f"Wrote {OUT_REP_PNG} from {OUT_JSON}")
+        if args.sync_figures:
+            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(OUT_REP_PNG, GALLERY_DIRECTORY / OUT_REP_PNG.name)
+        print(f"Wrote {OUT_REP_PDF} from {args.plot_from_cache}")
+        print(f"Wrote {OUT_REP_PNG} from {args.plot_from_cache}")
         return
     collapse_ratios = tuple(float(value) for value in args.collapse_ratios)
     if len(collapse_ratios) != 3 or any(
@@ -1255,14 +1284,18 @@ def main() -> None:
         "results": [result],
         "fixed_translated_control": [fixed_result],
     }
-    OUT_JSON.write_text(json.dumps(payload, indent=2) + "\n")
+    cache_output.parent.mkdir(parents=True, exist_ok=True)
+    cache_output.write_text(json.dumps(payload, indent=2) + "\n")
+    if args.sync_figures and not args.no_plots and completed_all_stages:
+        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(OUT_REP_PNG, GALLERY_DIRECTORY / OUT_REP_PNG.name)
     if not args.no_plots:
         print(f"Wrote {OUT_PDF}")
         print(f"Wrote {OUT_PNG}")
         if completed_all_stages:
             print(f"Wrote {OUT_REP_PDF}")
             print(f"Wrote {OUT_REP_PNG}")
-    print(f"Wrote {OUT_JSON}")
+    print(f"Wrote {cache_output}")
     print(
         f"P={WIDTH}: triggers={result['event_iterations']}; "
         f"completed_all_stages={completed_all_stages}; "

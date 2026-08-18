@@ -32,9 +32,9 @@
     "torch_default_in_fresh_process": 4,
     "torch_interop_default_in_fresh_process": 8,
     "scripts_explicitly_setting_torch_threads_to_one": [
-      "matched_elliptic_completion.py",
-      "tanh_slope_collision_snapshots.py",
-      "boundary_completion_2d_experiment.py"
+      "experiments/matched_elliptic_completion.py",
+      "experiments/tanh_slope_collision_snapshots.py",
+      "experiments/boundary_completion_2d_experiment.py"
     ]
   },
   "randomness": {

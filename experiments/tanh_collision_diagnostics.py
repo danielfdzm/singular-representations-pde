@@ -1,4 +1,4 @@
-"""Figure-5-style diagnostics for the tanh slope-collision sequence.
+"""Diagnostics for the tanh slope-collision sequence.
 
 The profiled model is
 
@@ -21,10 +21,17 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from artifact_paths import (
+    NATIVE_DIRECTORY,
+    OUTPUT_DIRECTORY as REPOSITORY_OUTPUT_DIRECTORY,
+    experiment_output_directory,
+)
 
-ROOT = Path(__file__).resolve().parent
-C_FLOAT32_SRC = ROOT / "tanh_float32_optimizer.c"
-C_FLOAT32_LIB = ROOT / "tanh_float32_optimizer.dylib"
+
+TANH_OUTPUT_DIRECTORY = experiment_output_directory("tanh")
+BUILD_DIRECTORY = REPOSITORY_OUTPUT_DIRECTORY / ".build"
+C_FLOAT32_SRC = NATIVE_DIRECTORY / "tanh_float32_optimizer.c"
+C_FLOAT32_LIB = BUILD_DIRECTORY / "tanh_float32_optimizer.dylib"
 CACHE_VERSION = 2
 DEFAULT_LAMBDAS = [10.0 ** (-k) for k in range(5, 13)]
 
@@ -64,13 +71,20 @@ def output_paths(mode: str, max_iter: int, lambdas: list[float]) -> tuple[Path, 
         )
     else:
         stem = f"tanh_instability_unpenalized_{iter_part}"
-    return ROOT / f"{stem}.pdf", ROOT / f"{stem}.png", ROOT / f"{stem}.json"
+    return (
+        TANH_OUTPUT_DIRECTORY / f"{stem}.pdf",
+        TANH_OUTPUT_DIRECTORY / f"{stem}.png",
+        TANH_OUTPUT_DIRECTORY / f"{stem}.json",
+    )
 
 
 def cache_path(q_min: float, q_max: float, n_profile: int, n_quad: int) -> Path:
     q_min_s = f"{q_min:g}".replace("-", "m").replace(".", "p")
     q_max_s = f"{q_max:g}".replace("-", "m").replace(".", "p")
-    return ROOT / f"tanh_profile_cache_v{CACHE_VERSION}_q{q_min_s}_{q_max_s}_n{n_profile}_N{n_quad}.npz"
+    return TANH_OUTPUT_DIRECTORY / (
+        f"tanh_profile_cache_v{CACHE_VERSION}_q{q_min_s}_{q_max_s}_"
+        f"n{n_profile}_N{n_quad}.npz"
+    )
 
 
 def sech2(x: np.ndarray) -> np.ndarray:
@@ -360,6 +374,7 @@ def load_float32_optimizer_lib() -> ctypes.CDLL | None:
         return None
     try:
         if not C_FLOAT32_LIB.exists() or C_FLOAT32_LIB.stat().st_mtime < C_FLOAT32_SRC.stat().st_mtime:
+            BUILD_DIRECTORY.mkdir(parents=True, exist_ok=True)
             subprocess.run(
                 [
                     "clang",
@@ -1229,6 +1244,7 @@ def main() -> None:
     parser.add_argument("--n-profile", type=int, default=6000)
     parser.add_argument("--n-quad", type=int, default=20001)
     args = parser.parse_args()
+    TANH_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     lambdas = [10.0 ** (-k) for k in range(args.start_exp, args.end_exp + 1)]
     out_fig, out_png, out_json = output_paths(args.mode, args.max_iter, lambdas)

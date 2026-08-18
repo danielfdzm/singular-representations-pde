@@ -1,4 +1,4 @@
-"""Mixed-precision Figure 5 for confluent Gaussian RBF finite differences.
+"""Mixed-precision diagnostics for confluent Gaussian RBF finite differences.
 
 This is the Gaussian/RBF analogue of the previous tanh slope-collision figure.
 For order m we use m+1 translated Gaussian atoms
@@ -20,14 +20,15 @@ from pathlib import Path
 
 import numpy as np
 
-import tanh_instability_figure5_mixed_precision as base
+from artifact_paths import GAUSSIAN_DATA_DIRECTORY, experiment_output_directory
+import tanh_collision_mixed_precision as base
 
 
-ROOT = Path(__file__).resolve().parent
+GAUSSIAN_OUTPUT_DIRECTORY = experiment_output_directory("gaussian")
 OUT_STEM = "gaussian_rbf_instability_unpenalized_mixed_precision"
-OUT_PDF = ROOT / f"{OUT_STEM}.pdf"
-OUT_PNG = ROOT / f"{OUT_STEM}.png"
-OUT_JSON = ROOT / f"{OUT_STEM}.json"
+OUT_PDF = GAUSSIAN_OUTPUT_DIRECTORY / f"{OUT_STEM}.pdf"
+OUT_PNG = GAUSSIAN_OUTPUT_DIRECTORY / f"{OUT_STEM}.png"
+OUT_JSON = GAUSSIAN_DATA_DIRECTORY / f"{OUT_STEM}.json"
 
 ORDERS = tuple(range(1, 5))
 CACHE_VERSION = 1
@@ -90,7 +91,7 @@ def feature_float32(order: int, x: np.ndarray, h: float, amplitude: float) -> np
 def cache_path(order: int, q_min: float, q_max: float, n_profile: int, n_quad: int) -> Path:
     q_min_s = f"{q_min:g}".replace("-", "m").replace(".", "p")
     q_max_s = f"{q_max:g}".replace("-", "m").replace(".", "p")
-    return ROOT / (
+    return GAUSSIAN_DATA_DIRECTORY / (
         f"gaussian_rbf_confluent_order{order}_profile_cache_v{CACHE_VERSION}_"
         f"q{q_min_s}_{q_max_s}_n{n_profile}_N{n_quad}.npz"
     )
@@ -403,6 +404,8 @@ def main() -> None:
         help="redraw the PDF and PNG from an existing JSON trace without optimization",
     )
     args = parser.parse_args()
+    GAUSSIAN_OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    GAUSSIAN_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     base.OUT_PDF = OUT_PDF
     base.OUT_PNG = OUT_PNG

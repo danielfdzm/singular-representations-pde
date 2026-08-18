@@ -20,10 +20,16 @@ from typing import Any
 import numpy as np
 import torch
 
+from artifact_paths import COMPLETION_DATA_DIRECTORY, experiment_output_directory
 
-ROOT = Path(__file__).resolve().parent
-DEFAULT_INPUT = ROOT / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"
-DEFAULT_OUTPUT = ROOT / "boundary_completion_matched_control_lbfgs.json"
+DEFAULT_INPUT = (
+    COMPLETION_DATA_DIRECTORY
+    / "boundary_completion_third_derivative_atoms_lbfgs_plateau.json"
+)
+DEFAULT_OUTPUT = (
+    experiment_output_directory("matched-controls")
+    / "boundary_completion_matched_control_lbfgs.json"
+)
 
 LEAF_OFFSETS = torch.tensor(
     [-7.0, -5.0, -3.0, -1.0, 1.0, 3.0, 5.0, 7.0],
@@ -333,6 +339,7 @@ def main() -> None:
         "matched_fixed_controls": results,
         "completed_stage_3_validation": completed_validation,
     }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n")
 
     print(f"Wrote {args.output}")

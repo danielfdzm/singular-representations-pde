@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": {
-    "path": "experiments/boundary_completion_2d_atoms_adam.json",
+    "path": "data/reference/completion/boundary_completion_2d_atoms_adam.json",
     "sha256": "ca60e43d9b4d2f08de27daa4b270b88c24930f6bd86c85a65b86ad1d4f339f51",
     "seed": 80209,
     "adam_max_iteration": 40000

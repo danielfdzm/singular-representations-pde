@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import argparse
+import json
 from pathlib import Path
 
 import matplotlib as mpl
@@ -11,16 +11,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
+from artifact_paths import TANH_DATA_DIRECTORY, experiment_output_directory
 
-ROOT = Path(__file__).resolve().parent
+
+OUTPUT_DIRECTORY = experiment_output_directory("tanh")
 
 
 def output_paths(dtype_name: str) -> tuple[Path, Path, Path]:
     suffix = "" if dtype_name == "float64" else f"_{dtype_name}"
     return (
-        ROOT / f"tanh_parameter_escape_loss{suffix}.pdf",
-        ROOT / f"tanh_parameter_escape_loss{suffix}.png",
-        ROOT / f"tanh_parameter_escape_loss{suffix}.json",
+        OUTPUT_DIRECTORY / f"tanh_parameter_escape_loss{suffix}.pdf",
+        OUTPUT_DIRECTORY / f"tanh_parameter_escape_loss{suffix}.png",
+        TANH_DATA_DIRECTORY / f"tanh_parameter_escape_loss{suffix}.json",
     )
 
 
@@ -99,6 +101,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dtype", choices=["float64", "float32"], default="float64")
     args = parser.parse_args()
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    TANH_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
     dtype = torch.float32 if args.dtype == "float32" else torch.float64
     out_pdf, out_png, out_json = output_paths(args.dtype)
 

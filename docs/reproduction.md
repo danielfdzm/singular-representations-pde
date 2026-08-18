@@ -1,26 +1,62 @@
-# Reproduction notes
+# Reproduction guide
+
+All commands are run from the repository root. The stable entry point is
+`python reproduce.py`; it delegates to the versioned orchestrator in `tools/`.
+
+## Installation
+
+The recorded environment is available through Conda:
+
+```bash
+conda env create -f environment.yml
+conda activate singular-representations-pde
+```
+
+Alternatively, install the exact direct Python dependencies with pip:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-lock.txt
+```
+
+On Linux x86-64, installing the CPU-only PyTorch wheel first avoids pulling the
+CUDA/NVIDIA runtime from the default PyPI wheel:
+
+```bash
+python -m pip install "torch==2.10.0" \
+  --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements-lock.txt
+```
+
+The Conda file records the macOS reference environment. The Linux commands are
+the lean CPU-only equivalent used by continuous integration.
 
 ## Validation tiers
 
 `python reproduce.py --check` is read-only. It checks the curated source and
-cache files, JSON schemas, source hashes, exact figure aliases, PDF media boxes,
-absence of Type 3 fonts, and recorded direct package versions.
+reference-data files, JSON schemas, source hashes, manuscript PDFs, PDF media
+boxes, absence of Type 3 fonts, checksum manifests, and recorded direct package
+versions.
 
-`python reproduce.py --fast` redraws deterministic or cache-backed plots,
-restores the selected publication PDFs, updates the numbered figure
-aliases, and finishes with the same validation.
+`python reproduce.py --fast` redraws deterministic or cache-backed plots under
+the ignored `outputs/` tree and finishes with the same validation. It does not
+modify the immutable manuscript PDFs or the tracked gallery previews.
 
 `python reproduce.py --matched-controls` reruns the one- and two-dimensional
 matched LBFGS endpoint audits without repeating the Adam trajectories. Results
-are written to the ignored `reproduced/` directory, then the committed caches
-and their checksums are validated. This isolates the nondeterministic measured
-wall-clock field from the reference artifact.
+are written to `outputs/matched-controls/`, isolating nondeterministic measured
+wall-clock fields from the checksummed reference records.
 
-`python reproduce.py --full` reruns all optimizer trajectories. It is a manual,
-long-running workflow and is not suitable for pull-request CI. It validates
-regenerated contents without comparing them byte-for-byte with the committed
-reference caches. Full reproduction replaces authoritative caches in place and
-should therefore be run in a clean clone or dedicated worktree.
+`python reproduce.py --full` reruns every optimizer trajectory. It is a manual,
+long-running workflow and is not suitable for pull-request CI. Full
+reproduction regenerates authoritative files under `data/reference/`, so run it
+in a clean clone or dedicated worktree when byte-for-byte comparison matters.
+All rendered audit products remain under `outputs/`.
+
+To validate structure and provenance while using other dependency versions,
+append `--allow-version-drift`. Version drift can change floating-point
+trajectories and is not equivalent to reproducing the recorded environment.
 
 ## Reference environment
 
@@ -31,6 +67,10 @@ should therefore be run in a clean clone or dedicated worktree.
 - CPU execution
 - macOS arm64 on an Apple M2 reference machine
 - a C compiler for the mixed-precision Gaussian trajectory
+
+The native source is `native/tanh_second_derivative_optimizer.c`; compiled
+libraries are written below `outputs/` and are never committed. Set `CC` if
+compiler discovery does not find a suitable C compiler.
 
 The drivers use full-batch deterministic grids. The orchestrator selects the
 noninteractive Matplotlib backend and a temporary writable Matplotlib cache.
@@ -47,8 +87,8 @@ can differ through embedded timestamps, fonts, or backend metadata.
 
 ## Integrity
 
-The committed checksum files cover every authoritative numerical cache and all
-eight manuscript PDFs. On macOS:
+The committed checksum files cover all 13 authoritative numerical records and
+all eight manuscript PDFs. On macOS:
 
 ```bash
 shasum -a 256 -c DATA_SHA256SUMS

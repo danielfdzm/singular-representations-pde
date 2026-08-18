@@ -34,12 +34,16 @@ import numpy as np
 import torch
 
 import boundary_completion_2d_experiment as experiment
+from artifact_paths import COMPLETION_DATA_DIRECTORY, experiment_output_directory
 
 
 HERE = Path(__file__).resolve().parent
 WORKSPACE = HERE.parent
-DEFAULT_INPUT = HERE / "boundary_completion_2d_atoms_adam.json"
-DEFAULT_OUTPUT = HERE / "boundary_completion_2d_matched_control_lbfgs.json"
+DEFAULT_INPUT = COMPLETION_DATA_DIRECTORY / "boundary_completion_2d_atoms_adam.json"
+DEFAULT_OUTPUT = (
+    experiment_output_directory("matched-controls")
+    / "boundary_completion_2d_matched_control_lbfgs.json"
+)
 
 
 def sha256(path: Path) -> str:
@@ -393,6 +397,7 @@ def main() -> None:
 
     torch.set_num_threads(1)
     payload = run(args)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n")
 
     before, after, completed = payload["terminal_metrics"]

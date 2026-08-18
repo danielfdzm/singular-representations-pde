@@ -14,6 +14,7 @@ __pycache__/
 .ruff_cache/
 
 # Native build products
+outputs/
 experiments/.build/
 *.dylib
 *.so
@@ -25,6 +26,7 @@ experiments/.build/
 matplotlib-cache/
 tmp/
 temp/
+# Legacy local outputs from artifact versions before the role-based layout.
 reproduced/
 experiments/*.pdf
 experiments/*.png

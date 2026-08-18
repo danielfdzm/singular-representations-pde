@@ -9,18 +9,22 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
+from artifact_paths import (
+    GALLERY_DIRECTORY,
+    TANH_DATA_DIRECTORY,
+    experiment_output_directory,
+)
 
-HERE = Path(__file__).resolve().parent
-WORKSPACE = HERE.parent
-FIGURE_OUTPUT = WORKSPACE / "figures" / "descriptive"
+
+OUTPUT_DIRECTORY = experiment_output_directory("tanh")
 STEM = "tanh_x_tanhprime_energy_minimization"
 RADIUS = 10.0
 ADAM_STEPS = 5_000
@@ -258,7 +262,7 @@ def main() -> None:
         "--sync-paper",
         dest="sync_figures",
         action="store_true",
-        help="copy the rendered PDF and PNG to figures/descriptive",
+        help="copy the rendered PNG preview to figures/gallery",
     )
     parser.add_argument(
         "--plot-from-cache",
@@ -266,9 +270,11 @@ def main() -> None:
         help="redraw the PDF/PNG from the existing JSON without rerunning optimization",
     )
     args = parser.parse_args()
-    output_json = HERE / f"{STEM}.json"
-    output_pdf = HERE / f"{STEM}.pdf"
-    output_png = HERE / f"{STEM}.png"
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    TANH_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    output_json = TANH_DATA_DIRECTORY / f"{STEM}.json"
+    output_pdf = OUTPUT_DIRECTORY / f"{STEM}.pdf"
+    output_png = OUTPUT_DIRECTORY / f"{STEM}.png"
     if args.plot_from_cache:
         payload = json.loads(output_json.read_text())
         snapshots = payload.get("snapshots")
@@ -276,9 +282,8 @@ def main() -> None:
             raise ValueError("cached tanh-slope JSON must contain four snapshots")
         make_plot(snapshots, output_pdf, output_png)
         if args.sync_figures:
-            FIGURE_OUTPUT.mkdir(parents=True, exist_ok=True)
-            for source in (output_pdf, output_png):
-                shutil.copy2(source, FIGURE_OUTPUT / source.name)
+            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
         print(f"Wrote {output_pdf} and {output_png} from {output_json}")
         return
     snapshots = run()
@@ -309,9 +314,8 @@ def main() -> None:
     output_json.write_text(json.dumps(payload, indent=2) + "\n")
     make_plot(snapshots, output_pdf, output_png)
     if args.sync_figures:
-        FIGURE_OUTPUT.mkdir(parents=True, exist_ok=True)
-        for source in (output_pdf, output_png):
-            shutil.copy2(source, FIGURE_OUTPUT / source.name)
+        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
     print(json.dumps(snapshots, indent=2))
 
 
