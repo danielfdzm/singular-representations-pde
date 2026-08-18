@@ -1,0 +1,14 @@
+{
+  "frequencies": "lambda_n=n*delta, |n|<=10",
+  "coefficients": "a_n=1",
+  "windows": [
+    2.0,
+    5.0,
+    10.0
+  ],
+  "delta_min": 0.15,
+  "delta_max": 15.0,
+  "delta_points": 1500,
+  "exact_integral_formula": "2*T*M + 4*sum_{k=1}^{M-1}(M-k)*sin(k*delta*T)/(k*delta), M=2*N+1",
+  "lower_bound_formula": "(4*T/pi)*(1-pi^2/(T^2*delta^2))*sum_n|a_n|^2, valid for T>pi/delta"
+}

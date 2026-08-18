@@ -1,0 +1,37 @@
+# Operating-system and editor files
+.DS_Store
+.vscode/
+.idea/
+*~
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Native build products
+experiments/.build/
+*.dylib
+*.so
+*.dll
+*.o
+
+# Temporary plotting and test output
+.matplotlib/
+matplotlib-cache/
+tmp/
+temp/
+reproduced/
+experiments/*.pdf
+experiments/*.png
+experiments/gaussian_instability_diagnostics.json
+experiments/gaussian_instability_table.tex
+
+# Release bundles and logs
+release_dist/
+*.zip
+*.log

@@ -1,0 +1,53 @@
+{
+  "captured_for_artifact_version": "1.0.0",
+  "capture_date": "2026-08-05",
+  "operating_system": {
+    "name": "macOS",
+    "version": "26.5.2",
+    "build": "25F84",
+    "architecture": "arm64"
+  },
+  "hardware": {
+    "computer": "MacBook Air",
+    "processor": "Apple M2",
+    "performance_cores": 4,
+    "efficiency_cores": 4,
+    "logical_cpu_count": 8,
+    "unified_memory_gib": 16,
+    "accelerator": null,
+    "execution_device": "CPU"
+  },
+  "software": {
+    "python": "3.13.9",
+    "python_distribution": "Anaconda",
+    "python_compiler": "Clang 20.1.8",
+    "numpy": "2.4.2",
+    "matplotlib": "3.10.8",
+    "matplotlib_backend_for_orchestrated_reproduction": "Agg",
+    "matplotlib_bundled_freetype": "2.6.1 (local build)",
+    "torch": "2.10.0",
+    "native_optimizer_compiler": "Apple clang 14.0.3 (clang-1403.0.22.14.1)"
+  },
+  "threading": {
+    "torch_default_in_fresh_process": 4,
+    "torch_interop_default_in_fresh_process": 8,
+    "scripts_explicitly_setting_torch_threads_to_one": [
+      "matched_elliptic_completion.py",
+      "tanh_slope_collision_snapshots.py",
+      "boundary_completion_2d_experiment.py"
+    ]
+  },
+  "randomness": {
+    "tanh_offset_manual_seed": 0,
+    "tanh_offset_note": "Initialization is explicit; no random draw or minibatch is used.",
+    "tanh_slope_seed": null,
+    "matched_weak_pde_seed": null,
+    "gaussian_collision_seed": null,
+    "gaussian_penalty_seed": null,
+    "completion_1d_completed_initial_seed_formula": "70000 + width",
+    "completion_1d_fixed_control_seed_formula": "80000 + 17*width + stage",
+    "completion_2d_seed": 80209,
+    "ingham_seed": null
+  },
+  "privacy_note": "No serial number, hardware UUID, user name, or network identifier is recorded."
+}

@@ -1,0 +1,99 @@
+{
+  "experiment": "tanh slope collision",
+  "target": "x sech^2(x)",
+  "model": "w1*tanh(a1*x+b1)+w2*tanh(a2*x+b2)",
+  "deterministic": true,
+  "random_seed": null,
+  "bulk_energy_only": true,
+  "domain": [
+    -10.0,
+    10.0
+  ],
+  "optimizer": {
+    "adam_steps": 5000,
+    "adam_learning_rate": 0.001,
+    "adam_nodes": 1001,
+    "lbfgs_budgets": [
+      200,
+      1000
+    ],
+    "lbfgs_nodes": 2001,
+    "lbfgs_line_search": "strong_wolfe",
+    "note": "Each LBFGS run starts independently from the Adam endpoint."
+  },
+  "software": {
+    "numpy": "2.4.2",
+    "torch": "2.10.0",
+    "matplotlib": "3.10.8"
+  },
+  "snapshots": [
+    {
+      "label": "Adam 1,666",
+      "optimizer": "Adam",
+      "budget": 1666,
+      "parameters": {
+        "w1": 2.523404369107023,
+        "a1": 0.6029840461247423,
+        "b1": -0.03541097285618758,
+        "w2": 1.8992477931051794,
+        "a2": -0.46189465502499777,
+        "b2": 0.039049614893879946
+      },
+      "coefficient_norm": 3.1582767120129462,
+      "sign_normalized_feature_separation": 0.1411363029017522,
+      "relative_l2_error": 4.0267863122267835,
+      "relative_h1_error": 2.427523563062114
+    },
+    {
+      "label": "Adam 5,000",
+      "optimizer": "Adam",
+      "budget": 5000,
+      "parameters": {
+        "w1": 2.2347463547777573,
+        "a1": 0.9023062709252261,
+        "b1": -0.0002854980482938581,
+        "w2": 2.2825526894078054,
+        "a2": -0.5551354140665101,
+        "b2": 0.00028918675310942354
+      },
+      "coefficient_norm": 3.1943916557171383,
+      "sign_normalized_feature_separation": 0.3471708568783123,
+      "relative_l2_error": 0.42483465040842394,
+      "relative_h1_error": 0.4016545057585305
+    },
+    {
+      "label": "LBFGS 200",
+      "optimizer": "LBFGS",
+      "budget": 200,
+      "parameters": {
+        "w1": 12.547002207930394,
+        "a1": 1.0405154006072517,
+        "b1": -2.7087766907594423e-05,
+        "w2": 12.5470635520351,
+        "a2": -0.9607771095119683,
+        "b2": 2.71533905522643e-05
+      },
+      "coefficient_norm": 17.744184066465774,
+      "sign_normalized_feature_separation": 0.07973829109531042,
+      "relative_l2_error": 0.0005684212050210822,
+      "relative_h1_error": 0.0006394734993354562
+    },
+    {
+      "label": "LBFGS 1,000",
+      "optimizer": "LBFGS",
+      "budget": 1000,
+      "parameters": {
+        "w1": 22.131328838531992,
+        "a1": 1.02280147278525,
+        "b1": -1.3952726078556408e-06,
+        "w2": 22.13134957067504,
+        "a2": -0.9776095023632336,
+        "b2": 1.3719993674746994e-06
+      },
+      "coefficient_norm": 31.298440056633112,
+      "sign_normalized_feature_separation": 0.04519197042202227,
+      "relative_l2_error": 0.00018501662874198199,
+      "relative_h1_error": 0.00020477582636584625
+    }
+  ]
+}

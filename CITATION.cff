@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: >-
+  If you use this numerical artifact, please cite the associated article and
+  the archived artifact version.
+title: >-
+  Numerical artifact for Stable Solutions and Singular Representations in
+  Neural PDE Models
+type: software
+authors:
+  - family-names: Fernández
+    given-names: Daniel
+    email: daniel.fernandez@fau.de
+  - family-names: Zuazua
+    given-names: Enrique
+    email: enrique.zuazua@fau.de
+version: 1.0.0
+date-released: 2026-08-18
+repository-code: https://github.com/danielfdzm/singular-representations-pde
+abstract: >-
+  Executable scripts, raw optimizer histories, validation summaries, and
+  manuscript-facing figures for controlled collision and boundary-completion
+  experiments in neural PDE trial classes.
+keywords:
+  - neural PDE solvers
+  - coercivity
+  - feature collisions
+  - confluent closure
+  - derivative atoms
+  - reproducible research

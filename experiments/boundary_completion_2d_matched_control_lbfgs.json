@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "source": {
+    "path": "experiments/boundary_completion_2d_atoms_adam.json",
+    "sha256": "ca60e43d9b4d2f08de27daa4b270b88c24930f6bd86c85a65b86ad1d4f339f51",
+    "seed": 80209,
+    "adam_max_iteration": 40000
+  },
+  "method": "Reconstruct the cached terminal translated state and optimize all coefficients, log(h), and the ordinary center with the identical strong-Wolfe LBFGS settings used by the completed dictionary.",
+  "training_quadrature": {
+    "rule": "tensor-product trapezoidal",
+    "domain": [
+      -6.0,
+      6.0,
+      -6.0,
+      6.0
+    ],
+    "nodes_per_axis": 31
+  },
+  "validation_quadrature": {
+    "rule": "independent tensor-product trapezoidal grid",
+    "domain": [
+      -6.0,
+      6.0,
+      -6.0,
+      6.0
+    ],
+    "nodes_per_axis": 121
+  },
+  "lbfgs": {
+    "learning_rate": 1.0,
+    "max_iter": 200,
+    "max_eval": 400,
+    "tolerance_grad": 1e-14,
+    "tolerance_change": 1e-18,
+    "line_search": "strong_wolfe",
+    "iterations_performed": 200,
+    "closure_evaluations": 242,
+    "closure_evaluations_observed": 242,
+    "wall_seconds": 0.5375760410097428
+  },
+  "condition_number_definition": {
+    "formula": "kappa_2(D^(-1/2) Phi^T W Phi D^(-1/2))",
+    "Phi": "terminal design matrix on the independent validation grid",
+    "W": "tensor-product composite-trapezoid weights",
+    "D": "diag(Phi^T W Phi)",
+    "computation": "SVD, without clipping or regularization"
+  },
+  "terminal_metrics": [
+    {
+      "label": "translated dictionary after Adam",
+      "optimization": "cached Adam endpoint; no LBFGS",
+      "training_relative_l2": 0.07106038925961655,
+      "validation_relative_l2": 0.07106038926589696,
+      "coefficients": [
+        6.531749375317607,
+        -3.9893640827097543,
+        -6.259765051566945,
+        -6.2062208048274226,
+        6.1299582179399765,
+        6.166607635997963,
+        4.313234283526385,
+        -6.6873055122004645,
+        0.600062741738097
+      ],
+      "coefficient_l2_norm": 16.600246041779705,
+      "h": 0.13506304814606365,
+      "active_pair_separation": 0.2701260962921273,
+      "ordinary_center": [
+        1.345419604236783,
+        -0.8527855294298273
+      ],
+      "guard_penalty": 0.0,
+      "validation_design_gram": {
+        "matrix": "D^(-1/2) Phi^T W Phi D^(-1/2)",
+        "norm": "spectral 2-norm via singular values",
+        "column_normalization": "unit discrete validation-L2 norm",
+        "regularization_or_clipping": "none",
+        "number_of_features": 9,
+        "largest_singular_value": 7.108838022024783,
+        "smallest_singular_value": 1.2139488119222432e-10,
+        "condition_number": 58559619254.19409,
+        "reciprocal_condition_number": 1.7076613761083822e-11,
+        "numerical_note": "Condition estimates with reciprocal condition near machine epsilon are necessarily sensitive to floating-point and BLAS details."
+      }
+    },
+    {
+      "label": "translated dictionary after Adam and matched LBFGS",
+      "optimization": "cached Adam endpoint followed by matched strong-Wolfe LBFGS",
+      "training_relative_l2": 0.0023971006066708213,
+      "validation_relative_l2": 0.002397100606768596,
+      "coefficients": [
+        780.3796828645152,
+        -347.05761292118007,
+        -1078.2199420654065,
+        -542.7474200404931,
+        600.6502034258976,
+        1056.0715055401122,
+        267.8185427767232,
+        -736.8942637966829,
+        0.5999313554323779
+      ],
+      "coefficient_l2_norm": 2068.1833625239506,
+      "h": 0.02506102380921502,
+      "active_pair_separation": 0.05012204761843004,
+      "ordinary_center": [
+        1.3496158135891518,
+        -0.8498682820777136
+      ],
+      "guard_penalty": 0.0,
+      "validation_design_gram": {
+        "matrix": "D^(-1/2) Phi^T W Phi D^(-1/2)",
+        "norm": "spectral 2-norm via singular values",
+        "column_normalization": "unit discrete validation-L2 norm",
+        "regularization_or_clipping": "none",
+        "number_of_features": 9,
+        "largest_singular_value": 8.255241286091161,
+        "smallest_singular_value": 3.4143229346443662e-15,
+        "condition_number": 2417826738744331.0,
+        "reciprocal_condition_number": 4.1359456572117235e-16,
+        "numerical_note": "Condition estimates with reciprocal condition near machine epsilon are necessarily sensitive to floating-point and BLAS details."
+      }
+    },
+    {
+      "label": "completed dictionary after Adam transfers and LBFGS",
+      "optimization": "same Adam initialization and budget; 200-step strong-Wolfe LBFGS",
+      "training_relative_l2": 2.4168948804812323e-10,
+      "validation_relative_l2": 2.416895064977206e-10,
+      "coefficients": [
+        -4.154067301576683e-10,
+        -2.2165335075292987e-10,
+        -2.836786619376578e-10,
+        0.9999999998423749,
+        0.6000000001377377
+      ],
+      "coefficient_l2_norm": 1.1661903789047632,
+      "h": null,
+      "active_pair_separation": null,
+      "ordinary_center": [
+        1.3499999997403096,
+        -0.8500000003087074
+      ],
+      "guard_penalty": 0.0,
+      "validation_design_gram": {
+        "matrix": "D^(-1/2) Phi^T W Phi D^(-1/2)",
+        "norm": "spectral 2-norm via singular values",
+        "column_normalization": "unit discrete validation-L2 norm",
+        "regularization_or_clipping": "none",
+        "number_of_features": 5,
+        "largest_singular_value": 2.0321670297869567,
+        "smallest_singular_value": 0.21704680362487597,
+        "condition_number": 9.362805606200817,
+        "reciprocal_condition_number": 0.10680559247515702,
+        "numerical_note": "Condition estimates with reciprocal condition near machine epsilon are necessarily sensitive to floating-point and BLAS details."
+      }
+    }
+  ],
+  "execution_environment": {
+    "python": "3.13.9",
+    "numpy": "2.4.2",
+    "torch": "2.10.0",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "logical_cpu_count": 8,
+    "torch_num_threads": 1,
+    "torch_num_interop_threads": 8
+  }
+}

@@ -1,0 +1,3 @@
+model,coordinates,minimum_center_separation,normalized_h1_gram_condition_number,adam_endpoint_relative_h1_error,final_relative_h1_error,least_squares_reference_relative_h1_error,final_coefficient_norm,optimizer_wall_seconds
+translated,9,0.19999999999999996,6980341538708.086,0.04333168018440287,0.001167511128505604,4.708884154050585e-06,195.33656122502353,0.6259234999888577
+completed,9,NA,3.445638046497827,1.1251993214379983e-07,2.729434305920514e-09,1.1248663908030426e-15,1.1661903775352833,0.5902287499629892
