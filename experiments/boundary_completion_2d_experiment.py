@@ -37,7 +37,7 @@ from matplotlib.patches import FancyArrowPatch
 
 from artifact_paths import (
     COMPLETION_DATA_DIRECTORY,
-    GALLERY_DIRECTORY,
+    PREVIEW_FIGURE_DIRECTORY,
     experiment_output_directory,
 )
 
@@ -1127,7 +1127,7 @@ def parse_args() -> argparse.Namespace:
         "--cache-output",
         type=Path,
         help=(
-            "JSON record written by a full run; defaults to data/reference/completion "
+            "JSON record written by a full run; defaults to data/completion "
             "with the selected output suffix"
         ),
     )
@@ -1135,10 +1135,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--no-plots", action="store_true")
     parser.add_argument(
         "--sync-figures",
-        "--sync-paper",
-        dest="sync_figures",
         action="store_true",
-        help="update the representation PNG preview in figures/gallery",
+        help="update the representation PNG preview in figures/previews",
     )
     parser.add_argument(
         "--plot-from-cache",
@@ -1169,8 +1167,8 @@ def main() -> None:
             cached_results[0], args.plot_domain_radius, args.plot_grid
         )
         if args.sync_figures:
-            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(OUT_REP_PNG, GALLERY_DIRECTORY / OUT_REP_PNG.name)
+            PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(OUT_REP_PNG, PREVIEW_FIGURE_DIRECTORY / OUT_REP_PNG.name)
         print(f"Wrote {OUT_REP_PDF} from {args.plot_from_cache}")
         print(f"Wrote {OUT_REP_PNG} from {args.plot_from_cache}")
         return
@@ -1287,8 +1285,8 @@ def main() -> None:
     cache_output.parent.mkdir(parents=True, exist_ok=True)
     cache_output.write_text(json.dumps(payload, indent=2) + "\n")
     if args.sync_figures and not args.no_plots and completed_all_stages:
-        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(OUT_REP_PNG, GALLERY_DIRECTORY / OUT_REP_PNG.name)
+        PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(OUT_REP_PNG, PREVIEW_FIGURE_DIRECTORY / OUT_REP_PNG.name)
     if not args.no_plots:
         print(f"Wrote {OUT_PDF}")
         print(f"Wrote {OUT_PNG}")

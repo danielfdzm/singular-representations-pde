@@ -36,7 +36,7 @@ from matplotlib.patches import FancyArrowPatch
 
 from artifact_paths import (
     COMPLETION_DATA_DIRECTORY,
-    GALLERY_DIRECTORY,
+    PREVIEW_FIGURE_DIRECTORY,
     experiment_output_directory,
 )
 
@@ -1119,10 +1119,8 @@ def main() -> None:
     parser.add_argument("--output-suffix", default="")
     parser.add_argument(
         "--sync-figures",
-        "--sync-paper",
-        dest="sync_figures",
         action="store_true",
-        help="update the two PNG previews in figures/gallery",
+        help="update the two PNG previews in figures/previews",
     )
     parser.add_argument("--final-stage-optimizer", choices=["adam", "lbfgs"], default="adam")
     parser.add_argument("--final-stage-polish-steps", type=int, default=1000)
@@ -1160,9 +1158,9 @@ def main() -> None:
         x_plot = np.linspace(-1.35, 2.65, 2201)
         plot_representation_evolution(results[0], x_plot, target_fn(x_plot))
         if args.sync_figures:
-            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
             for source in (OUT_PNG, OUT_REP_PNG):
-                shutil.copy2(source, GALLERY_DIRECTORY / source.name)
+                shutil.copy2(source, PREVIEW_FIGURE_DIRECTORY / source.name)
         print(f"Wrote {OUT_PDF} from {args.plot_from_cache}")
         print(f"Wrote {OUT_PNG} from {args.plot_from_cache}")
         print(f"Wrote {OUT_REP_PDF} from {args.plot_from_cache}")
@@ -1246,9 +1244,9 @@ def main() -> None:
     COMPLETION_DATA_DIRECTORY.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(payload, indent=2) + "\n")
     if args.sync_figures:
-        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
         for source in (OUT_PNG, OUT_REP_PNG):
-            shutil.copy2(source, GALLERY_DIRECTORY / source.name)
+            shutil.copy2(source, PREVIEW_FIGURE_DIRECTORY / source.name)
 
     print(f"Wrote {OUT_PDF}")
     print(f"Wrote {OUT_PNG}")

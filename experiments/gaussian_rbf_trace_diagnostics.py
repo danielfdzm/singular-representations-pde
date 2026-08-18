@@ -19,8 +19,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from artifact_paths import (
-    GALLERY_DIRECTORY,
     GAUSSIAN_DATA_DIRECTORY,
+    PREVIEW_FIGURE_DIRECTORY,
     experiment_output_directory,
 )
 
@@ -178,7 +178,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sync-figures",
         action="store_true",
-        help="copy the rendered PNG preview to figures/gallery",
+        help="copy the rendered PNG preview to figures/previews",
     )
     return parser.parse_args()
 
@@ -188,8 +188,8 @@ def main() -> None:
     data = load_order_one(args.input)
     _, output_png = make_figure(data, args.output_directory)
     if args.sync_figures:
-        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
+        PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output_png, PREVIEW_FIGURE_DIRECTORY / output_png.name)
 
 
 if __name__ == "__main__":

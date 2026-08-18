@@ -18,7 +18,7 @@ import numpy as np
 import torch
 
 from artifact_paths import (
-    GALLERY_DIRECTORY,
+    PREVIEW_FIGURE_DIRECTORY,
     TANH_DATA_DIRECTORY,
     experiment_output_directory,
 )
@@ -259,10 +259,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--sync-figures",
-        "--sync-paper",
-        dest="sync_figures",
         action="store_true",
-        help="copy the rendered PNG preview to figures/gallery",
+        help="copy the rendered PNG preview to figures/previews",
     )
     parser.add_argument(
         "--plot-from-cache",
@@ -282,8 +280,8 @@ def main() -> None:
             raise ValueError("cached tanh-slope JSON must contain four snapshots")
         make_plot(snapshots, output_pdf, output_png)
         if args.sync_figures:
-            GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
+            PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(output_png, PREVIEW_FIGURE_DIRECTORY / output_png.name)
         print(f"Wrote {output_pdf} and {output_png} from {output_json}")
         return
     snapshots = run()
@@ -314,8 +312,8 @@ def main() -> None:
     output_json.write_text(json.dumps(payload, indent=2) + "\n")
     make_plot(snapshots, output_pdf, output_png)
     if args.sync_figures:
-        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(output_png, GALLERY_DIRECTORY / output_png.name)
+        PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output_png, PREVIEW_FIGURE_DIRECTORY / output_png.name)
     print(json.dumps(snapshots, indent=2))
 
 

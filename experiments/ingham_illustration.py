@@ -20,8 +20,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from artifact_paths import (
-    GALLERY_DIRECTORY,
     INGHAM_DATA_DIRECTORY,
+    PREVIEW_FIGURE_DIRECTORY,
     experiment_output_directory,
 )
 
@@ -140,14 +140,12 @@ def main() -> None:
     parser.add_argument(
         "--plot-from-cache",
         action="store_true",
-        help="redraw from the reference metadata without rewriting it",
+        help="redraw from the stored metadata without rewriting it",
     )
     parser.add_argument(
         "--sync-figures",
-        "--sync-paper",
-        dest="sync_figures",
         action="store_true",
-        help="update the PNG preview in figures/gallery",
+        help="update the PNG preview in figures/previews",
     )
     args = parser.parse_args()
     if args.plot_from_cache:
@@ -181,9 +179,9 @@ def main() -> None:
     make_figure(delta, OUTPUT_DIRECTORY)
 
     if args.sync_figures:
-        GALLERY_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        PREVIEW_FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
         source = OUTPUT_DIRECTORY / f"{STEM}.png"
-        shutil.copy2(source, GALLERY_DIRECTORY / source.name)
+        shutil.copy2(source, PREVIEW_FIGURE_DIRECTORY / source.name)
 
     print(f"Wrote {OUTPUT_DIRECTORY / f'{STEM}.pdf'}")
     print(f"Wrote {OUTPUT_DIRECTORY / f'{STEM}.png'}")

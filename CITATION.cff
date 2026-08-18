@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: >-
-  If you use this numerical artifact, please cite the associated article and
-  this software artifact.
+  If you use these experiments or numerical records, please cite the associated
+  article and this repository.
 title: >-
-  Numerical artifact for Stable Solutions and Singular Representations in
-  Neural PDE Models
+  Reproducibility materials for Stable Solutions and Singular Representations
+  in Neural PDE Models
 type: software
 authors:
   - family-names: Fernández
@@ -13,8 +13,6 @@ authors:
   - family-names: Zuazua
     given-names: Enrique
     email: enrique.zuazua@fau.de
-version: 1.0.0
-date-released: 2026-08-18
 repository-code: https://github.com/danielfdzm/singular-representations-pde
 abstract: >-
   Executable scripts, raw optimizer histories, validation summaries, and
