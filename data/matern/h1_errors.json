@@ -1,0 +1,232 @@
+{
+  "0": {
+    "ordinary": {
+      "error": 1.5620322221796425e-05,
+      "status": "optimizer_converged",
+      "solves": 178,
+      "transfers": 0,
+      "energy": -7.26103050636252
+    },
+    "completion": {
+      "error": 3.078439031435632e-08,
+      "status": "optimizer_failure",
+      "solves": 236,
+      "transfers": 2,
+      "energy": -7.261030510985847
+    },
+    "finite_restart": {
+      "error": 1.56136598970588e-05,
+      "status": "optimizer_converged",
+      "solves": 181,
+      "transfers": 0,
+      "energy": -7.26103050637035
+    }
+  },
+  "1": {
+    "ordinary": {
+      "error": 0.00048036063496104754,
+      "status": "optimizer_converged",
+      "solves": 400,
+      "transfers": 0,
+      "energy": -7.261027595630273
+    },
+    "completion": {
+      "error": 0.00048036063496104754,
+      "status": "optimizer_converged",
+      "solves": 400,
+      "transfers": 0,
+      "energy": -7.261027595630273
+    },
+    "finite_restart": {
+      "error": 0.00048036063496104754,
+      "status": "optimizer_converged",
+      "solves": 400,
+      "transfers": 0,
+      "energy": -7.261027595630273
+    }
+  },
+  "2": {
+    "ordinary": {
+      "error": 3.793215721286183e-08,
+      "status": "optimizer_converged",
+      "solves": 262,
+      "transfers": 0,
+      "energy": -7.261030510985833
+    },
+    "completion": {
+      "error": 3.286721202117715e-08,
+      "status": "optimizer_converged",
+      "solves": 131,
+      "transfers": 2,
+      "energy": -7.261030510985842
+    },
+    "finite_restart": {
+      "error": 1.8615693647548787e-05,
+      "status": "optimizer_converged",
+      "solves": 184,
+      "transfers": 0,
+      "energy": -7.261030504452876
+    }
+  },
+  "3": {
+    "ordinary": {
+      "error": 3.196274984173863e-08,
+      "status": "optimizer_converged",
+      "solves": 217,
+      "transfers": 0,
+      "energy": -7.2610305109858295
+    },
+    "completion": {
+      "error": 3.451762950384347e-08,
+      "status": "optimizer_converged",
+      "solves": 243,
+      "transfers": 2,
+      "energy": -7.2610305109858455
+    },
+    "finite_restart": {
+      "error": 3.6988690026784805e-08,
+      "status": "optimizer_converged",
+      "solves": 210,
+      "transfers": 0,
+      "energy": -7.261030510985831
+    }
+  },
+  "4": {
+    "ordinary": {
+      "error": 1.935911381011307e-05,
+      "status": "optimizer_converged",
+      "solves": 141,
+      "transfers": 0,
+      "energy": -7.261030504124125
+    },
+    "completion": {
+      "error": 2.6544754706298133e-08,
+      "status": "optimizer_converged",
+      "solves": 229,
+      "transfers": 2,
+      "energy": -7.261030510985842
+    },
+    "finite_restart": {
+      "error": 1.925265167107812e-05,
+      "status": "optimizer_converged",
+      "solves": 156,
+      "transfers": 0,
+      "energy": -7.261030504180452
+    }
+  },
+  "5": {
+    "ordinary": {
+      "error": 3.222081672074895e-08,
+      "status": "optimizer_converged",
+      "solves": 201,
+      "transfers": 0,
+      "energy": -7.261030510985837
+    },
+    "completion": {
+      "error": 1.2167187099248535e-07,
+      "status": "optimizer_converged",
+      "solves": 216,
+      "transfers": 2,
+      "energy": -7.261030510985627
+    },
+    "finite_restart": {
+      "error": 7.346274333177847e-08,
+      "status": "optimizer_converged",
+      "solves": 225,
+      "transfers": 0,
+      "energy": -7.261030510985787
+    }
+  },
+  "6": {
+    "ordinary": {
+      "error": 6.001663283440434e-08,
+      "status": "optimizer_converged",
+      "solves": 216,
+      "transfers": 0,
+      "energy": -7.2610305109857105
+    },
+    "completion": {
+      "error": 5.3502042393285846e-08,
+      "status": "optimizer_converged",
+      "solves": 278,
+      "transfers": 2,
+      "energy": -7.261030510985801
+    },
+    "finite_restart": {
+      "error": 2.2619997953489212e-05,
+      "status": "optimizer_converged",
+      "solves": 229,
+      "transfers": 0,
+      "energy": -7.261030506076395
+    }
+  },
+  "7": {
+    "ordinary": {
+      "error": 2.7217263640182165e-05,
+      "status": "optimizer_converged",
+      "solves": 213,
+      "transfers": 0,
+      "energy": -7.261030497135062
+    },
+    "completion": {
+      "error": 4.249139436934838e-08,
+      "status": "optimizer_converged",
+      "solves": 346,
+      "transfers": 2,
+      "energy": -7.261030510985835
+    },
+    "finite_restart": {
+      "error": 8.722138522836415e-07,
+      "status": "optimizer_converged",
+      "solves": 325,
+      "transfers": 0,
+      "energy": -7.261030510978308
+    }
+  },
+  "8": {
+    "ordinary": {
+      "error": 9.749430229374364e-08,
+      "status": "optimizer_converged",
+      "solves": 177,
+      "transfers": 0,
+      "energy": -7.261030510985643
+    },
+    "completion": {
+      "error": 1.3807919351287368e-06,
+      "status": "optimizer_converged",
+      "solves": 183,
+      "transfers": 2,
+      "energy": -7.261030510954843
+    },
+    "finite_restart": {
+      "error": 8.15814019868565e-06,
+      "status": "optimizer_converged",
+      "solves": 193,
+      "transfers": 0,
+      "energy": -7.261030509393311
+    }
+  },
+  "9": {
+    "ordinary": {
+      "error": 5.3744903743581294e-08,
+      "status": "optimizer_converged",
+      "solves": 244,
+      "transfers": 0,
+      "energy": -7.261030510985794
+    },
+    "completion": {
+      "error": 3.033875191283094e-08,
+      "status": "optimizer_converged",
+      "solves": 287,
+      "transfers": 2,
+      "energy": -7.261030510985849
+    },
+    "finite_restart": {
+      "error": 3.2271890791859435e-08,
+      "status": "optimizer_converged",
+      "solves": 359,
+      "transfers": 0,
+      "energy": -7.261030510985831
+    }
+  }
+}

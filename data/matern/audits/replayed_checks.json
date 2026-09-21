@@ -1,0 +1,48 @@
+{
+  "training_rerun": false,
+  "exact_target_energy": {
+    "matern": {
+      "32": -7.261016549638859,
+      "48": -7.261030942548599,
+      "64": -7.261030597835651,
+      "80": -7.261030486537869,
+      "96": -7.261030510985844,
+      "128": -7.261030506005566
+    },
+    "gaussian": {
+      "32": -7.689123565209176,
+      "48": -7.689123565209121,
+      "64": -7.689123565209222,
+      "80": -7.689123565209185,
+      "96": -7.689123565209254,
+      "128": -7.6891235652089716
+    }
+  },
+  "energy_differences": {
+    "matern": {
+      "32_to_48": 1.4392909740479354e-05,
+      "96_to_128": 4.980277523713994e-09
+    },
+    "gaussian": {
+      "32_to_48": 5.5067062021407764e-14,
+      "96_to_128": 2.824407374646398e-13
+    }
+  },
+  "cancellation": {
+    "seed": 6,
+    "half_gap": 1.5493767099922653e-17,
+    "quadrature_order": 64,
+    "metric": "relative quadrature L2 error against zero-gap column",
+    "naive_relative_error": 3.845773218344554,
+    "stable_relative_error": 1.9910159641868405e-16,
+    "naive_relative_max_norm_error": 26.22744840802851,
+    "stable_relative_max_norm_error": 1.626646967410387e-15
+  },
+  "stored_run_checks": {
+    "runs": 30,
+    "largest_order80_order96_energy_difference": 2.4454484659486297e-08,
+    "largest_coefficient_condition": 135411854038.92621,
+    "maximum_coefficient_solves": 400,
+    "completed_starts": 9
+  }
+}

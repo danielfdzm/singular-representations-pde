@@ -1,0 +1,12 @@
+{
+  "paper_figure": 6,
+  "source_sha256_before_portability_edits": "e8c0889f7c84387a09bfc05d99ecaf30f38ffbe139d9f5074ad9a5bd59757028",
+  "plot_source_sha256_before_portability_edits": "6d3cc2f079c99d69ac44d60e8ad67dee65544f3503becea7ec60763b4f454c15",
+  "gram_source_sha256": "6ca7e988d6c532e71076d3f886843965b9c7f30d108ff90b649bee4cb6ea82f1",
+  "adaptations": "Only paths and the Gaussian Gram helper import changed. The needed Gram/interval functions were extracted unchanged; no extra experiments are included. Reference sweep.csv, summary.json and grid.npz are copied byte-for-byte. Fresh runs default to outputs/precision.",
+  "reference_record_sha256": {
+    "sweep.csv": "da5bb81b297eeb2a93d836c5826889ab59a644c556d6c9db07bbac6ceeb8d87a",
+    "summary.json": "dceadac9b585c6256fa47f28ec4be3e8e45aff0f3116e566fa0e8085726defd6",
+    "grid.npz": "44a39ef4c16df90b579b7dfd50dec78a3b9e100cdb7ff8157ea90fdbf0bd99f0"
+  }
+}

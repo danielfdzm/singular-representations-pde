@@ -1,0 +1,211 @@
+{
+  "protocol": {
+    "description": "Fixed dyadic central stencils; no optimization or format-dependent parameters. Raw and stable evaluators represent identical functions. Completed derivative is a distinct limiting state.",
+    "orders": [
+      1,
+      3
+    ],
+    "gap": "h=2^{-k}; k=0,...,max_k",
+    "max_k": {
+      "float32_order1": 38,
+      "float32_order3": 38,
+      "float64_order1": 38,
+      "float64_order3": 38
+    },
+    "nodes": 1025,
+    "interval": [
+      -12,
+      12
+    ],
+    "quadrature": "composite trapezoid on dyadic nodes/weights",
+    "norms": [
+      "relative H1",
+      "relative L2 residual for L=1-dxx"
+    ],
+    "primary_norm": "H1",
+    "references": "100-digit direct Gaussian sums; 160-digit subset check; 140-digit outward whole-line Gaussian Gram enclosures",
+    "reference_storage": "Binary64 high/low pairs; pre-subtracted exact model error; ~106-bit reference storage.",
+    "rounding_control": "All nodes, centers, coefficients are exactly representable in both float32/64. Only arithmetic changes.",
+    "completed_control": "Evaluates He_q(x) exp(-x^2/2) directly; it changes the finite-gap state to its derivative limit.",
+    "scope": "The observed optimal gaps/floors apply to these sampled naive evaluators and stencils; they are not global optimization lower bounds."
+  },
+  "summary": [
+    {
+      "precision": "float32",
+      "order": 1,
+      "raw_best_sampled_gap": 0.0078125,
+      "raw_minimum_sampled_h1": 8.567533980776006e-06,
+      "raw_best_model_h1": 6.607227915622879e-06,
+      "raw_best_evaluation_h1": 5.6652137077862976e-06,
+      "stable_minimum_sampled_h1": 3.367607549500794e-08,
+      "stable_small_gap_evaluation_max": 7.178143318875856e-08,
+      "stable_small_gap_count": 29,
+      "completed_h1": 3.4151266638283436e-08,
+      "raw_best_sampled_residual": 7.70075701730857e-06,
+      "nominal_eps": 1.1920928955078125e-07,
+      "asymptotic_gap_scale": 0.004921565763652325,
+      "asymptotic_error_scale": 2.4221810235758312e-05
+    },
+    {
+      "precision": "float32",
+      "order": 3,
+      "raw_best_sampled_gap": 0.0625,
+      "raw_minimum_sampled_h1": 0.0023208867428738127,
+      "raw_best_model_h1": 0.0023258290226729123,
+      "raw_best_evaluation_h1": 0.0003002052317157011,
+      "stable_minimum_sampled_h1": 4.000906853060326e-08,
+      "stable_small_gap_evaluation_max": 7.755679315848618e-08,
+      "stable_small_gap_count": 27,
+      "completed_h1": 3.819979312764797e-08,
+      "raw_best_sampled_residual": 0.001718339736202075,
+      "nominal_eps": 1.1920928955078125e-07,
+      "asymptotic_gap_scale": 0.04123461991548538,
+      "asymptotic_error_scale": 0.0017002938548102975
+    },
+    {
+      "precision": "float64",
+      "order": 1,
+      "raw_best_sampled_gap": 7.62939453125e-06,
+      "raw_minimum_sampled_h1": 1.2679463461643282e-11,
+      "raw_best_model_h1": 6.30116413072205e-12,
+      "raw_best_evaluation_h1": 1.0568119559794985e-11,
+      "stable_minimum_sampled_h1": 5.853923809618837e-17,
+      "stable_small_gap_evaluation_max": 1.777854542141766e-16,
+      "stable_small_gap_count": 14,
+      "completed_h1": 5.853923809618837e-17,
+      "raw_best_sampled_residual": 1.0329653775942667e-11,
+      "nominal_eps": 2.220446049250313e-16,
+      "asymptotic_gap_scale": 6.055454452393343e-06,
+      "asymptotic_error_scale": 3.666852862501036e-11
+    },
+    {
+      "precision": "float64",
+      "order": 3,
+      "raw_best_sampled_gap": 0.0009765625,
+      "raw_minimum_sampled_h1": 5.735591546789797e-07,
+      "raw_best_model_h1": 5.685918859788077e-07,
+      "raw_best_evaluation_h1": 1.4411304030225542e-07,
+      "stable_minimum_sampled_h1": 6.110281443424938e-17,
+      "stable_small_gap_evaluation_max": 1.666470288469894e-16,
+      "stable_small_gap_count": 13,
+      "completed_h1": 6.110281443424938e-17,
+      "raw_best_sampled_residual": 6.488848690640147e-07,
+      "nominal_eps": 2.220446049250313e-16,
+      "asymptotic_gap_scale": 0.000740095979741405,
+      "asymptotic_error_scale": 5.477420592293901e-07
+    }
+  ],
+  "reference_checks": [
+    {
+      "order": 1,
+      "k": 0,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 0.0
+    },
+    {
+      "order": 1,
+      "k": 4,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 0.0
+    },
+    {
+      "order": 1,
+      "k": 8,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 0.0
+    },
+    {
+      "order": 1,
+      "k": 12,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 0.0
+    },
+    {
+      "order": 1,
+      "k": 38,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 0.0
+    },
+    {
+      "order": 3,
+      "k": 0,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 7.143671195514219e-102
+    },
+    {
+      "order": 3,
+      "k": 4,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 2.926047721682624e-98
+    },
+    {
+      "order": 3,
+      "k": 8,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 2.3970182936024055e-94
+    },
+    {
+      "order": 3,
+      "k": 12,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 9.818186930595453e-91
+    },
+    {
+      "order": 3,
+      "k": 38,
+      "nodes": 65,
+      "reference_dps": [
+        100,
+        160
+      ],
+      "maximum_stored_pair_difference": 3.6931914471142943e-127
+    }
+  ],
+  "maximum_grid_vs_continuous_model_relative_difference": 3.845925385024834e-16,
+  "seconds_this_invocation": 12.018702458997723,
+  "resumed_cached_order_gap_cases": 72,
+  "range_design_note": "All four order/precision sweeps now cover k=0,...,38 so plotted curves reach the same horizontal boundary. The earlier ranges ended at k26 (order-one binary32), k38 (order-one binary64), k15 (order-three binary32), and k32 (order-three binary64). Every earlier sample is retained. The order-three binary64 pilot had previously been extended from k22 to k32. These are range extensions, not endpoint selection.",
+  "environment": {
+    "python": "3.14.0 (v3.14.0:ebf955df7a8, Oct  7 2025, 08:20:14) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "numpy": "2.3.5",
+    "mpmath": "1.3.0",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O"
+  },
+  "source_sha256": "e8c0889f7c84387a09bfc05d99ecaf30f38ffbe139d9f5074ad9a5bd59757028"
+}

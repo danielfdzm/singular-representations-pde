@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "configuration": {
+    "output": "outputs/matern_rerun",
+    "cases": [
+      "manufactured_jet"
+    ],
+    "amplitudes": [
+      1.0
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "max_solves": 8000,
+    "quadrature_order": 64,
+    "block_iterations": 40,
+    "proximity_threshold": 0.05,
+    "transfer_tolerance": 0.03,
+    "ftol": 0.0,
+    "gtol": 0.0,
+    "initial_half_gap_min": 0.02,
+    "initial_half_gap_max": 0.05,
+    "finite_restart_control": true,
+    "domain": "(-1,1)^2",
+    "equation": "(1+Lap)^2 u + rho u + u^3 = f, rho=1",
+    "boundary": "natural Neumann-type data m, q manufactured from u*",
+    "objective": "integral (0.5*((1+Lap)u)^2 + 0.5*rho*u^2 + 0.25*u^4 - f*u) - boundary work",
+    "kernel": "Matern nu=9/2, ell=3/sqrt(7); C^8; stable confluent columns by exact divided differences",
+    "forcing_formulas": {
+      "manufactured_jet": "(1+Laplacian)^2 u* + rho*u* + (u*)^3, rho=1"
+    },
+    "boundary_multiplier": "none; the Neumann-type data are natural",
+    "multiplicity_budget": 5,
+    "pairing": "two supplied pairs plus one singleton",
+    "geometry_bounds": "centers [-2,2]^2, angles unbounded, 0<h<=1.5 without positive floor",
+    "coefficient_fit": "gradient-QR whitened damped Newton; no ridge or rank truncation",
+    "work_accounting": "one unit per distinct nonlinear coefficient fit, including line-search probes and post-transfer refits; Newton iterations also recorded",
+    "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; history reset only on actual completion",
+    "transfer": "measured H1 state change at order-64 quadrature; float64, not a validated enclosure",
+    "study_design": "Ten reported starts, seeds0-9, for the manufactured completed-class target; all three branches/statuses retained.",
+    "finite_restart_protocol": "finite geometry and fitted coefficients unchanged at the exact first completion checkpoint; same remaining fit budget; only L-BFGS history reset; if completion never transfers, control is ordinary continuation",
+    "limitations": "fixed Matern nu=9/2 scale and supplied pairing; no certified objective gate; quadrature agreement is not validated integration"
+  },
+  "software": {
+    "python": "3.14.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "torch": "2.10.0",
+    "torch_threads": 1
+  },
+  "source_sha256": "3f77e9659e5ba99b985ef3aba4eb91a7ae749ed8ebc3b254dc7248d1b162b404",
+  "planned_runs": [
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "finite_restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "finite_restart"
+    }
+  ]
+}

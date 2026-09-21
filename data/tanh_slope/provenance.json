@@ -1,0 +1,65 @@
+{
+  "paper_figure": 5,
+  "publication_asset": "figures/paper/figure_05.pdf",
+  "publication_asset_sha256": "2433e9df9e67908b2b63a312324f9fd26592ba8cd5a4399489cda87b393a14c4",
+  "historical_source_sha256": "97cc13a56c85e42d128db2c12f7a5702290b15caa86e18031abafd8bdd635e13",
+  "historical_source": {
+    "notebook_sha256": "6ebd1bd01ef90f44f907d1a4e45b51befe64dc5c74be3d1f36a230c07296603d",
+    "zero_based_cell_index": 3,
+    "notebook_python_version": "3.13.9",
+    "full_historical_library_environment_recorded": false,
+    "two_row_plot_code_preserved": true,
+    "four_displayed_states": [
+      "Adam step 1666",
+      "Adam step 5000",
+      "independent LBFGS continuation with max_iter=200",
+      "independent LBFGS continuation with max_iter=1000"
+    ],
+    "initial_parameters": {
+      "w1": 3.5,
+      "a1": 2.0,
+      "b1": 0.0,
+      "w2": 1.5,
+      "a2": 0.5,
+      "b2": 0.0
+    },
+    "dtype": "torch.float64",
+    "random_seed": 0,
+    "adam_learning_rate": 0.001,
+    "adam_grid_nodes": 1001,
+    "lbfgs_grid_nodes": 2001,
+    "plot_nodes": 4001,
+    "bulk_objective": "20 times trapezoidal integral of 0.5*(u_x^2+u^2)-f*u on [-10,10], without a boundary load term",
+    "forcing": "4*sech(x)^2*tanh(x)-3*x*sech(x)^2+6*x*sech(x)^4",
+    "lbfgs_line_search": "strong_wolfe",
+    "lbfgs_continuations_independent": true,
+    "label_correction": "The source calls the first displayed snapshot 1/5 Adam, but the condition is it == 5000 // 3, namely 1666. It is described by its actual step in current text.",
+    "rounded_stdout_weight_pairs": [
+      [
+        2.523404,
+        1.899247
+      ],
+      [
+        2.234746,
+        2.282552
+      ],
+      [
+        13.2824,
+        13.282458
+      ],
+      [
+        24.23092,
+        24.230936
+      ]
+    ],
+    "limits": "The saved historical output gives parameter values to six decimal places, not an exact full-precision checkpoint ledger. Rerunning the source may produce different LBFGS values across environments.",
+    "source": "experiments/tanh/historical_slope_source.py",
+    "rounded_records": "data/tanh_slope/rounded_snapshots.json"
+  },
+  "interpretation": [
+    "This is a slope-collision companion to the fixed-slope bias-collision experiment, with a different target.",
+    "After sign-normalizing the second neuron using tanh(-z)=-tanh(z), effective hidden slopes coalesce and large weighted neurons cancel.",
+    "The last two columns are separate LBFGS continuations from the same Adam endpoint, not consecutive checkpoints of one LBFGS run."
+  ],
+  "reproduction": "The published PDF is preserved unchanged. A fresh run uses the exact historical source; the precise historical states cannot be reconstructed from the rounded snapshots. The separate later companion run is not included."
+}

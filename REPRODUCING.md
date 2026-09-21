@@ -1,128 +1,68 @@
-# Reproducing the numerical experiments
+# Reproducing the paper
 
-The repository includes the numerical records needed to redraw the figures,
-so the quickest reproduction does not repeat the long optimization runs. All
-commands below are run from the repository root.
+This repository accompanies **Singular Parameters and Missing Limits in Neural PDE Solvers**. It contains the experiments in Sections 4.1–4.4, the checks reported in Appendices D.1–D.4, and the analytical illustrations in Figures 1–3. Older studies that are absent from the current paper are not part of this release.
 
-## 1. Create the recorded environment
+## Install
 
-Install [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
-or Miniconda, then run:
+Use Python 3.11 or later. The reproduction commands were checked on Python 3.14.0 with the versions pinned in `requirements.txt`:
 
-```bash
-git clone https://github.com/danielfdzm/singular-representations-pde.git
-cd singular-representations-pde
-conda env create -f environment.yml
-conda activate singular-representations-pde
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-The environment contains Python 3.13.9, NumPy 2.4.2, Matplotlib 3.10.8,
-and PyTorch 2.10.0.
+Alternatively, use `conda env create -f environment.yml` and `conda activate singular-representations-pde`. The Matplotlib scripts use a headless backend. Latin Modern Roman gives the publication typography; an installed serif font is used otherwise. Ghostscript is optional and is used only when requesting a new PNG preview of Figure 4.
 
-## 2. Choose a reproduction level
+The original tanh runs used an older Python/NumPy/Matplotlib environment, recorded with their data. Fresh optimization is not guaranteed to reproduce the last digits across software versions or platforms. The supplied recorded states and exact publication figures provide the comparison baseline.
 
-### Validate the repository without producing files
+## Verify the supplied files
 
-```bash
+```sh
 python reproduce.py --check
 ```
 
-This checks the required sources, cached numerical records, figure
-provenance, file integrity, and recorded package versions.
+This uses only the Python standard library to verify the SHA-256 inventory. It also checks the figure map and the recorded runs for the two matched experiments. The inventory covers the scientific sources, numerical records, documentation, and publication figures. Generated outputs are excluded.
 
-### Redraw the figures from cached records
+## Redraw the figures
 
-```bash
-python reproduce.py --fast
+```sh
+python reproduce.py --figures
 ```
 
-This is the recommended first run. It redraws the figures from the cached
-records under `outputs/`, then performs the same validation as `--check`.
+`--fast` is an alias for this command. New plots go into `outputs/figures/`; the publication assets remain untouched. Figures 1–3 are recalculated from their prescribed formulas, Figure 4 is recomposed from its recorded vector panels, and Figures 6–10 are redrawn from the stored numerical records. Figure 5 is copied from its preserved publication PDF because exact historical optimizer snapshots were not saved.
 
-### Repeat the matched endpoint controls
+| Figure | Published PDF | Source |
+| --- | --- | --- |
+| 1 | [Tanh singular limit](figures/paper/figure_01.pdf) | `illustrations/plot_tanh_limit.py` |
+| 2 | [Deep-network escape and degeneracy](figures/paper/figure_02.pdf) | `illustrations/plot_forced_singularity.py` |
+| 3 | [Gaussian collision and completion](figures/paper/figure_03.pdf) | `illustrations/plot_completion_patterns.py` |
+| 4 | [Tanh bias trajectories](figures/paper/figure_04.pdf) | `experiments/tanh/plot_bias.py` |
+| 5 | [Tanh slope snapshots](figures/paper/figure_05.pdf) | Preserved historical PDF; fresh-run source in `experiments/tanh/` |
+| 6 | [Gaussian precision sweep](figures/paper/figure_06.pdf) | `experiments/precision/plot.py` |
+| 7 | [Matérn fields](figures/paper/figure_07.pdf) | `experiments/matern_swift_hohenberg_2d/plot_fields.py` |
+| 8 | [Matérn trajectories](figures/paper/figure_08.pdf) | `experiments/matern_swift_hohenberg_2d/plot_results.py` |
+| 9 | [Poisson–Neumann fields](figures/paper/figure_09.pdf) | `experiments/poisson_neumann_2d/plot_fields.py` |
+| 10 | [Poisson–Neumann trajectories](figures/paper/figure_10.pdf) | `experiments/poisson_neumann_2d/plot_results.py` |
 
-```bash
-python reproduce.py --matched-controls
+PDF metadata, font availability and plotting-library versions can change regenerated file bytes. Exact publication PDFs and their browser previews are supplied under `figures/`.
+
+## Recompute the tables
+
+```sh
+python reproduce.py --tables
 ```
 
-This reruns the one- and two-dimensional LBFGS endpoint comparisons without
-repeating the preceding Adam trajectories. Results are written to
-`outputs/matched-controls/`.
+This reevaluates the final recorded states with order-96 quadrature and reports per-start relative `H¹` errors, coefficient norms, smallest half-gaps, coefficient-solve counts, and transfers. JSON summaries are written to `outputs/tables/`.
 
-### Repeat every optimization trajectory
+Table 1 uses the nine Matérn starts where completion transfers; all ten starts, including the no-transfer case, remain in the supplied records. Table 2 uses all ten Poisson–Neumann starts, numbered 10–19. Full optimizer histories are stored as compressed JSON; the scripts read them directly.
 
-```bash
-python reproduce.py --full
-```
+## Repeat the calculations
 
-> **Long-run warning.** The full workflow includes two 100-million-step
-> Gaussian trajectories, a one-million-step penalty continuation, three
-> 100,000-step one-dimensional completion stages, and a 40,000-step
-> two-dimensional run. It is intended for a dedicated machine, not as a first
-> check of the repository. It also regenerates authoritative records under
-> `data/`, so use a clean clone when comparing files with the archive.
+Individual commands, run settings, provenance, and the reported appendix checks are documented in:
 
-If the installed numerical-library versions differ from the recorded ones,
-the structural checks can still be run with:
+- [Tanh experiments and precision sweep](docs/experiments_tanh_precision.md): fresh binary32/binary64 training, the historical slope-collision protocol, and the full high-precision sweep.
+- [Matérn and Poisson–Neumann experiments](docs/experiments_2d.md): matched starts and controls, the two tables, quadrature and gradient audits, kernel evaluation checks, and the reported scale comparison.
+- [Analytical illustrations](docs/illustrations.md): formulas and independent commands for Figures 1–3.
 
-```bash
-python reproduce.py --check --allow-version-drift
-```
-
-This is useful for inspection, but floating-point trajectories obtained with
-other versions are not expected to be byte-for-byte identical.
-
-## 3. Where to find the results
-
-- `outputs/tanh/`, `outputs/gaussian/`, `outputs/completion/`,
-  `outputs/weak_pde/`, and `outputs/ingham/` contain newly rendered results.
-- `data/tanh/`, `data/gaussian/`, `data/completion/`, `data/weak_pde/`, and
-  `data/ingham/` contain the recorded histories and cached calculations.
-- `figures/paper/Fig1.pdf` through `Fig8.pdf` are the exact publication
-  figures. Reproduction commands do not overwrite them.
-- `figures/previews/` contains browser-friendly versions for readers.
-
-For the command associated with each figure, see
-[`experiments/README.md`](experiments/README.md).
-
-## 4. Reference platform
-
-The archived calculations were made on CPU under macOS arm64 on an Apple M2.
-The Gaussian mixed-precision run also requires a C compiler; the portable
-source is [`native/tanh_second_derivative_optimizer.c`](native/tanh_second_derivative_optimizer.c),
-and the compiled library is placed under `outputs/.build/`.
-
-The experiments use fixed full-batch quadrature grids, with no minibatching or
-random resampling. Numerically equivalent output is expected on other
-platforms, although PDF bytes and the final digits of floating-point results
-may differ because of fonts, backends, compiler choices, and arithmetic.
-Further machine-readable platform information is stored in
-[`data/execution_environment.json`](data/execution_environment.json).
-
-## 5. Seeds and deterministic inputs
-
-- The tanh bias-collision calculation records seed 0, uses explicit initial
-  values, and has no stochastic sample.
-- The tanh slope, Gaussian collision, Gaussian penalty, matched weak-form PDE,
-  and Ingham calculations have no random input.
-- The one-dimensional completion initializes completed coordinates with seed
-  `70000 + width` and fixed controls with seed
-  `80000 + 17*width + stage`.
-- The two-dimensional completion uses seed 80209 for both translated and
-  completed coordinates.
-
-These runs are reproducible case studies, not averages over random seeds.
-
-## 6. Verify the archived files
-
-On macOS, verify all cached records and publication figures with:
-
-```bash
-shasum -a 256 -c data/SHA256SUMS
-```
-
-On Linux, the equivalent command is:
-
-```bash
-sha256sum -c data/SHA256SUMS
-```
+Fresh training is separate from the quick figure and table commands. It writes new results under `outputs/`, without modifying the supplied records. No external dataset is required.

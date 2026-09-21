@@ -1,0 +1,83 @@
+{
+  "paper_seeds": [
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "ranges": {
+    "ordinary": {
+      "error": [
+        3.196274984173863e-08,
+        2.7217263640182165e-05
+      ],
+      "weight_norm": [
+        77.91518468006464,
+        5.020173452238382e+16
+      ],
+      "min_half_gap": [
+        1.5493767099922653e-17,
+        0.011441430454100196
+      ],
+      "solves": [
+        141,
+        262
+      ],
+      "transfers": [
+        0,
+        0
+      ]
+    },
+    "finite_restart": {
+      "error": [
+        3.2271890791859435e-08,
+        2.2619997953489212e-05
+      ],
+      "weight_norm": [
+        91.2885039328721,
+        1941977849081.3767
+      ],
+      "min_half_gap": [
+        4.0052682926014787e-13,
+        0.012475946075490846
+      ],
+      "solves": [
+        156,
+        359
+      ],
+      "transfers": [
+        0,
+        0
+      ]
+    },
+    "completion": {
+      "error": [
+        2.6544754706298133e-08,
+        1.3807919351287368e-06
+      ],
+      "weight_norm": [
+        2.463705118015676,
+        2.465763220142723
+      ],
+      "min_half_gap": [
+        0.0,
+        0.0
+      ],
+      "solves": [
+        131,
+        346
+      ],
+      "transfers": [
+        2,
+        2
+      ]
+    }
+  },
+  "error_metric": "Relative H1 on (-1,1)^2, tensor Gauss-Legendre order96",
+  "coefficient_norm": "Euclidean norm of raw finite kernel weights; kernel/derivative coefficients after completion."
+}

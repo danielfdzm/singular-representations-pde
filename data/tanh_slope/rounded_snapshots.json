@@ -1,0 +1,55 @@
+{
+  "precision": "Printed to six decimal places; these are not full-precision checkpoints.",
+  "snapshots": [
+    {
+      "historical_label": "Initial",
+      "actual_stage": "initial",
+      "w1": 3.5,
+      "a1": 2.0,
+      "b1": 0.0,
+      "w2": 1.5,
+      "a2": 0.5,
+      "b2": 0.0
+    },
+    {
+      "historical_label": "1/5 Adam",
+      "actual_stage": "Adam step 1666",
+      "w1": 2.523404,
+      "a1": 0.602983,
+      "b1": -0.035411,
+      "w2": 1.899247,
+      "a2": -0.461895,
+      "b2": 0.03905
+    },
+    {
+      "historical_label": "Final Adam",
+      "actual_stage": "Adam step 5000",
+      "w1": 2.234746,
+      "a1": 0.902306,
+      "b1": -0.000286,
+      "w2": 2.282552,
+      "a2": -0.555135,
+      "b2": 0.000289
+    },
+    {
+      "historical_label": "1/5 LBFGS",
+      "actual_stage": "independent LBFGS, max_iter=200",
+      "w1": 13.2824,
+      "a1": 1.038234,
+      "b1": -1e-05,
+      "w2": 13.282458,
+      "a2": -0.962913,
+      "b2": 6e-06
+    },
+    {
+      "historical_label": "Final LBFGS",
+      "actual_stage": "independent LBFGS, max_iter=1000",
+      "w1": 24.23092,
+      "a1": 1.020807,
+      "b1": -1e-06,
+      "w2": 24.230936,
+      "a2": -0.979532,
+      "b2": 0.0
+    }
+  ]
+}

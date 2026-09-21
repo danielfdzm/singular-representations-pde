@@ -1,0 +1,3 @@
+# Preserve checksum-verified file bytes on every platform.
+* -text
+*.csv whitespace=cr-at-eol

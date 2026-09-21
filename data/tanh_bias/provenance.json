@@ -1,0 +1,20 @@
+{
+  "paper_figure": 4,
+  "source_repository": "https://github.com/danielfdzm/singular-representations-pde",
+  "source_commit": "8b15f8714af3f87abcde9fa484eddd7d66343f06",
+  "records": [
+    {
+      "file": "data/tanh_bias/tanh_parameter_escape_loss.json",
+      "sha256": "264df578b1f5edb28b3e991f13d74ee4eea83d0292afcb866d422d56e7114672"
+    },
+    {
+      "file": "data/tanh_bias/tanh_parameter_escape_loss_float32.json",
+      "sha256": "0e899c13dbfc9e8813b134bd180fb2fcba97444c11a6c65f13a8822e3f04ec45"
+    }
+  ],
+  "original_runner_sha256": "04a54d21d65d9f10bd80e0261afdafbef7a906fe5374a79a8a3ffa0dc5f1de1b",
+  "source_vector_sha256": "5e680f039d8b32ba7fc736a4235031291bf5f0faf926fefe0be55f96721f5c4e",
+  "adaptations": "The training protocol is unchanged. The runner now writes fresh results to outputs/tanh_bias and uses a headless plotting backend. plot_bias.py reorders the original vector panels and verifies their endpoints against both supplied histories.",
+  "training_rerun_during_packaging": false,
+  "dtype_note": "The float64 record does not carry a dtype field; its precision follows the original runner default and source mapping. LBFGS history entries include closure evaluations, not only accepted iterations."
+}

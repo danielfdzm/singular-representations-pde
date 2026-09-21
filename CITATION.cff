@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: >-
   If you use these experiments or numerical records, please cite the associated
-  article and this repository.
+  paper and this repository.
 title: >-
-  Reproducibility materials for Stable Solutions and Singular Representations
-  in Neural PDE Models
+  Reproducibility materials for Singular Parameters and Missing Limits in
+  Neural PDE Solvers
 type: software
 authors:
   - family-names: Fernández
@@ -14,14 +14,15 @@ authors:
     given-names: Enrique
     email: enrique.zuazua@fau.de
 repository-code: https://github.com/danielfdzm/singular-representations-pde
+url: https://github.com/danielfdzm/singular-representations-pde
 abstract: >-
-  Executable scripts, raw optimizer histories, validation summaries, and
-  manuscript-facing figures for controlled collision and boundary-completion
-  experiments in neural PDE trial classes.
+  Code, recorded numerical trajectories, audits, and publication figures for
+  the paper's tanh collisions, Gaussian precision sweep, Matérn fourth-order
+  problem, and Poisson–Neumann completion experiment.
 keywords:
   - neural PDE solvers
-  - coercivity
   - feature collisions
+  - missing limits
   - confluent closure
-  - derivative atoms
+  - derivative features
   - reproducible research

@@ -1,116 +1,65 @@
-# Stable Solutions and Singular Representations in Neural PDE Models
+# Singular Parameters and Missing Limits in Neural PDE Solvers
 
-This repository accompanies the paper by Daniel Fernández and Enrique Zuazua.
-It contains the numerical experiments, cached trajectories, and publication
-figures used to study a simple but consequential mismatch in neural PDE
-models: the represented functions may converge while the parameters used to
-represent them become singular.
+**Daniel Fernández · Enrique Zuazua**
 
-The central mechanism is **feature collision**. Nearby features become almost
-linearly dependent, their coefficients grow with opposite signs, and the
-represented state approaches a regular limit that may not belong to the
-original fixed-width model.
+[Experiments](#the-experiments) · [Reproduce the results](REPRODUCING.md) · [All paper figures](figures/paper/) · [Citation](CITATION.cff)
 
-## Main mathematical picture
+A neural PDE approximation can become more accurate while its parameters grow without bound. At fixed width, the limiting solution may be smooth and still lie outside the neural model's realization class.
 
-- **Collisions are necessary.** In fixed-width translated-feature models,
-  separated centers control the feature Gramian and the outer coefficients.
-  A strongly convergent sequence can reach a new, unrepresented state only by
-  losing center separation.
-- **The one-dimensional closure is exact.** Under the assumptions of the
-  paper, every strong limit is a finite confluent combination of kernel
-  translates and their derivatives, with total multiplicity bounded by the
-  original width. Conversely, every such combination can be approximated by
-  the original model.
-- **The phenomenon is not confined to radial basis functions.** The paper
-  constructs an explicit boundary state for a class of fixed-depth tanh
-  networks, and shows that unconstrained signed-measure representations can
-  have the same loss of compactness.
-- **Derivative atoms provide completed coordinates.** Once a collision
-  pattern is identified, replacing collapsing translates by kernel
-  derivatives preserves the limiting state without retaining the vanishing
-  separation scale and diverging coefficients.
+This paper connects that behaviour to the **closure of the neural parametrisation class**. For deep tanh networks, approaching a missing limit forces parameter escape or hidden-layer degeneracy. For one-dimensional translated-feature models, we characterise the closure through kernel derivatives, counted within the original width. Admitting these limits—**completion**—restores variational attainment under the stated assumptions and provides stable coordinates for computation.
 
-## Selected numerical illustrations
+<p align="center">
+  <img src="figures/previews/figure_03.png" alt="Three Gaussian features collide; a derivative block represents the limiting state with bounded coefficients." width="920">
+</p>
 
-![Gaussian collision diagnostics in double and single precision](figures/previews/gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.png)
+*Figure 3. Colliding features approach a missing state. Completion represents that state using the kernel and its derivatives.*
 
-*As two Gaussian centers collide, the smallest Gramian eigenvalue decreases,
-the condition number grows, and single precision ceases to resolve the same
-scale as double precision.*
+## The experiments
 
-![Successive completion of a one-dimensional collision tree](figures/previews/boundary_completion_third_derivative_representation_lbfgs_plateau.png)
+The repository contains the four numerical studies in the paper, their reported appendix checks, and the three analytical illustrations. Every figure below is the current publication figure.
 
-*Successive collisions are transferred to first-, second-, and
-third-derivative atoms. The completed representation reaches the limiting
-state with finite coordinates.*
+| Section | Question | Figures | Code and records |
+| --- | --- | --- | --- |
+| 4.1 | What happens to parameters as two tanh neurons approach a missing limit? | [4](figures/paper/figure_04.pdf), [5](figures/paper/figure_05.pdf) | [Tanh experiments](docs/experiments_tanh_precision.md#tanh-experiments) |
+| 4.2 | Can stable evaluation recover the accuracy lost when Gaussian centres coalesce? | [6](figures/paper/figure_06.pdf) | [Precision sweep](docs/experiments_tanh_precision.md#precision-sweep) |
+| 4.3 | Does completion work for Matérn features on a nonlinear fourth-order PDE? | [7](figures/paper/figure_07.pdf), [8](figures/paper/figure_08.pdf), Table 1 | [Matérn experiment](docs/experiments_2d.md) |
+| 4.4 | Does completion improve accuracy and computational cost in a wider Poisson–Neumann model? | [9](figures/paper/figure_09.pdf), [10](figures/paper/figure_10.pdf), Table 2 | [Poisson–Neumann experiment](docs/experiments_2d.md) |
 
-![Matched weak-form elliptic comparison](figures/previews/matched_elliptic_completion.png)
+The Matérn comparison uses starts 0–9; the Poisson comparison uses starts 10–19. Both compare ordinary finite-gap optimization, completion, and a matched finite restart. Figures 1–3 are [analytical illustrations](docs/illustrations.md).
 
-*In the controlled weak-form elliptic test, completed coordinates maintain a
-small coordinate norm while attaining a lower error under the matched
-optimizer budget.*
+<p align="center">
+  <img src="figures/previews/figure_06.png" alt="Relative errors for first and third Gaussian derivatives, comparing direct summation, stable evaluation, and the limiting derivative in single and double precision." width="850">
+</p>
 
-## Start here
+*Figure 6. Stable arithmetic recovers accuracy at small centre separations. It improves evaluation without making a missing limit admissible.*
 
-| If you want to… | Open… |
-|---|---|
-| See the eight figures exactly as used in the paper | [`figures/paper/`](figures/paper/) |
-| Browse the figures in a web browser | [`figures/previews/`](figures/previews/) |
-| Reproduce the cached plots | [the reproduction guide](REPRODUCING.md) |
-| Find the calculation behind a particular figure | [the experiment guide](experiments/README.md) |
-| Inspect the recorded numerical histories | [`data/`](data/) |
-| Cite the paper or software | [`CITATION.cff`](CITATION.cff) |
+<p align="center">
+  <img src="figures/previews/figure_09.png" alt="Poisson–Neumann target, finite and completed approximations, feature centres, and spatial errors." width="920">
+</p>
 
-Readers interested only in the mathematics can begin with the summary and
-figures above. Running the code is optional; no external dataset is needed.
+*Figure 9. Finite and completed representations in the Poisson–Neumann experiment. Close pair markers in panel (b) are separated visually; connectors indicate the true centre locations.*
 
-## Quick reproduction
-
-The shortest route uses Conda and redraws the figures from the cached
-numerical records:
+## Quick start
 
 ```bash
 git clone https://github.com/danielfdzm/singular-representations-pde.git
 cd singular-representations-pde
-conda env create -f environment.yml
-conda activate singular-representations-pde
-python reproduce.py --fast
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python reproduce.py --check
+python reproduce.py --figures
+python reproduce.py --tables
 ```
 
-New plots are written to `outputs/`; the publication PDFs in
-`figures/paper/` are not overwritten. For validation, individual experiment
-commands, platform information, and the warning about the very long full
-rerun, see [REPRODUCING.md](REPRODUCING.md).
+New outputs go into `outputs/`. The ten exact publication PDFs in [`figures/paper/`](figures/paper/) and their [browser previews](figures/previews/) remain available without running any code. The [reproduction guide](REPRODUCING.md) gives individual commands, the recorded environment, and instructions for fresh runs.
 
-## Experiment map
+Figure 5 preserves a historical run: its original script, publication PDF and rounded logged states are included, but exact unrounded optimizer snapshots are unavailable. Its reproduction command restores the preserved figure; a fresh run is a new numerical realization of the same protocol.
 
-| Paper result | Calculation | Cached record | Preview |
-|---|---|---|---|
-| Tanh bias collision (Fig. 1) | [`tanh_parameter_escape_loss.py`](experiments/tanh_parameter_escape_loss.py) | [`data/tanh/`](data/tanh/) | [view](figures/previews/wb_trajectories.png) |
-| Tanh slope collision (Fig. 2) | [`tanh_slope_collision_snapshots.py`](experiments/tanh_slope_collision_snapshots.py) | [`data/tanh/`](data/tanh/) | [view](figures/previews/tanh_x_tanhprime_energy_minimization.png) |
-| Gaussian center collision (Fig. 3) | [`gaussian_collision_mixed_precision.py`](experiments/gaussian_collision_mixed_precision.py) | [`data/gaussian/`](data/gaussian/) | [view](figures/previews/gaussian_rbf_instability_unpenalized_mixed_precision_diagnostics.png) |
-| Adaptive weight penalty (Fig. 4) | [`gaussian_instability_adaptive_weight_penalty.py`](experiments/gaussian_instability_adaptive_weight_penalty.py) | [`data/gaussian/`](data/gaussian/) | [view](figures/previews/gaussian_instability_weight_penalty_adaptive_1e-5_to_1e-12.png) |
-| One-dimensional completion (Figs. 5–6) | [`boundary_completion_experiment.py`](experiments/boundary_completion_experiment.py) | [`data/completion/`](data/completion/) | [view](figures/previews/boundary_completion_third_derivative_representation_lbfgs_plateau.png) |
-| Directional two-dimensional completion (Fig. 7) | [`boundary_completion_2d_experiment.py`](experiments/boundary_completion_2d_experiment.py) | [`data/completion/`](data/completion/) | [view](figures/previews/boundary_completion_2d_representation_adam.png) |
-| Ingham illustration (Fig. 8) | [`ingham_illustration.py`](experiments/ingham_illustration.py) | [`data/ingham/`](data/ingham/) | [view](figures/previews/ingham_panel_T_2_5_10_an1_styled.png) |
-| Matched weak-form PDE test | [`matched_elliptic_completion.py`](experiments/matched_elliptic_completion.py) | [`data/weak_pde/`](data/weak_pde/) | [view](figures/previews/matched_elliptic_completion.png) |
+## Reading the results
 
-Exact commands and figure provenance are collected in
-[`experiments/README.md`](experiments/README.md).
-
-## Scope
-
-These are controlled mechanism studies, not optimizer benchmarks. The targets
-and collision patterns are prescribed, and the calculations use deterministic
-grids. The exact confluent-closure theorem is one-dimensional; the
-two-dimensional experiment illustrates a prescribed directional collision
-rather than a general multivariate closure theorem. The experiments do not
-perform automatic collision detection or claim generic optimizer superiority.
+These are controlled experiments with prescribed targets and pairings. Stable evaluation, admitting limiting states, and finding them through optimization are separate issues. Completion keeps the Matérn coefficients bounded without uniformly improving accuracy; in the reported Poisson runs it improves accuracy on every start and reduces the median number of coefficient solves. The two-dimensional examples illustrate directional collisions, while the exact closure theorem is one-dimensional. Measured quadrature and transfer errors are numerical checks, not validated objective enclosures.
 
 ## Citation and license
 
-Please cite *Stable Solutions and Singular Representations in Neural PDE
-Models* and use [`CITATION.cff`](CITATION.cff) for the accompanying software
-metadata. The repository is currently distributed under the terms stated in
-[`LICENSE`](LICENSE).
+Please cite **Singular Parameters and Missing Limits in Neural PDE Solvers**, by Daniel Fernández and Enrique Zuazua, and this repository when using these materials. Machine-readable metadata is in [`CITATION.cff`](CITATION.cff). The existing repository [license](LICENSE) applies.

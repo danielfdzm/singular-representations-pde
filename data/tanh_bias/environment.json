@@ -1,0 +1,29 @@
+{
+  "capture_date": "2026-08-05",
+  "operating_system": {
+    "name": "macOS",
+    "version": "26.5.2",
+    "build": "25F84",
+    "architecture": "arm64"
+  },
+  "hardware": {
+    "computer": "MacBook Air",
+    "processor": "Apple M2",
+    "performance_cores": 4,
+    "efficiency_cores": 4,
+    "logical_cpu_count": 8,
+    "unified_memory_gib": 16,
+    "accelerator": null,
+    "execution_device": "CPU"
+  },
+  "software": {
+    "python": "3.13.9",
+    "python_distribution": "Anaconda",
+    "python_compiler": "Clang 20.1.8",
+    "numpy": "2.4.2",
+    "matplotlib": "3.10.8",
+    "matplotlib_backend_for_orchestrated_reproduction": "Agg",
+    "matplotlib_bundled_freetype": "2.6.1 (local build)",
+    "torch": "2.10.0"
+  }
+}

@@ -2,9 +2,7 @@ name: singular-representations-pde
 channels:
   - conda-forge
 dependencies:
-  - python=3.13.9
+  - python=3.14
   - pip
   - pip:
-      - numpy==2.4.2
-      - matplotlib==3.10.8
-      - torch==2.10.0
+      - -r requirements.txt

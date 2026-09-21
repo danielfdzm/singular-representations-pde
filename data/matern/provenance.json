@@ -1,0 +1,6 @@
+{
+  "original_results_sha256": "c5c8512a713aaf28460cd70238a36300a3be7b255b740e1eee1af4c8e38e0cd1",
+  "original_source_sha256": "3f77e9659e5ba99b985ef3aba4eb91a7ae749ed8ebc3b254dc7248d1b162b404",
+  "published_data_changes": "Output directory is repository-relative. Mat\u00e9rn descriptive metadata corrected to match the stored configuration and manufactured target; unused forcing descriptions removed. All run records, planned runs, numerical settings, software versions and gradient validation are unchanged.",
+  "source_changes": "Public source retains solver mathematics. CLI defaults select the paper configuration; unused experiments and obsolete narrative comments removed. Data readers also accept deterministic gzip."
+}

@@ -1,0 +1,246 @@
+{
+  "training_rerun": false,
+  "scale045": {
+    "coefficient_condition": 54.922578597384735,
+    "max_absolute_coefficient_error": 1.7541523789077473e-14,
+    "relative_coefficient_error": 8.663275090778967e-15,
+    "target_mean": -1.1664336816766812,
+    "neumann_compatibility_error": 5.284661597215745e-14,
+    "target_h1_norm": 10.413567596173097,
+    "target_energy": -48.92731291685271
+  },
+  "unit_scale_historical_target": {
+    "coefficient_condition": 5319135.2104770485,
+    "max_absolute_coefficient_error": 4.1057890420859167e-10,
+    "relative_coefficient_error": 1.4751418679760833e-10,
+    "target_mean": -0.5775642376848491,
+    "neumann_compatibility_error": 9.769962616701378e-15,
+    "target_h1_norm": 3.499276718593519,
+    "target_energy": -4.714979249323537
+  },
+  "scale_comparison_note": "The historical unit-scale target and anchors also differ; these are two documented configurations, not a controlled scale-only comparison.",
+  "stored_run_checks": {
+    "runs": 30,
+    "largest_order64_order96_energy_difference": 1.0658141036401503e-13,
+    "largest_coefficient_condition": 891.6157834370789,
+    "maximum_coefficient_solves": 2293,
+    "transfers_per_completed_start": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "measured_h1_transfer_change_range": [
+      0.004579822686464094,
+      0.02999773968736873
+    ]
+  },
+  "unit_scale_endpoints": [
+    {
+      "seed": 0,
+      "method": "ordinary",
+      "status": "optimizer_converged",
+      "energy": -4.714979249222991,
+      "singleton_centres": [
+        [
+          -0.4790357911032389,
+          -0.16860708378501804
+        ],
+        [
+          0.1463398851655067,
+          -0.07987316333775883
+        ]
+      ],
+      "singleton_coefficients": [
+        0.0946255266024177,
+        -0.07372938079801931
+      ]
+    },
+    {
+      "seed": 0,
+      "method": "completion",
+      "status": "optimizer_converged",
+      "energy": -4.7149792492303435,
+      "singleton_centres": [
+        [
+          -0.4493528205606671,
+          -0.1513508852031904
+        ],
+        [
+          0.12262024778093136,
+          -0.07405010706181492
+        ]
+      ],
+      "singleton_coefficients": [
+        0.010764745425952186,
+        -0.06408848089074556
+      ]
+    },
+    {
+      "seed": 1,
+      "method": "ordinary",
+      "status": "optimizer_converged",
+      "energy": -4.714979249276101,
+      "singleton_centres": [
+        [
+          -0.019764871318063457,
+          0.2694172599616432
+        ],
+        [
+          0.04378883738377849,
+          -0.09535387854671441
+        ]
+      ],
+      "singleton_coefficients": [
+        0.6102948869267838,
+        -0.20765633934933356
+      ]
+    },
+    {
+      "seed": 1,
+      "method": "completion",
+      "status": "optimizer_converged",
+      "energy": -4.714979249314869,
+      "singleton_centres": [
+        [
+          -0.05424063074140943,
+          0.2146423287420822
+        ],
+        [
+          0.0643176871529009,
+          -0.09771355235631916
+        ]
+      ],
+      "singleton_coefficients": [
+        0.7210241476929866,
+        -0.3724429412780553
+      ]
+    },
+    {
+      "seed": 2,
+      "method": "ordinary",
+      "status": "optimizer_converged",
+      "energy": -4.714979249288405,
+      "singleton_centres": [
+        [
+          0.07103562667534329,
+          0.10236843926072407
+        ],
+        [
+          0.14332702423091162,
+          -0.1573367663228107
+        ]
+      ],
+      "singleton_coefficients": [
+        0.48060866046585654,
+        -0.5714849880701373
+      ]
+    },
+    {
+      "seed": 2,
+      "method": "completion",
+      "status": "optimizer_converged",
+      "energy": -4.714979249313522,
+      "singleton_centres": [
+        [
+          0.06347317284920961,
+          0.09520578143815492
+        ],
+        [
+          0.14004695752528562,
+          -0.1611638791453002
+        ]
+      ],
+      "singleton_coefficients": [
+        0.4850849711576051,
+        -0.5141103482506104
+      ]
+    },
+    {
+      "seed": 3,
+      "method": "ordinary",
+      "status": "optimizer_converged",
+      "energy": -4.714979249314859,
+      "singleton_centres": [
+        [
+          -0.08727556623867253,
+          0.13833480909680282
+        ],
+        [
+          0.16211836492768264,
+          -0.12222126901555237
+        ]
+      ],
+      "singleton_coefficients": [
+        0.7450433868109397,
+        -0.5330166279705186
+      ]
+    },
+    {
+      "seed": 3,
+      "method": "completion",
+      "status": "optimizer_converged",
+      "energy": -4.7149792493151494,
+      "singleton_centres": [
+        [
+          -0.0878632716788294,
+          0.137552410531577
+        ],
+        [
+          0.16274157672627187,
+          -0.12153963875990502
+        ]
+      ],
+      "singleton_coefficients": [
+        0.7743849556996891,
+        -0.4933068384055085
+      ]
+    },
+    {
+      "seed": 4,
+      "method": "ordinary",
+      "status": "optimizer_converged",
+      "energy": -4.714979249289094,
+      "singleton_centres": [
+        [
+          -0.014989034666186314,
+          0.2929973347860133
+        ],
+        [
+          0.1015019981531326,
+          0.0012052031780194756
+        ]
+      ],
+      "singleton_coefficients": [
+        0.7695768961844851,
+        -0.21942824381073534
+      ]
+    },
+    {
+      "seed": 4,
+      "method": "completion",
+      "status": "optimizer_converged",
+      "energy": -4.714979249296576,
+      "singleton_centres": [
+        [
+          -0.011450966986291828,
+          0.2943654475007531
+        ],
+        [
+          0.09385911842076847,
+          0.006181049722095945
+        ]
+      ],
+      "singleton_coefficients": [
+        0.7063527132536044,
+        -0.18407124712063705
+      ]
+    }
+  ]
+}
