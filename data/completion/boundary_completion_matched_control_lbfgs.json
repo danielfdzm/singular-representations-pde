@@ -1,0 +1,117 @@
+{
+  "source": "boundary_completion_third_derivative_atoms_lbfgs_plateau.json",
+  "method": "float64 strong-Wolfe LBFGS initialized from each cached 100000-step Adam state; trainable variables are all coefficients, log(h), and the primary ordinary center; the original center guard is retained",
+  "domain": [
+    -8.0,
+    8.0
+  ],
+  "train_grid_size": 2001,
+  "validation_grid_size": 20001,
+  "quadrature": "composite trapezoidal rule",
+  "lbfgs": {
+    "learning_rate": 1.0,
+    "max_iter": 200,
+    "max_eval": 400,
+    "tolerance_grad": 1e-14,
+    "tolerance_change": 1e-18,
+    "line_search": "strong_wolfe"
+  },
+  "guard": {
+    "radius": 0.85,
+    "weight": 1.0
+  },
+  "matched_fixed_controls": [
+    {
+      "width": 9,
+      "fixed_extra_centers": [],
+      "before_lbfgs": {
+        "train_relative_l2": 0.03019934414168847,
+        "validation_relative_l2": 0.030199344141688268,
+        "coefficient_l2_norm": 34.64600942284554,
+        "h": 0.10161912940826297,
+        "primary_center": 2.247790235615101
+      },
+      "after_lbfgs": {
+        "train_relative_l2": 0.0020681953472648446,
+        "validation_relative_l2": 0.0020681953472648,
+        "coefficient_l2_norm": 942.1754840171412,
+        "h": 0.03691365969632599,
+        "primary_center": 1.0796792718925352,
+        "guard_penalty": 0.0,
+        "objective": 4.2774319944479505e-06,
+        "lbfgs_iterations": 200,
+        "closure_evaluations": 252
+      }
+    },
+    {
+      "width": 10,
+      "fixed_extra_centers": [
+        -3.2
+      ],
+      "before_lbfgs": {
+        "train_relative_l2": 0.03452219505798468,
+        "validation_relative_l2": 0.03452219505798467,
+        "coefficient_l2_norm": 33.55929274258172,
+        "h": 0.10849536133062519,
+        "primary_center": 2.3166606527393596
+      },
+      "after_lbfgs": {
+        "train_relative_l2": 0.0018793734301557183,
+        "validation_relative_l2": 0.0018793734301565178,
+        "coefficient_l2_norm": 359.0707669312476,
+        "h": 0.04850955569690629,
+        "primary_center": 1.270132543657565,
+        "guard_penalty": 0.0,
+        "objective": 3.53204448997527e-06,
+        "lbfgs_iterations": 200,
+        "closure_evaluations": 244
+      }
+    },
+    {
+      "width": 12,
+      "fixed_extra_centers": [
+        -3.2,
+        -2.1,
+        2.6
+      ],
+      "before_lbfgs": {
+        "train_relative_l2": 0.020184945302350092,
+        "validation_relative_l2": 0.020184945302350363,
+        "coefficient_l2_norm": 25.139264827853932,
+        "h": 0.137790622928189,
+        "primary_center": 0.8499208919044832
+      },
+      "after_lbfgs": {
+        "train_relative_l2": 0.01576934353339741,
+        "validation_relative_l2": 0.015769343533397567,
+        "coefficient_l2_norm": 61.06447827959905,
+        "h": 0.1094116114774166,
+        "primary_center": 0.8496320096542381,
+        "guard_penalty": 1.3541689457392466e-07,
+        "objective": 0.0002488076123688767,
+        "lbfgs_iterations": 200,
+        "closure_evaluations": 243
+      }
+    }
+  ],
+  "completed_stage_3_validation": [
+    {
+      "width": 9,
+      "train_relative_l2": 3.4258462620734217e-10,
+      "validation_relative_l2": 3.4258463138366225e-10,
+      "coefficient_l2_norm": 1.1661903840673005
+    },
+    {
+      "width": 10,
+      "train_relative_l2": 4.859943489389775e-10,
+      "validation_relative_l2": 4.859943476529538e-10,
+      "coefficient_l2_norm": 1.1661903836042706
+    },
+    {
+      "width": 12,
+      "train_relative_l2": 9.534893820708335e-10,
+      "validation_relative_l2": 9.534893835512536e-10,
+      "coefficient_l2_norm": 1.1661904665610936
+    }
+  ]
+}

@@ -84,6 +84,11 @@ def main():
     ranges = {m: {key: [min(table[s][m][key] for s in paper_seeds), max(table[s][m][key] for s in paper_seeds)]
                   for key in ("error", "weight_norm", "min_half_gap", "solves", "transfers")}
               for m in ("ordinary", "finite_restart", "completion")}
+    # Publication labels/placeholders; preserve the full per-start diagnostics.
+    for values in ranges.values():
+        values["renormalization_steps"] = values.pop("transfers")
+    ranges["completion"]["weight_norm"] = None
+    ranges["completion"]["min_half_gap"] = None
     print("\nTable1 (nine transferring starts):")
     print(json.dumps(ranges, indent=2))
     if arguments.output is not None:

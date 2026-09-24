@@ -3,60 +3,54 @@
     "figure": 1,
     "file": "figures/paper/figure_01.pdf",
     "preview": "figures/previews/figure_01.png",
-    "manuscript_asset": "tanh_singular_limit.pdf"
+    "manuscript_asset": "Fig1.pdf"
   },
   {
     "figure": 2,
     "file": "figures/paper/figure_02.pdf",
     "preview": "figures/previews/figure_02.png",
-    "manuscript_asset": "forced_singularity.pdf"
+    "manuscript_asset": "Fig2.pdf"
   },
   {
     "figure": 3,
     "file": "figures/paper/figure_03.pdf",
     "preview": "figures/previews/figure_03.png",
-    "manuscript_asset": "completion_patterns.pdf"
+    "manuscript_asset": "Fig4.pdf"
   },
   {
     "figure": 4,
     "file": "figures/paper/figure_04.pdf",
     "preview": "figures/previews/figure_04.png",
-    "manuscript_asset": "tanh_trajectories_single_first.pdf"
+    "manuscript_asset": "Fig5.pdf"
   },
   {
     "figure": 5,
     "file": "figures/paper/figure_05.pdf",
     "preview": "figures/previews/figure_05.png",
-    "manuscript_asset": "Fig2.pdf"
+    "manuscript_asset": "gaussian_1d_completion.pdf"
   },
   {
     "figure": 6,
     "file": "figures/paper/figure_06.pdf",
     "preview": "figures/previews/figure_06.png",
-    "manuscript_asset": "precision_crossover.pdf"
+    "manuscript_asset": "Fig7.pdf"
   },
   {
     "figure": 7,
     "file": "figures/paper/figure_07.pdf",
     "preview": "figures/previews/figure_07.png",
-    "manuscript_asset": "matern_swift_hohenberg_2d_fields.pdf"
+    "manuscript_asset": "Fig8.pdf"
   },
   {
     "figure": 8,
     "file": "figures/paper/figure_08.pdf",
     "preview": "figures/previews/figure_08.png",
-    "manuscript_asset": "matern_swift_hohenberg_2d.pdf"
+    "manuscript_asset": "Fig9.pdf"
   },
   {
     "figure": 9,
     "file": "figures/paper/figure_09.pdf",
     "preview": "figures/previews/figure_09.png",
-    "manuscript_asset": "poisson_neumann_2d_fields.pdf"
-  },
-  {
-    "figure": 10,
-    "file": "figures/paper/figure_10.pdf",
-    "preview": "figures/previews/figure_10.png",
-    "manuscript_asset": "poisson_neumann_2d.pdf"
+    "manuscript_asset": "Fig10.pdf"
   }
 ]

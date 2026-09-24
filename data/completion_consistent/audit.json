@@ -1,0 +1,97 @@
+{
+  "source_sha256": "ebf1549ff24f3df17d4990fdb94e992cdba08b9aeb2403073e9c5df8379598d8",
+  "results_sha256": "ca86ceb56d6c503f7ebe90ff46c7355b1634b15c40706b6a6dede5a12658142d",
+  "method": "Independent 1601-node Gauss-Legendre state evaluation and 110-digit whole-line interval replay",
+  "records": [
+    {
+      "width": 9,
+      "snapshot": "initial",
+      "sampled_relative_h1_error_1601": 0.20831337865908306,
+      "wholeline_h1_error_interval_110digits": [
+        0.8896271709884563,
+        0.8896271709884567
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 9,
+      "snapshot": "finite",
+      "sampled_relative_h1_error_1601": 0.0001150148515627757,
+      "wholeline_h1_error_interval_110digits": [
+        0.0004911846645459005,
+        0.0004911846645459008
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 9,
+      "snapshot": "completed",
+      "sampled_relative_h1_error_1601": 6.482350397585589e-16,
+      "wholeline_h1_error_interval_110digits": [
+        2.6614643119992627e-15,
+        2.661464311999264e-15
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 10,
+      "snapshot": "initial",
+      "sampled_relative_h1_error_1601": 0.20221115800557898,
+      "wholeline_h1_error_interval_110digits": [
+        0.8635669086487603,
+        0.8635669086487606
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 10,
+      "snapshot": "finite",
+      "sampled_relative_h1_error_1601": 9.372119600266732e-05,
+      "wholeline_h1_error_interval_110digits": [
+        0.0004002475645002407,
+        0.0004002475645002409
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 10,
+      "snapshot": "completed",
+      "sampled_relative_h1_error_1601": 1.6238728254160576e-15,
+      "wholeline_h1_error_interval_110digits": [
+        6.859457943741167e-15,
+        6.85945794374117e-15
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 12,
+      "snapshot": "initial",
+      "sampled_relative_h1_error_1601": 0.20010048774827582,
+      "wholeline_h1_error_interval_110digits": [
+        0.8545530391508864,
+        0.8545530391508868
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 12,
+      "snapshot": "finite",
+      "sampled_relative_h1_error_1601": 5.85098561733038e-06,
+      "wholeline_h1_error_interval_110digits": [
+        2.4987333102566607e-05,
+        2.498733310256662e-05
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    },
+    {
+      "width": 12,
+      "snapshot": "completed",
+      "sampled_relative_h1_error_1601": 8.732507929410347e-16,
+      "wholeline_h1_error_interval_110digits": [
+        3.679028111195815e-15,
+        3.679028111195817e-15
+      ],
+      "stored_80digit_interval_encloses_110digit_check": true
+    }
+  ]
+}

@@ -146,7 +146,7 @@ def main() -> None:
     parser.add_argument("--source", type=Path,
                         default=original_directory / "source_trajectories.pdf")
     parser.add_argument("--output", type=Path,
-                        default=REPOSITORY / "outputs" / "figures" / "figure_04")
+                        default=REPOSITORY / "outputs" / "figures" / "figure_03")
     parser.add_argument("--dpi", type=int, default=600)
     parser.add_argument("--pdf-only", action="store_true",
                         help="Write the vector PDF without requiring Ghostscript")

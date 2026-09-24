@@ -11,7 +11,7 @@ from matplotlib.text import Text
 from matplotlib.transforms import Bbox
 ROOT=Path(__file__).resolve().parents[2]
 DEFAULT_INPUT=ROOT/'data/precision'
-DEFAULT_OUTPUT=ROOT/'outputs/figures/figure_06'
+DEFAULT_OUTPUT=ROOT/'outputs/precision/precision_sweep'
 
 def texnum(x,digits=2):
     exponent=int(np.floor(np.log10(x)));mantissa=x/10.**exponent

@@ -1,31 +1,31 @@
 # Two-dimensional experiments
 
-These files reproduce Sections 4.3–4.4 and Appendices D.3–D.4 of *Singular Parameters and Missing Limits in Neural PDE Solvers*. Run the commands from the repository root after installing its requirements.
+These files reproduce Sections 4.4–4.5 and Appendices D.4–D.5 of *Singular Parameters and Missing Limits in Neural PDE Solvers*. Run the commands from the repository root after installing its requirements.
 
 ## What is included
 
 | Paper item | Source | Stored records |
 |---|---|---|
-| Matérn Swift–Hohenberg comparison; Figures 7–8; Table 1 | `experiments/matern_swift_hohenberg_2d/` | `data/matern/`, seeds 0–9, all three methods |
-| Gaussian Poisson–Neumann comparison; Figures 9–10; Table 2 | `experiments/poisson_neumann_2d/` | `data/poisson/`, seeds 10–19, all three methods |
-| Matérn/Gaussian target quadrature and small-gap evaluation checks in D.3 | Matérn `audit.py` and `gaussian_target.py` | `data/matern/audits/replayed_checks.json` |
-| Poisson target conditioning, compatibility, and transfer checks in D.4 | Poisson `audit.py` | `data/poisson/audits/replayed_checks.json` |
-| Unit-scale stalled-optimization observation in D.4 | Poisson `unit_scale.py` | `data/poisson/audits/unit_scale/`, seeds 0–4, ordinary and completion methods |
+| Matérn Swift–Hohenberg comparison; Figures 6–7; Table 1 | `experiments/matern_swift_hohenberg_2d/` | `data/matern/`, seeds 0–9, all three methods |
+| Gaussian Poisson–Neumann comparison; Figures 8–9; Table 2 | `experiments/poisson_neumann_2d/` | `data/poisson/`, seeds 10–19, all three methods |
+| Matérn/Gaussian target quadrature and small-gap evaluation checks in D.4 | Matérn `audit.py` and `gaussian_target.py` | `data/matern/audits/replayed_checks.json` |
+| Poisson target conditioning, compatibility, and transfer checks in D.5 | Poisson `audit.py` | `data/poisson/audits/replayed_checks.json` |
+| Unit-scale stalled-optimization observation in D.5 | Poisson `unit_scale.py` | `data/poisson/audits/unit_scale/`, seeds 0–4, ordinary and completion methods |
 
-Each main dataset contains 30 runs, including initial/final states, accepted histories, transfer states, optimizer termination statuses, work counts, independent quadrature checks, and gradient-validation records. Table 1 uses the nine starts at which completion transfers: 0, 2, 3, 4, 5, 6, 7, 8, 9. Start 1 is retained in the data and Figure 8. Table 2 uses all ten reported Poisson starts. Figure 7 uses Matérn start 0; Figure 9 uses Poisson start 16.
+Each main dataset contains 30 runs, including initial/final states, accepted histories, transfer states, optimizer termination statuses, work counts, independent quadrature checks, and gradient-validation records. Table 1 uses the nine starts at which completion transfers: 0, 2, 3, 4, 5, 6, 7, 8, 9. Start 1 is retained in the data and Figure 7. Table 2 uses all ten reported Poisson starts. Figure 6 uses Matérn start 0; Figure 8 uses Poisson start 16.
 
-Only the unit-scale batch needed for the Appendix D.4 comparison is retained from the earlier Poisson configurations. Other tuning sweeps and unrelated PDE experiments are excluded.
+Only the unit-scale batch needed for the Appendix D.5 comparison is retained from the earlier Poisson configurations. Other tuning sweeps and unrelated PDE experiments are excluded.
 
-## Redraw Figures 7–10
+## Redraw Figures 6–9
 
 ```bash
 python experiments/matern_swift_hohenberg_2d/plot_fields.py --output outputs/figures
-python experiments/matern_swift_hohenberg_2d/plot_results.py --output outputs/figures
+python experiments/plot_coefficient_diagnostics.py --case matern --output outputs/figures
 python experiments/poisson_neumann_2d/plot_fields.py --output outputs/figures
-python experiments/poisson_neumann_2d/plot_results.py --output outputs/figures
+python experiments/plot_coefficient_diagnostics.py --case poisson --output outputs/figures
 ```
 
-Each command reads the published compressed records directly and writes PDF, PNG, SVG, and plotting metadata. The field plots use a 241×241 grid; pair stars are visually separated along their true joining direction, and connectors indicate the true positions. The trajectory error panels show running minima; coefficient-size panels show the current iterate. Redrawing trajectories evaluates the saved histories at order 96 quadrature and can take several minutes. No optimization is repeated.
+Each command reads the published compressed records directly and writes PDF, PNG, SVG, and plotting metadata. The field plots use a 241×241 grid; pair stars are visually separated along their true joining direction, and connectors indicate the true positions. The trajectory error panels show running minima; coefficient-size panels show the current iterate. Redrawing trajectories uses the source-hash-checked order-96 H1 error caches supplied with the records. No optimization is repeated.
 
 ## Recompute Tables 1–2
 
@@ -36,7 +36,7 @@ python experiments/poisson_neumann_2d/analyse.py --output outputs/tables/poisson
 
 These commands evaluate only the stored final states. Output includes per-start relative H1 errors and the exact ranges behind the paper's rounded tables. Reference ranges are in `data/{matern,poisson}/paper_table.json`.
 
-H1 errors use tensor Gauss–Legendre quadrature of order 96 against the manufactured solution. A finite pair has ordinary-kernel weights `a/2 ± b/(2h)`; after completion its two coefficients are `(a,b)`. The reported coefficient norm is the Euclidean norm in the applicable coordinates. For Matérn a work unit is a nonlinear coefficient fit; for Poisson it is a linear coefficient solve.
+H1 errors use tensor Gauss–Legendre quadrature of order 96 against the manufactured solution. A finite pair has ordinary-kernel weights `a/2 ± b/(2h)`; after completion its two coefficients are `(a,b)`. Figures 7 and 9 separate the norm of stable solver coefficients from the reconstructed ordinary-weight norm, which is undefined after any pair completes. The `analyse.py` scripts retain the original mixed `weight_norm` only in per-start diagnostics; publication summaries use null completed weight norms and gaps, and the key `renormalization_steps`; the new plotting script writes stable-coordinate diagnostics and current weight-norm table ranges separately to `{matern,poisson}_coefficient_summary.json`. The tables retain only the ordinary-kernel “Weight norm” row; completed weight norms and pair gaps are shown as em dashes. Transfer counts are labelled “Renormalization steps”. For Matérn a work unit is a nonlinear coefficient fit; for Poisson it is a linear coefficient solve.
 
 ## Repeat the reported training
 

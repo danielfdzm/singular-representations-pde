@@ -29,7 +29,7 @@
         1003,
         2170
       ],
-      "transfers": [
+      "renormalization_steps": [
         0,
         0
       ]
@@ -51,7 +51,7 @@
         1092,
         2293
       ],
-      "transfers": [
+      "renormalization_steps": [
         0,
         0
       ]
@@ -61,24 +61,24 @@
         6.659917245689402e-08,
         2.4995736007557456e-07
       ],
-      "weight_norm": [
-        3.53691072113281,
-        3.5369787747294907
-      ],
-      "min_half_gap": [
-        0.0,
-        0.0
-      ],
+      "weight_norm": null,
+      "min_half_gap": null,
       "solves": [
         323,
         627
       ],
-      "transfers": [
+      "renormalization_steps": [
         4,
         4
       ]
     }
   },
   "error_metric": "Relative H1 on (-1,1)^2, tensor Gauss-Legendre order96",
-  "coefficient_norm": "Euclidean norm of raw finite kernel weights; kernel/derivative coefficients after completion."
+  "coefficient_norm": "Euclidean norm of ordinary-kernel weights; null after completion (displayed as an em dash).",
+  "display_labels": {
+    "weight_norm": "Weight norm",
+    "min_half_gap": "Smallest half-gap",
+    "renormalization_steps": "Renormalization steps"
+  },
+  "null_display": "\u2014"
 }
