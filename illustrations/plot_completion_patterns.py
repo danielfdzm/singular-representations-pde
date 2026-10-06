@@ -29,7 +29,7 @@ from matplotlib.patches import FancyArrowPatch  # noqa: E402
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / "illustrations" / "completion_patterns"
 ATOM_COLORS = (BLUE, RED, GREEN)
-FIGURE_HEIGHT = 4.5
+FIGURE_HEIGHT = 3.8
 GRID = np.linspace(-6.0, 6.0, 4001)
 UPPER_YLIM = (-12.0, 12.0)
 
@@ -73,6 +73,11 @@ def panel_data() -> list[dict]:
 
 def make_figure(panels: list[dict]):
     fig = plt.figure(figsize=(FULL_WIDTH, FIGURE_HEIGHT))
+    # Fix the panel height in inches while bringing each shared legend closer
+    # to its row; shrinking the canvas must not squash the plotted features.
+    row_height = 0.99 / FIGURE_HEIGHT
+    upper_bottom = 2.11 / FIGURE_HEIGHT
+    lower_bottom = 0.64 / FIGURE_HEIGHT
     lefts = (0.082, 0.395, 0.708)
     width = 0.252
     titles = ("(a) Separated centers", "(b) Centers nearly collided",
@@ -82,7 +87,7 @@ def make_figure(panels: list[dict]):
         fig.text(middle, 0.985, titles[index], ha="center", va="top", fontsize=9.5)
 
         # Upper row: the weighted contributions the model actually carries.
-        upper = fig.add_axes([left, 0.615, width, 0.22])
+        upper = fig.add_axes([left, upper_bottom, width, row_height])
         for color, coefficient, column in zip(ATOM_COLORS, panel["coefficients"], panel["columns"]):
             upper.plot(GRID, coefficient * column, color=color, lw=1.3, alpha=0.9,
                        solid_capstyle="round")
@@ -98,7 +103,7 @@ def make_figure(panels: list[dict]):
         style_axis(upper)
 
         # Lower row: what the model produces, against the target it is chasing.
-        lower = fig.add_axes([left, 0.17, width, 0.22])
+        lower = fig.add_axes([left, lower_bottom, width, row_height])
         total = sum(c * col for c, col in zip(panel["coefficients"], panel["columns"]))
         lower.fill_between(GRID, target(GRID), total, color=RED, alpha=0.18, lw=0)
         lower.plot(GRID, target(GRID), color=BLACK, lw=1.7, zorder=3,
@@ -132,7 +137,7 @@ def make_figure(panels: list[dict]):
         for color, label in zip(ATOM_COLORS, feature_labels)
     ]
     fig.legend(handles=feature_handles, loc="center",
-               bbox_to_anchor=(0.52, 0.505), ncol=3, columnspacing=2.0,
+               bbox_to_anchor=(0.52, 1.85 / FIGURE_HEIGHT), ncol=3, columnspacing=2.0,
                handlelength=2.4, fontsize=8)
 
     handles = [
@@ -145,10 +150,8 @@ def make_figure(panels: list[dict]):
 
 
 def style_axis(axis) -> None:
-    axis.spines[["top", "right"]].set_visible(False)
-    axis.spines[["left", "bottom"]].set_color(LIGHT_GRAY)
-    axis.spines[["left", "bottom"]].set_linewidth(0.65)
-    axis.tick_params(axis="both", color=LIGHT_GRAY, labelcolor=BLACK, width=0.65,
+    # Keep the full black frame used by the numerical plots.
+    axis.tick_params(axis="both", color="black", labelcolor=BLACK, width=0.65,
                      labelsize=8)
 
 

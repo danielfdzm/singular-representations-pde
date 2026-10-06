@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "configuration": {
-    "output": "outputs/poisson_rerun",
+    "output": "outputs/revision_runs/poisson_q32",
     "seeds": [
       10,
       11,
@@ -23,7 +23,12 @@
     "gtol": 0.0,
     "initial_half_gap_min": 0.02,
     "initial_half_gap_max": 0.05,
-    "finite_restart_control": true,
+    "methods": {
+      "ordinary": "finite pairs in log h",
+      "restart": "finite pairs in log h; L-BFGS-B restarted when the completion trigger holds, at most once per pair",
+      "squared_gap": "finite pairs in t=h^2, 1e-12<=t<=2.25, no restarts",
+      "completion": "finite pairs in log h; transfer to derivative blocks when the trigger holds; tolerance rechecked after each refit"
+    },
     "domain": "(-1,1)^2",
     "equation": "-Laplacian u = f",
     "boundary": "du/dn = g, nonhomogeneous Neumann, manufactured from u*",
@@ -35,9 +40,9 @@
     "multiplicity_budget": 10,
     "pairing": "4 supplied pairs plus 2 singletons",
     "geometry_bounds": "centres [-2,2]^2, angles unbounded, 0<h<=1.5 without positive floor",
-    "coefficient_fit": "one linear solve of (S + sigma m m') c = L + sigma M m after column scaling",
+    "coefficient_fit": "one linear solve of (S + sigma m m') c = L + sigma M m after column scaling; accepted at residual <= 4 times its rounding floor, otherwise the run stops with status inner_solve_failure",
     "work_accounting": "one unit per distinct coefficient solve, including line-search probes and post-transfer refits",
-    "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; history reset only on actual completion",
+    "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; memory reset only on completion or, for the restart control, at its matched restarts",
     "transfer": "measured H1 state change at order-64 quadrature; float64, not a validated enclosure",
     "limitations": "fixed Gaussian scale and supplied pairing; no certified objective gate; quadrature agreement is not validated integration"
   },
@@ -47,7 +52,7 @@
     "scipy": "1.17.0",
     "torch": "2.10.0"
   },
-  "source_sha256": "b2b561f7c693e47172c64c44f96065eba449e7f562464aabe59d346e3c4f6e7d",
+  "source_sha256": "74331e80d7bb17f3c0e7c6394d1e201d71837dbaf516bd559403108c64f94c4c",
   "planned_runs": [
     {
       "seed": 10,
@@ -55,11 +60,15 @@
     },
     {
       "seed": 10,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 10,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 10,
+      "method": "completion"
     },
     {
       "seed": 11,
@@ -67,11 +76,15 @@
     },
     {
       "seed": 11,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 11,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 11,
+      "method": "completion"
     },
     {
       "seed": 12,
@@ -79,11 +92,15 @@
     },
     {
       "seed": 12,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 12,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 12,
+      "method": "completion"
     },
     {
       "seed": 13,
@@ -91,11 +108,15 @@
     },
     {
       "seed": 13,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 13,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 13,
+      "method": "completion"
     },
     {
       "seed": 14,
@@ -103,11 +124,15 @@
     },
     {
       "seed": 14,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 14,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 14,
+      "method": "completion"
     },
     {
       "seed": 15,
@@ -115,11 +140,15 @@
     },
     {
       "seed": 15,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 15,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 15,
+      "method": "completion"
     },
     {
       "seed": 16,
@@ -127,11 +156,15 @@
     },
     {
       "seed": 16,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 16,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 16,
+      "method": "completion"
     },
     {
       "seed": 17,
@@ -139,11 +172,15 @@
     },
     {
       "seed": 17,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 17,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 17,
+      "method": "completion"
     },
     {
       "seed": 18,
@@ -151,11 +188,15 @@
     },
     {
       "seed": 18,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 18,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 18,
+      "method": "completion"
     },
     {
       "seed": 19,
@@ -163,11 +204,15 @@
     },
     {
       "seed": 19,
-      "method": "completion"
+      "method": "restart"
     },
     {
       "seed": 19,
-      "method": "finite_restart"
+      "method": "squared_gap"
+    },
+    {
+      "seed": 19,
+      "method": "completion"
     }
   ]
 }

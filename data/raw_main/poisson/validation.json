@@ -1,0 +1,69 @@
+{
+  "ordinary": {
+    "pair_column_order": "center + h*d, then center - h*d",
+    "moderate_gap_value_relative_max_error": 5.120184488875193e-16,
+    "moderate_gap_spatial_gradient_relative_max_error": 5.894376829964175e-16,
+    "raw_reduced_autodiff_vs_central_difference_relative_max_error": 9.75098159945449e-09,
+    "initial_raw_vs_stable_refit_relative_h1_change": 3.6875465117234437e-13,
+    "initial_raw_vs_stable_objective_absolute_change": 2.1316282072803006e-14,
+    "passed": true
+  },
+  "completion": [
+    {
+      "completed_mask": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "direct_field_relative_max_error": 3.2557429059500893e-15,
+      "laplacian_absolute_max_error": 4.973799150320701e-14,
+      "reduced_gradient_relative_max_error": 9.75098159945449e-09,
+      "raw_mixed_vs_stable_refit_relative_h1_change": 3.6875465117234437e-13,
+      "transfer_h1_measurement_absolute_difference": 1.5785983631388945e-15,
+      "passed": true
+    },
+    {
+      "completed_mask": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "direct_field_relative_max_error": 1.6218068508364134e-15,
+      "laplacian_absolute_max_error": 3.197442310920451e-14,
+      "reduced_gradient_relative_max_error": 9.770730027650387e-09,
+      "raw_mixed_vs_stable_refit_relative_h1_change": 3.982903284455955e-13,
+      "transfer_h1_measurement_absolute_difference": 2.942091015256665e-15,
+      "passed": true
+    },
+    {
+      "completed_mask": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "direct_field_relative_max_error": 1.8497689967361407e-15,
+      "laplacian_absolute_max_error": 3.197442310920451e-14,
+      "reduced_gradient_relative_max_error": 9.536008372075975e-09,
+      "raw_mixed_vs_stable_refit_relative_h1_change": 3.7673747522611184e-13,
+      "transfer_h1_measurement_absolute_difference": 3.148523108897905e-15,
+      "passed": true
+    },
+    {
+      "completed_mask": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "direct_field_relative_max_error": 4.970132937693389e-16,
+      "laplacian_absolute_max_error": 3.552713678800501e-15,
+      "reduced_gradient_relative_max_error": 9.540658583154048e-09,
+      "raw_mixed_vs_stable_refit_relative_h1_change": 3.753775180363797e-16,
+      "transfer_h1_measurement_absolute_difference": 0.0,
+      "passed": true
+    }
+  ]
+}

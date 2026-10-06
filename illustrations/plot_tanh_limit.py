@@ -38,7 +38,10 @@ def draw_collision(axis) -> None:
     axis.set_xlim(-1.28, 1.28)
     axis.set_ylim(lower, 1.54)
     axis.set_aspect("equal", adjustable="box")
-    axis.axis("off")
+    # Keep the same full black frame as the other panels; the diagram supplies
+    # its own bias-axis labels rather than numeric plot ticks.
+    axis.set_xticks([])
+    axis.set_yticks([])
     axis.set_title("(a) Two colliding neurons", fontsize=9, pad=8)
 
     axis.text(0, 1.35, "output weights", ha="center", va="center",
@@ -102,10 +105,8 @@ def draw_contributions(axis) -> dict:
     axis.set(xlim=(-3, 3), ylim=(-5.65, 5.65), xlabel=r"$x_1$")
     axis.set_xticks((-3, 0, 3))
     axis.set_yticks((-5, 0, 5))
-    axis.spines[["top", "right"]].set_visible(False)
-    axis.spines[["left", "bottom"]].set_color(LIGHT_GRAY)
-    axis.spines[["left", "bottom"]].set_linewidth(0.65)
-    axis.tick_params(axis="both", color=LIGHT_GRAY, labelcolor=BLACK, width=0.65)
+    # Keep the full black frame used by the numerical plots.
+    axis.tick_params(axis="both", color="black", labelcolor=BLACK, width=0.65)
     axis.text(-2.75, 3.7, "Neuron 2", color=BLACK, fontsize=7.5,
               ha="left", va="center")
     axis.text(-2.75, -3.55, "Neuron 1", color=BLACK, fontsize=7.5,
@@ -115,7 +116,7 @@ def draw_contributions(axis) -> dict:
     return {"epsilon": epsilon, "output_weights": [-5.0, 5.0],
             "sum_peak": float(np.max(state)), "common_y_range": [-5.65, 5.65],
             "sum_displayed": False,
-            "design": "Open axes, thin opposing curves, direct neuron labels; no sum curve",
+            "design": "Full black plot frame, thin opposing curves, direct neuron labels; no sum curve",
             "shading": "None",
             "neuron_labels": {"Neuron 1": "+5*tanh(x_1+0.1)",
                               "Neuron 2": "-5*tanh(x_1-0.1)"}}
@@ -142,10 +143,8 @@ def draw_profiles(axis) -> dict:
     axis.set_xticks((-3, 0, 3))
     axis.set_yticks((0, 0.5, 1))
     axis.set_yticklabels(("0", "0.5", "1"))
-    axis.spines[["top", "right"]].set_visible(False)
-    axis.spines[["left", "bottom"]].set_color(LIGHT_GRAY)
-    axis.spines[["left", "bottom"]].set_linewidth(0.65)
-    axis.tick_params(axis="both", color=LIGHT_GRAY, labelcolor=BLACK, width=0.65)
+    # Keep the full black frame used by the numerical plots.
+    axis.tick_params(axis="both", color="black", labelcolor=BLACK, width=0.65)
     # Direct labels keep the shrinking profile gap visible without a legend box.
     for epsilon, color, anchor_x, label_y in (
         (EPSILONS[2], GREEN, -0.30, 1.04),
@@ -220,10 +219,10 @@ def main() -> None:
         "max_sampled_state_discrepancy": discrepancies,
         "cancellation_panel": contributions,
         "profile_shading": f"Deterministic gap between epsilon={EPSILONS[0]} profile and target; not uncertainty",
-        "profile_panel_design": "Open light axes, thin finite profiles, emphasized green near-limit curve, direct labels and a fine dashed target",
+        "profile_panel_design": "Full black plot frame, thin finite profiles, emphasized green near-limit curve, direct labels and a fine dashed target",
         "figure_size_inches": list(figure.get_size_inches()),
         "panel_geometry": panel_geometry,
-        "collision_panel_design": "Equal physical panel dimensions; isotropic neuron circles with larger icons and vertically spread labels and bias axis.",
+        "collision_panel_design": "Full black plot frame matching the other panels; equal physical panel dimensions, isotropic neuron circles, and a labeled bias axis.",
         "neuron_circle_diameter_inches": [float(circle.width/figure.dpi), float(circle.height/figure.dpi)],
         "style_source": "illustrations/plot_style.py",
         "outputs": outputs,

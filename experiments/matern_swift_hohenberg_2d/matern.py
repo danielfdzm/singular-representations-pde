@@ -38,6 +38,7 @@ import numpy as np
 GAMMA = float(np.sqrt(7.0))
 LENGTH_SCALE = 3.0/GAMMA
 SMOOTHNESS = 4.5
+_EXPM1_SERIES_THRESHOLD = 1e-2
 
 # Ascending coefficients of P in F(r) = exp(-GAMMA r) P(r), derived symbolically.
 #   f0    = phi                     c1    = phi'/r          c1p  = (phi'/r)'/r
@@ -81,11 +82,17 @@ def _polynomial_divided_difference(coefficients, a, b):
     return out
 
 
+def _expm1_ratio_series(delta):
+    """Degree-six continuation; retain accuracy after differentiation in h^2."""
+    z = -GAMMA*delta
+    return -GAMMA*(1+z*(1/2+z*(1/6+z*(1/24+z*(1/120+z*(1/720+z/5040))))))
+
+
 def _expm1_ratio(delta):
     """expm1(-GAMMA delta)/delta, continued to its value -GAMMA at delta=0."""
-    small = np.abs(GAMMA*delta) < 1e-5
+    small = np.abs(GAMMA*delta) < _EXPM1_SERIES_THRESHOLD
     safe = np.where(small, 1.0, delta)
-    series = -GAMMA+GAMMA*GAMMA*delta/2-GAMMA**3*delta*delta/6
+    series = _expm1_ratio_series(delta)
     return np.where(small, series, np.expm1(-GAMMA*np.where(small, 0.0, delta))/safe)
 
 
@@ -129,9 +136,9 @@ def torch_pair(torch, name, a, b, delta, t):
         return out
 
     even = 0.5*(horner(a)*torch.exp(-GAMMA*a)+horner(b)*torch.exp(-GAMMA*b))
-    small = torch.abs(GAMMA*delta) < 1e-5
+    small = torch.abs(GAMMA*delta) < _EXPM1_SERIES_THRESHOLD
     safe = torch.where(small, torch.ones_like(delta), delta)
-    series = -GAMMA+GAMMA*GAMMA*delta/2-GAMMA**3*delta*delta/6
+    series = _expm1_ratio_series(delta)
     ratio = torch.where(small, series, torch.expm1(-GAMMA*safe)/safe)
     polydd = torch.zeros_like(a)
     for k in range(len(coefficients)-1, 0, -1):

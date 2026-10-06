@@ -1,0 +1,396 @@
+{
+  "paper_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "methods": [
+    "ordinary",
+    "restart",
+    "squared_gap",
+    "completion"
+  ],
+  "training_quadrature_order": 64,
+  "evaluation_quadrature_order": 128,
+  "scope": "All ten starts, including partial-transfer and abnormal optimizer returns.",
+  "ranges": {
+    "ordinary": {
+      "error": [
+        3.5114365133575953e-07,
+        1.1209885269793278e-05
+      ],
+      "stable_coefficient_norm": [
+        3.537102076372769,
+        3.543606736876086
+      ],
+      "weight_norm": [
+        567.8774376345619,
+        5.970893910046149e+16
+      ],
+      "min_half_gap": [
+        1.5395230365638543e-17,
+        0.00233465026140316
+      ],
+      "solves": [
+        1004,
+        1797
+      ],
+      "transfers": [
+        0,
+        0
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901657,
+        891.6157834375946
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.954202497307304e-16,
+        5.91955837143231e-16
+      ]
+    },
+    "restart": {
+      "error": [
+        1.7232489056625394e-07,
+        2.5096511184493897e-06
+      ],
+      "stable_coefficient_norm": [
+        3.536974290418825,
+        3.538151674954637
+      ],
+      "weight_norm": [
+        235192.9004462634,
+        6.881320621612406e+19
+      ],
+      "min_half_gap": [
+        1.0629696915294018e-20,
+        2.706054835073649e-06
+      ],
+      "solves": [
+        1371,
+        2728
+      ],
+      "transfers": [
+        0,
+        0
+      ],
+      "restarts": [
+        4,
+        4
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901657,
+        891.6157834375946
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.9787416769233345e-16,
+        5.91955837143231e-16
+      ]
+    },
+    "squared_gap": {
+      "error": [
+        9.33663522136026e-08,
+        1.9461370840446676e-06
+      ],
+      "stable_coefficient_norm": [
+        3.5369159646701345,
+        3.5377353230795183
+      ],
+      "weight_norm": [
+        1118034.5310466457,
+        1541106.1663594735
+      ],
+      "min_half_gap": [
+        1e-06,
+        1e-06
+      ],
+      "solves": [
+        471,
+        780
+      ],
+      "transfers": [
+        0,
+        0
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        93.01653475305304,
+        20195.17466621312
+      ],
+      "max_relative_coefficient_stationarity": [
+        3.0325603008971577e-16,
+        6.2373624188079945e-16
+      ]
+    },
+    "completion": {
+      "error": [
+        2.830246054498629e-08,
+        1.6075735056819866e-07
+      ],
+      "stable_coefficient_norm": [
+        3.536919563994975,
+        3.536960680777667
+      ],
+      "weight_norm": [
+        3.536919563994975,
+        3.536960680777667
+      ],
+      "min_half_gap": [
+        0.0,
+        0.0
+      ],
+      "solves": [
+        341,
+        598
+      ],
+      "transfers": [
+        4,
+        4
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901657,
+        891.6157834375946
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.712877257094601e-16,
+        5.91955837143231e-16
+      ]
+    }
+  },
+  "medians": {
+    "ordinary": {
+      "error": 1.048578897638474e-06,
+      "solves": 1522.0
+    },
+    "restart": {
+      "error": 6.103008186029141e-07,
+      "solves": 1794.0
+    },
+    "squared_gap": {
+      "error": 2.0627985132931106e-07,
+      "solves": 692.0
+    },
+    "completion": {
+      "error": 7.35025369677803e-08,
+      "solves": 424.0
+    }
+  },
+  "status_counts": {
+    "ordinary": {
+      "optimizer_converged": 10
+    },
+    "restart": {
+      "optimizer_converged": 10
+    },
+    "squared_gap": {
+      "optimizer_converged": 10
+    },
+    "completion": {
+      "optimizer_converged": 10
+    }
+  },
+  "transferring_subgroup": {
+    "definition": "starts on which completion transfers every pair",
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "ranges": {
+      "ordinary": {
+        "error": [
+          3.5114365133575953e-07,
+          1.1209885269793278e-05
+        ],
+        "stable_coefficient_norm": [
+          3.537102076372769,
+          3.543606736876086
+        ],
+        "weight_norm": [
+          567.8774376345619,
+          5.970893910046149e+16
+        ],
+        "min_half_gap": [
+          1.5395230365638543e-17,
+          0.00233465026140316
+        ],
+        "solves": [
+          1004,
+          1797
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901657,
+          891.6157834375946
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.954202497307304e-16,
+          5.91955837143231e-16
+        ]
+      },
+      "restart": {
+        "error": [
+          1.7232489056625394e-07,
+          2.5096511184493897e-06
+        ],
+        "stable_coefficient_norm": [
+          3.536974290418825,
+          3.538151674954637
+        ],
+        "weight_norm": [
+          235192.9004462634,
+          6.881320621612406e+19
+        ],
+        "min_half_gap": [
+          1.0629696915294018e-20,
+          2.706054835073649e-06
+        ],
+        "solves": [
+          1371,
+          2728
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          4,
+          4
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901657,
+          891.6157834375946
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.9787416769233345e-16,
+          5.91955837143231e-16
+        ]
+      },
+      "squared_gap": {
+        "error": [
+          9.33663522136026e-08,
+          1.9461370840446676e-06
+        ],
+        "stable_coefficient_norm": [
+          3.5369159646701345,
+          3.5377353230795183
+        ],
+        "weight_norm": [
+          1118034.5310466457,
+          1541106.1663594735
+        ],
+        "min_half_gap": [
+          1e-06,
+          1e-06
+        ],
+        "solves": [
+          471,
+          780
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          93.01653475305304,
+          20195.17466621312
+        ],
+        "max_relative_coefficient_stationarity": [
+          3.0325603008971577e-16,
+          6.2373624188079945e-16
+        ]
+      },
+      "completion": {
+        "error": [
+          2.830246054498629e-08,
+          1.6075735056819866e-07
+        ],
+        "stable_coefficient_norm": [
+          3.536919563994975,
+          3.536960680777667
+        ],
+        "weight_norm": [
+          3.536919563994975,
+          3.536960680777667
+        ],
+        "min_half_gap": [
+          0.0,
+          0.0
+        ],
+        "solves": [
+          341,
+          598
+        ],
+        "transfers": [
+          4,
+          4
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901657,
+          891.6157834375946
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.712877257094601e-16,
+          5.91955837143231e-16
+        ]
+      }
+    },
+    "medians": {
+      "ordinary": {
+        "error": 1.048578897638474e-06,
+        "solves": 1522.0
+      },
+      "restart": {
+        "error": 6.103008186029141e-07,
+        "solves": 1794.0
+      },
+      "squared_gap": {
+        "error": 2.0627985132931106e-07,
+        "solves": 692.0
+      },
+      "completion": {
+        "error": 7.35025369677803e-08,
+        "solves": 424.0
+      }
+    }
+  }
+}

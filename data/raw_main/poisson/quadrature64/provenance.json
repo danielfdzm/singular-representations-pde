@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "description": "Two-method primary comparison, using ordinary weights until derivative transfer",
+  "generating_inputs": [
+    {
+      "method": "ordinary",
+      "input": "code/outputs/raw_main/poisson_q64/standard/results.json",
+      "sha256": "8c45746d753d60ef937d35caa408352214979a684dbcde8c72dd63811a43ef30",
+      "configuration": {
+        "method": "ordinary",
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "quadrature_order": 64,
+        "error_quadrature_order": 96,
+        "max_solves": 8000,
+        "block_iterations": 40,
+        "proximity_threshold": 0.12,
+        "transfer_tolerance": 0.03,
+        "transfer_quadrature_order": 64,
+        "geometry": "Original paper starts/bounds; finite gaps use log h",
+        "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; restart after transfers only",
+        "coefficient_solve": "Original diagonal scaling, condition cutoff1e14, residual test; no ridge/rank truncation",
+        "training_basis": "Direct translated Gaussians for finite pairs; direct K and minus-directional K for completed pairs",
+        "coefficient_semantics": "Finite slots store w_plus,w_minus; completed slots store a,b. Derived stable coefficients are audits only."
+      },
+      "software": {
+        "python": "3.14.0",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "torch": "2.10.0",
+        "torch_threads": 1
+      },
+      "original_run_sha256": {
+        "10": "496ee36a66f03de38657d50ce426d0df6a53b1d4cba059fd870e727810dce76e",
+        "11": "cc29bc95a2925935e0d80cb1b915f26785a0ef5d8ce0c73244996c1aca7ce119",
+        "12": "36fe58a5e1a78659a327b5d002430d78c9bc2a96a370ffdb028695b066567937",
+        "13": "20cf2235a1ddc7b1dfee7bc8f816b84a51d4824302f1360c669e9af44e9c14c6",
+        "14": "ce37605a0841be7a82c34960695ab0c29472851c042a475f7d7244091780ed04",
+        "15": "ccf649cc0da248ef3dfe73d52d48ade19919ee9bf5d1398e7e569b7bd5d04a5a",
+        "16": "f2820990f2f9b029c2a00871e4de72d2cbb9f96dba9710646865e90a4e3a553f",
+        "17": "96231a0a7d3aafa447f92374154fc06bd2d04340d297ff6b9c02ab7d7bf4b047",
+        "18": "464b4f141cb205ed3098d4484c3d640f129641513b80d2a64c78e63cbb01acf3",
+        "19": "300f0a9faf7ca9b5add99063312691296d7f6bb064b9f1a28a2a17cddf8f8efd"
+      }
+    },
+    {
+      "method": "completion",
+      "input": "code/outputs/raw_main/poisson_q64/completion/results.json",
+      "sha256": "f92409b15352a25cd8437b364981f7b9fd75e3c727fe11cbaa10c844d45d13b0",
+      "configuration": {
+        "method": "completion",
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "quadrature_order": 64,
+        "error_quadrature_order": 96,
+        "max_solves": 8000,
+        "block_iterations": 40,
+        "proximity_threshold": 0.12,
+        "transfer_tolerance": 0.03,
+        "transfer_quadrature_order": 64,
+        "geometry": "Original paper starts/bounds; finite gaps use log h",
+        "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; restart after transfers only",
+        "coefficient_solve": "Original diagonal scaling, condition cutoff1e14, residual test; no ridge/rank truncation",
+        "training_basis": "Direct translated Gaussians for finite pairs; direct K and minus-directional K for completed pairs",
+        "coefficient_semantics": "Finite slots store w_plus,w_minus; completed slots store a,b. Derived stable coefficients are audits only."
+      },
+      "software": {
+        "python": "3.14.0",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "torch": "2.10.0",
+        "torch_threads": 1
+      },
+      "original_run_sha256": {
+        "10": "5450ee4bbf3f33e8de537b755e1bc186674f740113e46b8c5ca2a0e5c2a19497",
+        "11": "85917eb6698a955f87e63f1b2e88f3cc4766134fb61f47366b2860a00dbdfe7e",
+        "12": "91176e4edf80b254d9176f1786541f6f1b1e97cd55882c72f62f417b5a8f3084",
+        "13": "8183c631dc342ae964c2af0e6b8452d6de9d7a26e6d8fb4ee7cb7155030ca4e1",
+        "14": "23b9f6fffb7b0e7029f98e5423da3cc016621a13523f61b8d658ce5922b81880",
+        "15": "adf43971cb2bc0c48779e44053612bf374c3b89f4019778837e682468ce4e920",
+        "16": "eb99d8968b031f56462267428e6e694ad0a221fae2c05bc24195861f1e032f18",
+        "17": "4efad0729edcd450b502bdf003b406a37f6c8b0bac6b5bdcf1e6f4bc8d3f9a3d",
+        "18": "f8eb2982a72c6b307ceecbf9a0761650f24a84e2de848ff8e729b085e5845fb5",
+        "19": "c845726552a82e7bf885e58d05867224550612fd4cb18c83384ca37e1bd47c71"
+      }
+    }
+  ],
+  "source_sha256": {
+    "experiments/raw_coordinates/poisson_completion.py": "5418a2830a8572e2068d2c9f5f6db21fbc6b62aa77fb0f64a47c0d9a84ed3c82",
+    "experiments/raw_coordinates/poisson_raw.py": "f841be199e8fe7983b313fd43c58d78db992502c13bf9c4bc027ad64b8ea9b65",
+    "experiments/poisson_neumann_2d/experiment.py": "74331e80d7bb17f3c0e7c6394d1e201d71837dbaf516bd559403108c64f94c4c"
+  },
+  "retained_run_sha256": {
+    "10:completion": "5450ee4bbf3f33e8de537b755e1bc186674f740113e46b8c5ca2a0e5c2a19497",
+    "10:ordinary": "496ee36a66f03de38657d50ce426d0df6a53b1d4cba059fd870e727810dce76e",
+    "11:completion": "85917eb6698a955f87e63f1b2e88f3cc4766134fb61f47366b2860a00dbdfe7e",
+    "11:ordinary": "cc29bc95a2925935e0d80cb1b915f26785a0ef5d8ce0c73244996c1aca7ce119",
+    "12:completion": "91176e4edf80b254d9176f1786541f6f1b1e97cd55882c72f62f417b5a8f3084",
+    "12:ordinary": "36fe58a5e1a78659a327b5d002430d78c9bc2a96a370ffdb028695b066567937",
+    "13:completion": "8183c631dc342ae964c2af0e6b8452d6de9d7a26e6d8fb4ee7cb7155030ca4e1",
+    "13:ordinary": "20cf2235a1ddc7b1dfee7bc8f816b84a51d4824302f1360c669e9af44e9c14c6",
+    "14:completion": "23b9f6fffb7b0e7029f98e5423da3cc016621a13523f61b8d658ce5922b81880",
+    "14:ordinary": "ce37605a0841be7a82c34960695ab0c29472851c042a475f7d7244091780ed04",
+    "15:completion": "adf43971cb2bc0c48779e44053612bf374c3b89f4019778837e682468ce4e920",
+    "15:ordinary": "ccf649cc0da248ef3dfe73d52d48ade19919ee9bf5d1398e7e569b7bd5d04a5a",
+    "16:completion": "eb99d8968b031f56462267428e6e694ad0a221fae2c05bc24195861f1e032f18",
+    "16:ordinary": "f2820990f2f9b029c2a00871e4de72d2cbb9f96dba9710646865e90a4e3a553f",
+    "17:completion": "4efad0729edcd450b502bdf003b406a37f6c8b0bac6b5bdcf1e6f4bc8d3f9a3d",
+    "17:ordinary": "96231a0a7d3aafa447f92374154fc06bd2d04340d297ff6b9c02ab7d7bf4b047",
+    "18:completion": "f8eb2982a72c6b307ceecbf9a0761650f24a84e2de848ff8e729b085e5845fb5",
+    "18:ordinary": "464b4f141cb205ed3098d4484c3d640f129641513b80d2a64c78e63cbb01acf3",
+    "19:completion": "c845726552a82e7bf885e58d05867224550612fd4cb18c83384ca37e1bd47c71",
+    "19:ordinary": "300f0a9faf7ca9b5add99063312691296d7f6bb064b9f1a28a2a17cddf8f8efd"
+  },
+  "results_sha256": "c7fe118c6b5d9bd342635ee1eef5a769e72e0e0551220f8720a800141329941e"
+}

@@ -3,54 +3,81 @@
     "figure": 1,
     "file": "figures/paper/figure_01.pdf",
     "preview": "figures/previews/figure_01.png",
-    "manuscript_asset": "Fig1.pdf"
+    "manuscript_asset": "figure_01.pdf",
+    "source": "illustrations/plot_tanh_limit.py",
+    "section": "2.1",
+    "sha256": "c392a4287f5dace9cdadfeebe498fc432e726a98d96c4b38c4722be5dd3657b2"
   },
   {
     "figure": 2,
     "file": "figures/paper/figure_02.pdf",
     "preview": "figures/previews/figure_02.png",
-    "manuscript_asset": "Fig2.pdf"
+    "manuscript_asset": "figure_02.pdf",
+    "source": "illustrations/plot_forced_singularity.py",
+    "section": "3.1",
+    "sha256": "a20f3747c91e24984d56b3a354ef352c75c31d32f6c07e5dd36a91aab388941f"
   },
   {
     "figure": 3,
     "file": "figures/paper/figure_03.pdf",
     "preview": "figures/previews/figure_03.png",
-    "manuscript_asset": "Fig4.pdf"
+    "manuscript_asset": "figure_03.pdf",
+    "source": "illustrations/plot_completion_patterns.py",
+    "section": "3.2",
+    "sha256": "995f2aa5a62979c305bc591760df49980b8ac7aea91aaa7f16b14838ab2cfd0f"
   },
   {
     "figure": 4,
     "file": "figures/paper/figure_04.pdf",
     "preview": "figures/previews/figure_04.png",
-    "manuscript_asset": "Fig5.pdf"
+    "manuscript_asset": "figure_04.pdf",
+    "source": "experiments/tanh/plot_bias.py",
+    "section": "4.1",
+    "sha256": "cf615a49ae7c25b9bd05e337f961480a488a6d1c438dfb751850aa40ca3dab09"
   },
   {
     "figure": 5,
     "file": "figures/paper/figure_05.pdf",
     "preview": "figures/previews/figure_05.png",
-    "manuscript_asset": "gaussian_1d_completion.pdf"
+    "manuscript_asset": "figure_05.pdf",
+    "source": "experiments/tanh/historical_slope_source.py",
+    "section": "4.1",
+    "sha256": "2433e9df9e67908b2b63a312324f9fd26592ba8cd5a4399489cda87b393a14c4"
   },
   {
     "figure": 6,
     "file": "figures/paper/figure_06.pdf",
     "preview": "figures/previews/figure_06.png",
-    "manuscript_asset": "Fig7.pdf"
+    "manuscript_asset": "figure_11.pdf",
+    "source": "experiments/manufactured_1d/plot.py",
+    "section": "4.2",
+    "sha256": "426a0cea09ed4695fab5c0f265531506cab9b330555e21b4775975f1177155df"
   },
   {
     "figure": 7,
     "file": "figures/paper/figure_07.pdf",
     "preview": "figures/previews/figure_07.png",
-    "manuscript_asset": "Fig8.pdf"
+    "manuscript_asset": "figure_09.pdf",
+    "source": "experiments/raw_coordinates/plot_main.py",
+    "section": "4.3",
+    "sha256": "d581dd087d1d7d9bfec32d8855fa65ab7344198bff4fe1c7b366b03134462fdf"
   },
   {
     "figure": 8,
     "file": "figures/paper/figure_08.pdf",
     "preview": "figures/previews/figure_08.png",
-    "manuscript_asset": "Fig9.pdf"
+    "manuscript_asset": "figure_10.pdf",
+    "source": "experiments/raw_coordinates/plot_main.py",
+    "section": "4.3",
+    "sha256": "1e7acb3c171ccd535c4c5ae573e8764b754fb6a58aecc0c363b0814b74526a03"
   },
   {
     "figure": 9,
     "file": "figures/paper/figure_09.pdf",
     "preview": "figures/previews/figure_09.png",
-    "manuscript_asset": "Fig10.pdf"
+    "manuscript_asset": "figure_08.pdf",
+    "source": "experiments/raw_coordinates/plot_main.py",
+    "section": "4.4",
+    "sha256": "b07bd9e8b990e2d523077da3531b1b69b5469a0bbb2b48e8e3a55404f6256dd2"
   }
 ]

@@ -1,10 +1,10 @@
 # Reproducing the paper
 
-This repository accompanies **Singular Parameters and Missing Limits in Neural PDE Solvers**. It contains the experiments in Sections 4.1–4.5, the checks reported in Appendices D.1–D.5, and the analytical illustrations in Figures 1–2. Older studies that are absent from the current paper are not part of this release.
+The paper has nine figures and four tables: three analytical illustrations, two tanh training figures, the coefficient-cap figure, three figures for the ordinary-coordinate PDE comparisons, three main tables, and one training-quadrature table in Appendix C.3. Appendix C.6 reports stable evaluation and four-method PDE controls in text. Run commands from the directory containing `reproduce.py`.
 
 ## Install
 
-Use Python 3.11 or later. The reproduction commands were checked on Python 3.14.0 with the versions pinned in `requirements.txt`:
+Use Python 3.11 or later and install the pinned requirements:
 
 ```sh
 python3 -m venv .venv
@@ -12,9 +12,9 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-Alternatively, use `conda env create -f environment.yml` and `conda activate singular-representations-pde`. The Matplotlib scripts use a headless backend. Latin Modern Roman gives the publication typography; an installed serif font is used otherwise. Ghostscript is optional and is used only when requesting a new PNG preview of Figure 3.
+Alternatively, use `conda env create -f environment.yml` and `conda activate singular-representations-pde`. Plotting uses a headless backend. Latin Modern Roman gives the publication typography; an installed serif font is used otherwise. Ghostscript is needed only for a new PNG preview of Figure 4.
 
-The original tanh runs used an older Python/NumPy/Matplotlib environment, recorded with their data. Fresh optimization is not guaranteed to reproduce the last digits across software versions or platforms. The supplied recorded states and exact publication figures provide the comparison baseline.
+Each dataset records its Python and numerical-library versions. Optimization paths and last digits can depend on platform and library versions. Stored states and publication figures provide the comparison baseline. Historical tanh environment details and limitations are recorded separately.
 
 ## Verify the supplied files
 
@@ -22,7 +22,7 @@ The original tanh runs used an older Python/NumPy/Matplotlib environment, record
 python reproduce.py --check
 ```
 
-This uses only the Python standard library to verify the SHA-256 inventory. It also checks the figure map, the recorded runs for the two matched experiments, and the Gaussian experiment's multiplicities and transfer checks. The inventory covers the scientific sources, numerical records, documentation, and publication figures. Generated outputs are excluded.
+The check verifies the SHA-256 inventory, the nine figure entries, and coverage and canonical per-run hashes for all 240 two-dimensional runs. The 80 primary runs comprise `ordinary` and `completion` at ten starts in each of `data/raw_main/matern`, `data/raw_main/matern/quadrature96`, `data/raw_main/poisson` and `data/raw_main/poisson/quadrature64`. Another 160 runs are the four-method stable-coordinate controls in `data/matern`, `data/matern/quadrature96`, `data/poisson` and `data/poisson/quadrature64`. It also checks the one-dimensional sweep and pair-search coverage. Generating commands, source hashes and retained snapshots provide provenance. Generated outputs and Python caches are excluded from the release inventory.
 
 ## Redraw the figures
 
@@ -30,39 +30,91 @@ This uses only the Python standard library to verify the SHA-256 inventory. It a
 python reproduce.py --figures
 ```
 
-`--fast` is an alias for this command. New plots go into `outputs/figures/`; the publication assets remain untouched. Figures 1–2 are recalculated from their prescribed formulas, Figure 3 is recomposed from its recorded vector panels, and Figures 5–9 are redrawn from the stored numerical records. Figure 4 is copied from its preserved publication PDF because exact historical optimizer snapshots were not saved.
+`--fast` is an alias. New files go to `outputs/figures/`; publication assets remain untouched. The command reproduces the paper's nine figures. Figures 1–3 are recalculated from prescribed formulas and Figure 4 is recomposed from recorded vector panels. Figure 5 is restored from its historical PDF because exact unrounded optimizer snapshots were not saved. The other figures use stored records.
 
-| Figure | Published PDF | Source |
-| --- | --- | --- |
-| 1 | [Tanh singular limit](figures/paper/figure_01.pdf) | `illustrations/plot_tanh_limit.py` |
-| 2 | [Deep-network escape and degeneracy](figures/paper/figure_02.pdf) | `illustrations/plot_forced_singularity.py` |
-| 3 | [Tanh bias trajectories](figures/paper/figure_03.pdf) | `experiments/tanh/plot_bias.py` |
-| 4 | [Tanh slope snapshots](figures/paper/figure_04.pdf) | Preserved historical PDF; fresh-run source in `experiments/tanh/` |
-| 5 | [Gaussian completion snapshots](figures/paper/figure_05.pdf) | `experiments/plot_gaussian_1d_completion.py` |
-| 6 | [Matérn fields](figures/paper/figure_06.pdf) | `experiments/matern_swift_hohenberg_2d/plot_fields.py` |
-| 7 | [Matérn trajectories](figures/paper/figure_07.pdf) | `experiments/plot_coefficient_diagnostics.py --case matern` |
-| 8 | [Poisson–Neumann fields](figures/paper/figure_08.pdf) | `experiments/poisson_neumann_2d/plot_fields.py` |
-| 9 | [Poisson–Neumann trajectories](figures/paper/figure_09.pdf) | `experiments/plot_coefficient_diagnostics.py --case poisson` |
+| Main printed figure | Source |
+| --- | --- |
+| 1 | `illustrations/plot_tanh_limit.py` |
+| 2 | `illustrations/plot_forced_singularity.py` |
+| 3 | `illustrations/plot_completion_patterns.py` |
+| 4 | `experiments/tanh/plot_bias.py` |
+| 5 | Preserved historical PDF; original and fresh-run sources in `experiments/tanh/` |
+| 6 | `experiments/manufactured_1d/plot.py` |
+| 7 | `experiments/raw_coordinates/plot_main.py`: Poisson fields |
+| 8 | `experiments/raw_coordinates/plot_main.py`: Poisson trajectories |
+| 9 | `experiments/raw_coordinates/plot_main.py`: Matérn trajectories |
 
-PDF metadata, font availability and plotting-library versions can change regenerated file bytes. Exact publication PDFs and their browser previews are supplied under `figures/`.
+The package files `figures/paper/figure_01.pdf` through `figure_09.pdf` follow these printed numbers. The manuscript retains older internal asset names for some figures: printed 6 uses `figure_11.pdf`, printed 7 uses `figure_09.pdf`, printed 8 uses `figure_10.pdf`, and printed 9 uses `figure_08.pdf`. Printed figures 1–5 use matching asset names. The [figure map](figures/manifest.json) records this mapping. The current appendix contains no figures.
 
-## Recompute the tables
+Main PDE replay uses the independent direct NumPy evaluator in `experiments/raw_coordinates/analyse_main.py`: finite columns are individual translates and completed columns are kernel derivatives. Order-96 history replay repeats no training and may take several minutes. Requesting `--figures --tables` together computes analyses first and reuses them after checking exact run fingerprints. PDF metadata, fonts and plotting-library versions can change regenerated bytes.
+
+## Recompute the numerical summaries
 
 ```sh
 python reproduce.py --tables
 ```
 
-This reevaluates the final recorded states with order-96 quadrature and reports per-start relative `H¹` errors, coefficient norms, smallest half-gaps, coefficient-solve counts, and renormalization steps. JSON summaries are written to `outputs/tables/`.
+This recomputes the two-method raw primary summaries, their common-error work diagnostics and higher-training-quadrature comparisons, along with the appendix stable-coordinate summaries, the precision summary from its recorded sweep, and the exact-target quadrature check reported in Appendix C.3. Main coefficient norms are the norms of the actual stored coefficient vectors. Final errors use independent order-96 quadrature, with order-128 final-state sensitivity checks. Every start and termination status is retained. Threshold medians include only reaching starts; misses remain explicit. Outputs go to `outputs/tables/`.
 
-Table 1 uses the nine Matérn starts where completion transfers; all ten starts, including the no-transfer case, remain in the supplied records. Table 2 uses all ten Poisson–Neumann starts, numbered 10–19. Full optimizer histories are stored as compressed JSON; the scripts read them directly. The per-start diagnostics retain their original mixed `weight_norm` field. Publication summaries use `renormalization_steps` and JSON `null` for the completed weight norm and half-gap, matching the table em dashes. Current stable-coordinate and ordinary-weight ranges are separately verified and written by `plot_coefficient_diagnostics.py`; completed states have no ordinary-weight norm. The manuscript tables show this quantity as “Weight norm”, omit the stable coefficient norm, and use em dashes for completed weight norms and pair gaps.
+| Printed table | Results | Generated file |
+| --- | --- | --- |
+| 1 | Poisson final accuracy, coefficients and work | `outputs/tables/raw_tex/poisson.tex` |
+| 2 | Matérn final accuracy, coefficients and work | `outputs/tables/raw_tex/matern.tex` |
+| 3 | Work to common error thresholds | `outputs/tables/raw_tex/work.tex` |
+| 4 (Appendix C.3) | Higher-order training quadrature | `outputs/tables/raw_tex/sensitivity.tex` |
 
-## Repeat the calculations
+Generated table values reproduce the recorded numerical results. Layout and captions can differ from the manuscript.
 
-Individual commands, run settings, provenance, and the reported appendix checks are documented in:
+Individual main analyses and plots can be requested with:
 
-- [Tanh experiments and precision sweep](docs/experiments_tanh_precision.md): fresh binary32/binary64 training, the historical slope-collision protocol, and the full high-precision sweep.
-- [One-dimensional Gaussian experiment](docs/experiments_1d.md): fixed-multiplicity rerun, whole-line H¹ transfer enclosures, Figure 5 and historical provenance.
-- [Matérn and Poisson–Neumann experiments](docs/experiments_2d.md): matched starts and controls, the two tables, quadrature and gradient audits, kernel evaluation checks, and the reported scale comparison.
-- [Analytical illustrations](docs/illustrations.md): formulas and independent commands for Figures 1–2.
+```sh
+python experiments/raw_coordinates/analyse_main.py --study matern --output outputs/tables/raw_matern.json
+python experiments/raw_coordinates/analyse_main.py --study poisson --output outputs/tables/raw_poisson.json
+python experiments/raw_coordinates/analyse_main.py --study matern --results data/raw_main/matern/quadrature96 --quadrature-order 128 --final-only --output outputs/tables/raw_matern_quadrature96.json
+python experiments/raw_coordinates/analyse_main.py --study poisson --results data/raw_main/poisson/quadrature64 --quadrature-order 128 --final-only --output outputs/tables/raw_poisson_quadrature64.json
+python experiments/raw_coordinates/plot_main.py --analysis-directory outputs/tables --output outputs/figures
+```
 
-Fresh training is separate from the quick figure and table commands. Current drivers write new results under `outputs/`. For Section 4.3, run `python experiments/gaussian_completion_consistent.py`; the one-dimensional guide gives the settings and audit commands. No external dataset is required.
+For the whole-line one-dimensional study:
+
+```sh
+python experiments/manufactured_1d/run.py --output outputs/manufactured_1d_rerun
+python experiments/manufactured_1d/global_search.py --output outputs/manufactured_1d_rerun --jobs 8
+python experiments/manufactured_1d/plot.py --input outputs/manufactured_1d_rerun --output outputs/figures/figure_06_rerun
+```
+
+See [the one-dimensional guide](docs/manufactured_1d.md) for the model restrictions and interpretation of its rates.
+
+## Repeat the primary PDE training
+
+```sh
+python experiments/raw_coordinates/matern_completion.py --output outputs/raw_matern_rerun --jobs 8
+python experiments/raw_coordinates/matern_completion.py --output outputs/raw_matern_q96_rerun --quadrature-order 96 --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method standard --output outputs/raw_poisson_ordinary_rerun --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method completion --output outputs/raw_poisson_completion_rerun --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method standard --output outputs/raw_poisson_ordinary_q64_rerun --quadrature-order 64 --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method completion --output outputs/raw_poisson_completion_q64_rerun --quadrature-order 64 --jobs 8
+python experiments/raw_coordinates/collect_runs.py --study poisson --ordinary outputs/raw_poisson_ordinary_rerun --completion outputs/raw_poisson_completion_rerun --output outputs/raw_poisson_rerun
+python experiments/raw_coordinates/collect_runs.py --study poisson --ordinary outputs/raw_poisson_ordinary_q64_rerun --completion outputs/raw_poisson_completion_q64_rerun --output outputs/raw_poisson_q64_rerun
+```
+
+The Matérn driver runs both `ordinary` and `completion` by default. The Poisson driver selects one branch per command; its CLI spelling `standard` is stored as method `ordinary`. `collect_runs.py` combines the branches, checks matched starts and generating-source hashes, and retains their provenance. Main analysis expects both methods at every start, so use the combined Poisson directory with `--results` or `--poisson` for analysis or plotting.
+
+These are coefficient-refitted L-BFGS-B experiments, not joint coefficient/geometry gradient descent. Both branches evaluate every finite pair directly in ordinary weights. Completion explicitly converts a qualifying pair to its kernel/negative-directional-derivative block, refits coefficients, and restarts L-BFGS-B. The original 8000-fit allowance, log-gap geometry, transfer gates and inner-solve acceptance rules are preserved. No ridge, rank truncation or stable-basis retry is used. Validation runs before training. Failed probes and failed transfer refits preserve the last accepted fitted state. Existing output directories are refused.
+
+## Replay the appendix numerical studies
+
+```sh
+python experiments/matern_swift_hohenberg_2d/experiment.py --output outputs/stable_matern_rerun --jobs 8
+python experiments/poisson_neumann_2d/experiment.py --output outputs/stable_poisson_rerun --jobs 8
+python experiments/matern_swift_hohenberg_2d/analyse.py --output outputs/tables/matern.json
+python experiments/poisson_neumann_2d/analyse.py --output outputs/tables/poisson.json
+python experiments/training_quadrature.py
+python experiments/precision/run.py --output outputs/precision
+```
+
+The first two commands run the four stable-coordinate methods in Appendix C.6; higher training orders are selected with `--quadrature-order 96` and `--quadrature-order 64`, respectively. These runs share the exact finite-gap function spaces with the primary runs but use a different linear feature basis. Their four-method results describe optimization in stable coordinates. The two analysis commands replay the supplied controls without training.
+
+`training_quadrature.py` refits coefficients at the fixed completed target to reproduce the quadrature comparison in Appendix C.3. `precision/run.py` recomputes the prescribed Gaussian evaluation sweep in Appendix C.6 using independent 100-digit references. The supplied sweep is in `data/precision/`; recomputation can take several minutes. These numerical checks and measured transfer changes are floating-point evidence, not validated continuum enclosures.
+
+Further settings and individual commands are in [the two-dimensional guide](docs/experiments_2d.md), [the tanh and precision guide](docs/experiments_tanh_precision.md), and [the illustration guide](docs/illustrations.md).

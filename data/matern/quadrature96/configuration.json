@@ -1,0 +1,429 @@
+{
+  "schema_version": 2,
+  "configuration": {
+    "output": "outputs/gradient_fix/matern_q96",
+    "cases": [
+      "manufactured_jet"
+    ],
+    "amplitudes": [
+      1.0
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "max_solves": 8000,
+    "quadrature_order": 96,
+    "block_iterations": 40,
+    "proximity_threshold": 0.05,
+    "transfer_tolerance": 0.03,
+    "ftol": 0.0,
+    "gtol": 0.0,
+    "initial_half_gap_min": 0.02,
+    "initial_half_gap_max": 0.05,
+    "methods": {
+      "ordinary": "finite pairs in log h",
+      "restart": "finite pairs in log h; L-BFGS-B restarted when the completion trigger holds, at most once per pair",
+      "squared_gap": "finite pairs in t=h^2, 1e-12<=t<=2.25, no restarts",
+      "completion": "finite pairs in log h; transfer to derivative blocks when the trigger holds"
+    },
+    "domain": "(-1,1)^2",
+    "equation": "(1+Lap)^2 u + rho u + u^3 = f, rho=1",
+    "boundary": "natural Neumann-type data m, q manufactured from u*",
+    "objective": "integral (0.5*((1+Lap)u)^2 + 0.5*rho*u^2 + 0.25*u^4 - f*u) - boundary work",
+    "kernel": "Matern nu=9/2, ell=3/sqrt(7); C^8; stable confluent columns by exact divided differences",
+    "forcing_formulas": {
+      "manufactured_jet": "(1+Laplacian)^2 u* + rho*u* + (u*)^3, rho=1"
+    },
+    "boundary_multiplier": "none; the Neumann-type data are natural",
+    "multiplicity_budget": 5,
+    "pairing": "two supplied pairs plus one singleton",
+    "geometry_bounds": "centers [-2,2]^2, angles unbounded, 0<h<=1.5 without positive floor",
+    "coefficient_fit": "column-scaled damped Newton; no ridge or rank truncation; energy Armijo test, then residual-norm Armijo test after 8 energy halvings; accepted at relative stationarity 1e-13 or, in recovery mode, 4 times the residual rounding floor; otherwise the run stops with status inner_solve_failure",
+    "work_accounting": "one unit per distinct nonlinear coefficient fit, including line-search probes and post-transfer refits; Newton iterations also recorded",
+    "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; memory reset only on completion or, for the restart control, at its matched restarts",
+    "transfer": "measured H1 state change at order-64 quadrature; float64, not a validated enclosure",
+    "study_design": "manufactured completed-class target; all requested branches/statuses retained",
+    "limitations": "fixed Matern nu=9/2 scale and supplied pairing; no certified objective gate; quadrature agreement is not validated integration"
+  },
+  "software": {
+    "python": "3.14.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "torch": "2.10.0",
+    "torch_threads": 1
+  },
+  "source_sha256": "ac4e76f36bf98b437c0af84060c935fe1928146701015700f6bf1aa69a86dcee",
+  "planned_runs": [
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 0,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 1,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 2,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 3,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 4,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 5,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 6,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 7,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 8,
+      "method": "completion"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "ordinary"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "restart"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "squared_gap"
+    },
+    {
+      "case": "manufactured_jet",
+      "amplitude": 1.0,
+      "seed": 9,
+      "method": "completion"
+    }
+  ],
+  "gradient_validation": [
+    {
+      "gap_coordinate": "log",
+      "one_completed_pair": false,
+      "maximum_absolute_error": 3.9023012404770796e-08,
+      "relative_maximum_error": 1.4980392659477954e-08,
+      "analytic": [
+        -0.3834269926830527,
+        0.7553794448114308,
+        0.12242516538495735,
+        -0.0015744094452046376,
+        0.9379251875208388,
+        -2.604939222342834,
+        0.22030309472074494,
+        0.0005918162976892511,
+        -0.3257789313491124,
+        0.2108291833433693
+      ],
+      "finite_difference": [
+        -0.38342698998050645,
+        0.7553794515668953,
+        0.12242516445049033,
+        -0.0015744094518393406,
+        0.937925179522736,
+        -2.6049392166438423,
+        0.22030309350513905,
+        0.0005918162845221723,
+        -0.32577891886376165,
+        0.2108291443203569
+      ],
+      "passed": true
+    },
+    {
+      "gap_coordinate": "log",
+      "one_completed_pair": true,
+      "maximum_absolute_error": 3.8909783867113745e-08,
+      "relative_maximum_error": 1.497048780580395e-08,
+      "analytic": [
+        -0.3867408752375914,
+        0.7581502758016874,
+        0.12400599655627065,
+        0.932464993509976,
+        -2.599099265959036,
+        0.21798026222098832,
+        0.00057891332120858,
+        -0.3207345759903024,
+        0.20227326094836862
+      ],
+      "finite_difference": [
+        -0.3867408725266585,
+        0.7581502824649532,
+        0.12400599569417635,
+        0.9324649854480781,
+        -2.599099260258697,
+        0.21798026094727418,
+        0.0005789133388559479,
+        -0.3207345634859138,
+        0.20227322203858475
+      ],
+      "passed": true
+    },
+    {
+      "gap_coordinate": "squared",
+      "one_completed_pair": false,
+      "maximum_absolute_error": 3.902314563153375e-08,
+      "relative_maximum_error": 1.4980443803382026e-08,
+      "analytic": [
+        -0.38342699268309133,
+        0.7553794448113562,
+        0.12242516538498338,
+        -0.566186908706086,
+        0.937925187520956,
+        -2.6049392223429173,
+        0.22030309472080312,
+        0.5002137562084874,
+        -0.3257789313491981,
+        0.21082918334350254
+      ],
+      "finite_difference": [
+        -0.38342699002491537,
+        0.7553794515224864,
+        0.12242516453930817,
+        -0.5661869070916481,
+        0.937925179522736,
+        -2.6049392165994334,
+        0.22030309347799423,
+        0.5002137211551627,
+        -0.3257789188193527,
+        0.2108291443203569
+      ],
+      "passed": true
+    },
+    {
+      "gap_coordinate": "squared",
+      "one_completed_pair": true,
+      "maximum_absolute_error": 3.9042952898471484e-08,
+      "relative_maximum_error": 1.502172441423299e-08,
+      "analytic": [
+        -0.3867408752375745,
+        0.7581502758017207,
+        0.12400599655625621,
+        0.932464993509944,
+        -2.5990992659590084,
+        0.21798026222097278,
+        0.48930792891583685,
+        -0.3207345759902791,
+        0.20227326094831088
+      ],
+      "finite_difference": [
+        -0.3867408725266585,
+        0.7581502824649532,
+        0.12400599560535851,
+        0.9324649854036692,
+        -2.599099260258697,
+        0.21798026089298458,
+        0.4893078940693129,
+        -0.3207345634859138,
+        0.20227322190535799
+      ],
+      "passed": true
+    }
+  ]
+}

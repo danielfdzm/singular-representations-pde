@@ -1,79 +1,128 @@
 # Two-dimensional experiments
 
-These files reproduce Sections 4.4–4.5 and Appendices D.4–D.5 of *Singular Parameters and Missing Limits in Neural PDE Solvers*. Run the commands from the repository root after installing its requirements.
+Sections 4.3–4.4 compare standard optimization and completion using ordinary finite-pair coordinates. Appendix C.6 reports stable finite-pair evaluation and four-method coordinate controls in prose. Run commands from the directory containing `reproduce.py` after installing its requirements.
 
-## What is included
+## Primary ordinary-coordinate comparison
 
-| Paper item | Source | Stored records |
-|---|---|---|
-| Matérn Swift–Hohenberg comparison; Figures 6–7; Table 1 | `experiments/matern_swift_hohenberg_2d/` | `data/matern/`, seeds 0–9, all three methods |
-| Gaussian Poisson–Neumann comparison; Figures 8–9; Table 2 | `experiments/poisson_neumann_2d/` | `data/poisson/`, seeds 10–19, all three methods |
-| Matérn/Gaussian target quadrature and small-gap evaluation checks in D.4 | Matérn `audit.py` and `gaussian_target.py` | `data/matern/audits/replayed_checks.json` |
-| Poisson target conditioning, compatibility, and transfer checks in D.5 | Poisson `audit.py` | `data/poisson/audits/replayed_checks.json` |
-| Unit-scale stalled-optimization observation in D.5 | Poisson `unit_scale.py` | `data/poisson/audits/unit_scale/`, seeds 0–4, ordinary and completion methods |
+| Study | Main printed figures | Driver | Primary records |
+| --- | --- | --- | --- |
+| Gaussian Poisson–Neumann | 7: fields; 8: trajectories | `experiments/raw_coordinates/poisson_completion.py` | `data/raw_main/poisson/` (training order 32), `data/raw_main/poisson/quadrature64/` (order 64), seeds 10–19 |
+| Matérn Swift–Hohenberg | 9: trajectories | `experiments/raw_coordinates/matern_completion.py` | `data/raw_main/matern/` (training order 64), `data/raw_main/matern/quadrature96/` (order 96), seeds 0–9 |
+| Independent analysis and plotting | Main summaries, thresholds and figures | `experiments/raw_coordinates/analyse_main.py`, `plot_main.py` | All ten starts and both methods in each dataset |
 
-Each main dataset contains 30 runs, including initial/final states, accepted histories, transfer states, optimizer termination statuses, work counts, independent quadrature checks, and gradient-validation records. Table 1 uses the nine starts at which completion transfers: 0, 2, 3, 4, 5, 6, 7, 8, 9. Start 1 is retained in the data and Figure 7. Table 2 uses all ten reported Poisson starts. Figure 6 uses Matérn start 0; Figure 8 uses Poisson start 16.
+Each primary dataset contains 20 runs, and all four datasets together contain 80. Initial/final states, accepted histories, transfer events, termination statuses and work counts are retained. Appendix C.6 adds 160 stable-coordinate runs across the two problems and two training orders.
 
-Only the unit-scale batch needed for the Appendix D.5 comparison is retained from the earlier Poisson configurations. Other tuning sweeps and unrelated PDE experiments are excluded.
+Tables 1 and 2 report the Poisson and Matérn final results; Table 3 compares work to common error thresholds. Table 4 in Appendix C.3 reports higher-order training. `experiments/raw_coordinates/write_tables.py` generates the four numerical tables from independent replay results under `outputs/tables/raw_tex/`.
 
-## Redraw Figures 6–9
+The two primary methods share initial geometries, prescribed pairings, coefficient fitting and optimizer settings. A positive-gap pair is evaluated as
 
-```bash
-python experiments/matern_swift_hohenberg_2d/plot_fields.py --output outputs/figures
-python experiments/plot_coefficient_diagnostics.py --case matern --output outputs/figures
-python experiments/poisson_neumann_2d/plot_fields.py --output outputs/figures
-python experiments/plot_coefficient_diagnostics.py --case poisson --output outputs/figures
+```text
+w_plus K(x-c-hd) + w_minus K(x-c+hd),  h > 0.
 ```
 
-Each command reads the published compressed records directly and writes PDF, PNG, SVG, and plotting metadata. The field plots use a 241×241 grid; pair stars are visually separated along their true joining direction, and connectors indicate the true positions. The trajectory error panels show running minima; coefficient-size panels show the current iterate. Redrawing trajectories uses the source-hash-checked order-96 H1 error caches supplied with the records. No optimization is repeated.
+The first coefficient belongs to the centre `c+hd`, and the second to `c-hd`. Training evaluates individual kernels and spatial derivatives directly in float64. It uses neither pair averages nor divided-difference columns for finite pairs. Both methods refit coefficients at each geometry and optimize centres, directions and `log h` with L-BFGS-B; coefficients and geometry are not trained jointly by gradient descent.
 
-## Recompute Tables 1–2
+The `ordinary` branch retains finite pairs. The `completion` branch converts a qualifying pair to
 
-```bash
+```text
+a K(x-c) - b D_d K(x-c),  a=w_plus+w_minus, b=h*(w_plus-w_minus).
+```
+
+Converted pairs use direct kernel/negative-directional-derivative columns; remaining finite pairs continue to use ordinary weights. The coefficient vector keeps two slots per pair, followed by the singleton slots. For finite pairs these are `(w_plus,w_minus)`; for completed pairs they are `(a,b)`. The main coefficient panel shows the norm of this actual stored vector. Derived stable coefficients and reevaluation discrepancies are passive supplementary diagnostics.
+
+## Shared optimization and transfer rules
+
+Both methods use centres in `[-2,2]²`, unrestricted angles, `0<h<=1.5` without a positive floor, `ftol=gtol=0`, L-BFGS-B memory 12, at most 40 line-search steps, and an 8000-fit allowance. One work unit is one distinct coefficient fit, including line-search probes and post-transfer refits. Matérn fits are nonlinear Newton solves; Poisson fits are linear solves, so work counts should be compared within each problem.
+
+Completion checks eligibility every 40 accepted iterates and on optimizer return. Full-gap thresholds are 0.05 for Matérn and 0.12 for Poisson. The measured H1 change must be at most 0.03, using order-64 tensor Gauss–Legendre quadrature. Each conversion preserves centre and direction, refits coefficients and restarts L-BFGS-B. Later candidates are rechecked after preceding refits. Transfer records retain before, converted predictor and refitted states, the measured change, and independent order-80/96 measurements. Failed refits restore the last accepted fitted state. These measured changes are not validated enclosures or a certified objective-descent gate.
+
+Geometry is target-informed. Half-gaps start in `[0.02,0.05]`. Matérn pair centres receive offsets in `[-0.12,0.12]`, angles receive offsets in `[-0.2,0.2]`, and the singleton starts in `[-0.12,0.12]²`. Poisson centre offsets are in `[-0.10,0.10]` and angle offsets in `[-0.18,0.18]`. All Poisson full gaps are below the proximity threshold initially. Exact targets and anchors are in the sources. These are local manufactured comparisons, not discovery tests from arbitrary initial configurations.
+
+## Inner coefficient solves and failures
+
+The original coefficient solvers are reused with diagonal column scaling, their condition cutoff and residual tests. No ridge, rank truncation or stable-basis retry is used. A scaled quadratic condition number above `1e14` stops the run at its last accepted fitted state.
+
+Each Matérn fit minimizes a strictly convex coefficient energy with at most 80 damped Newton iterations. After eight unsuccessful energy-test halvings it switches to an Armijo test on the residual norm. A fit is accepted at relative stationarity at most `1e-13`, or, in recovery mode, within four times its componentwise residual rounding floor. A fit meeting neither criterion stops with `inner_solve_failure`. Poisson linear solves require a residual within four times their rounding floor. Envelope gradients are evaluated only after acceptance. A floating-point acceptance criterion does not certify an exact reduced gradient; residuals in a poorly scaled raw basis can be less informative about derivative directions.
+
+All statuses and returned states remain in the primary summaries. Optimizer success is distinct from attaining a small error or completing every pair. In the raw Matérn study, start 1 completes one pair at training order 64 and none at order 96; the higher-order outlier is retained. Higher quadrature can change optimization paths and transfer counts. Neither failed runs nor incomplete transfers are replaced by supplementary stable-coordinate results.
+
+## Independent errors, figures and work summaries
+
+```sh
+python experiments/raw_coordinates/analyse_main.py --study matern --output outputs/tables/raw_matern.json
+python experiments/raw_coordinates/analyse_main.py --study poisson --output outputs/tables/raw_poisson.json
+python experiments/raw_coordinates/plot_main.py --analysis-directory outputs/tables --output outputs/figures
+```
+
+The independent NumPy evaluator constructs direct finite translates and completed kernel derivatives; it does not import a training solver or convert finite pairs into stable divided-difference columns. Main trajectory errors use saved histories and order-96 quadrature, with no retraining. Error panels show running minima; coefficient panels show current stored-vector norms. Abnormal termination is marked. The Poisson field plot uses start 16 and a 241×241 grid; marker offsets and connectors distinguish close atoms from their actual locations.
+
+Final sensitivity checks use order 128, for both original and higher-order training:
+
+```sh
+python experiments/raw_coordinates/analyse_main.py --study matern --results data/raw_main/matern --quadrature-order 128 --final-only --output outputs/tables/raw_matern_eval128.json
+python experiments/raw_coordinates/analyse_main.py --study matern --results data/raw_main/matern/quadrature96 --quadrature-order 128 --final-only --output outputs/tables/raw_matern_quadrature96.json
+python experiments/raw_coordinates/analyse_main.py --study poisson --results data/raw_main/poisson --quadrature-order 128 --final-only --output outputs/tables/raw_poisson_eval128.json
+python experiments/raw_coordinates/analyse_main.py --study poisson --results data/raw_main/poisson/quadrature64 --quadrature-order 128 --final-only --output outputs/tables/raw_poisson_quadrature64.json
+```
+
+Common-threshold work counts the first recorded initial, accepted, transfer or final state that reaches the threshold. Line-search probes count as work but are not candidate hits. Medians apply only to reaching starts, with misses and statuses retained. Fully completed starts can be identified as a secondary subset; primary summaries use every start. Matérn analysis also measures the quadratic-energy error `sqrt(||(1+Delta)v||²+||v||²)`; no equivalence with the full H2 norm on the free-boundary space is asserted.
+
+## Repeat primary training
+
+```sh
+python experiments/raw_coordinates/matern_completion.py --output outputs/raw_matern_rerun --jobs 8
+python experiments/raw_coordinates/matern_completion.py --output outputs/raw_matern_q96_rerun --quadrature-order 96 --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method standard --output outputs/raw_poisson_ordinary_rerun --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method completion --output outputs/raw_poisson_completion_rerun --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method standard --output outputs/raw_poisson_ordinary_q64_rerun --quadrature-order 64 --jobs 8
+python experiments/raw_coordinates/poisson_completion.py --method completion --output outputs/raw_poisson_completion_q64_rerun --quadrature-order 64 --jobs 8
+python experiments/raw_coordinates/collect_runs.py --study poisson --ordinary outputs/raw_poisson_ordinary_rerun --completion outputs/raw_poisson_completion_rerun --output outputs/raw_poisson_rerun
+python experiments/raw_coordinates/collect_runs.py --study poisson --ordinary outputs/raw_poisson_ordinary_q64_rerun --completion outputs/raw_poisson_completion_q64_rerun --output outputs/raw_poisson_q64_rerun
+```
+
+Matérn runs both `ordinary` and `completion` by default. Its `--reuse-ordinary` option can reuse a matching raw ordinary dataset with verified source hashes; this was used to combine the earlier raw order-64 baseline with new completion runs. Poisson selects one branch per command: CLI `standard` is stored as `ordinary`. `collect_runs.py` combines the branches and checks matched starts and generating-source hashes. Analyse the combined directory with `--results`; main plotting accepts it with `--poisson`.
+
+The drivers validate physical feature equivalence, coefficient fits, geometry gradients and transfer conversion before running. Matérn validation covers zero, either one, and both completed pairs, plus failed-refit rollback. Seeds, quadrature and source hashes are recorded. Existing output directories are refused; new runs produce uncompressed JSON. `--jobs` runs independent single-threaded fits in parallel. Software versions are recorded per dataset, and platform/library changes can affect trajectories.
+
+## Appendix stable-coordinate controls
+
+The following numerical records reproduce Appendix C.6 and the exact-target reliability check in Appendix C.3:
+
+| Appendix material | Code | Records |
+| --- | --- | --- |
+| Four-method Matérn comparisons | `experiments/matern_swift_hohenberg_2d/` | `data/matern/`, `data/matern/quadrature96/` |
+| Four-method Poisson comparisons | `experiments/poisson_neumann_2d/` | `data/poisson/`, `data/poisson/quadrature64/` |
+| Training quadrature at the exact target | `experiments/training_quadrature.py` | `data/audits/training_quadrature.json` |
+
+Each appendix dataset contains four methods at ten starts. All four store stable `(a,b)` finite-pair coefficients and evaluate stable pair formulas. In these datasets, `ordinary` means standard optimization in stable coordinates. The primary datasets instead train using the ordinary kernel weights described above.
+
+| Appendix method | Gap coordinate | Transfer or restart |
+| --- | --- | --- |
+| `ordinary` | `log h` | none |
+| `restart` | `log h` | L-BFGS-B restart at the completion trigger, at most once per pair |
+| `squared_gap` | `t=h²`, `1e-12<=t<=2.25` | none |
+| `completion` | `log h` | derivative transfer and L-BFGS-B restart |
+
+These controls examine optimizer restarts and the flat logarithmic-gap direction. For positive gaps, exact coefficient-refitted objectives agree with those of the raw basis, but floating-point evaluation and coefficient solves can differ. The current paper reports these controls numerically, without appendix figures.
+
+Fresh appendix runs and replay commands are:
+
+```sh
+python experiments/matern_swift_hohenberg_2d/experiment.py --output outputs/stable_matern_rerun --jobs 8
+python experiments/poisson_neumann_2d/experiment.py --output outputs/stable_poisson_rerun --jobs 8
 python experiments/matern_swift_hohenberg_2d/analyse.py --output outputs/tables/matern.json
 python experiments/poisson_neumann_2d/analyse.py --output outputs/tables/poisson.json
+python experiments/training_quadrature.py
 ```
 
-These commands evaluate only the stored final states. Output includes per-start relative H1 errors and the exact ranges behind the paper's rounded tables. Reference ranges are in `data/{matern,poisson}/paper_table.json`.
+Appendix drivers default to all four methods; `--methods` selects a subset and higher quadrature uses `--quadrature-order 96` for Matérn or 64 for Poisson. To analyse higher-order records, pass `--results data/matern/quadrature96` or `--results data/poisson/quadrature64` to the respective `analyse.py` command. `reproduce.py --tables` replays the controls at both training orders; `--figures` reproduces the nine printed figures.
 
-H1 errors use tensor Gauss–Legendre quadrature of order 96 against the manufactured solution. A finite pair has ordinary-kernel weights `a/2 ± b/(2h)`; after completion its two coefficients are `(a,b)`. Figures 7 and 9 separate the norm of stable solver coefficients from the reconstructed ordinary-weight norm, which is undefined after any pair completes. The `analyse.py` scripts retain the original mixed `weight_norm` only in per-start diagnostics; publication summaries use null completed weight norms and gaps, and the key `renormalization_steps`; the new plotting script writes stable-coordinate diagnostics and current weight-norm table ranges separately to `{matern,poisson}_coefficient_summary.json`. The tables retain only the ordinary-kernel “Weight norm” row; completed weight norms and pair gaps are shown as em dashes. Transfer counts are labelled “Renormalization steps”. For Matérn a work unit is a nonlinear coefficient fit; for Poisson it is a linear coefficient solve.
+Stable Matérn records use the degree-six exponential-quotient continuation. No coefficient fit fails in those stable controls; that statement does not apply to raw main runs. Raw finite-pair training evaluates individual radial kernels directly. The generating solver sources are retained unchanged so their hashes continue to match the recorded provenance.
 
-## Repeat the reported training
+At the main training orders, the stable finite-pair and completion medians are respectively `5.3e-8` and `3.5e-8` for Matérn, and `9.2e-7` and `1.2e-7` for Poisson. The squared-gap medians are `3.6e-8` and `1.4e-7`. At Matérn order 96, the squared-gap and completion medians are `1.3e-8` and `2.1e-7`. These are the values reported in Appendix C.6; the retained records include every start and all four methods.
 
-```bash
-python experiments/matern_swift_hohenberg_2d/experiment.py --output outputs/matern_rerun
-python experiments/poisson_neumann_2d/experiment.py --output outputs/poisson_rerun
-```
+The exact-target coefficient-refit check gives a Matérn relative H1 error of `2.33e-8` at training order 64 and `5.27e-10` at 96, reproducing Appendix C.3. These checks are floating-point evidence, not continuum certifications.
 
-The public defaults are the paper configurations. Matérn uses seeds 0–9 and quadrature order 64; Poisson uses seeds 10–19 and order 32. Both use 8000 work units, 40 optimizer iterations per block, `ftol=gtol=0`, initial half-gaps in [0.02, 0.05], transfer tolerance 0.03, and the matched finite-restart control. Full-gap proximity thresholds are 0.05 and 0.12 respectively. Existing output directories are refused to protect stored runs. Outputs are uncompressed JSON; the same plotting and analysis commands accept a rerun directory through `--input` or `--results`.
+## Data integrity
 
-The main source was repackaged without changing solver mathematics. Unused Matérn forcing cases were removed; the auxiliary mixed-mode load remains solely for the original recorded envelope-gradient check. CLI defaults and descriptive metadata were corrected to the reported experiment. The original source and result hashes are recorded in each data directory's `provenance.json`; source hashes from the original run do not describe the repackaged public source. Original numerical run records are unchanged. The historical unit-scale solver functions are preserved; CLI defaults select its included batch.
-
-Recorded versions were Python 3.14.0, NumPy 2.3.5, SciPy 1.17.0 and PyTorch 2.10.0. Numerical linear algebra, library versions and hardware can change optimization paths and last-bit diagnostics; the published records remain the reference for the figures and tables. The scripts use double precision and one PyTorch thread. NumPy, SciPy and PyTorch are needed for solvers/analysis; Matplotlib is also needed for figures.
-
-## Appendix checks
-
-```bash
-python experiments/matern_swift_hohenberg_2d/audit.py
-python experiments/poisson_neumann_2d/audit.py
-```
-
-These create fresh reports in `outputs/audits/` and do not train. They cover the exact-target quadrature comparison, cancellation at the smallest stored Matérn half-gap, coefficient conditioning and recovery, the Poisson mean/compatibility calculation, and the stored energy-audit/work/transfer bounds. `data/*/audits/replayed_checks.json` records the release replay. Near-machine-precision values depend on summation order and library versions. The original point grid/norm for the manuscript's brief Matérn cancellation diagnostic was not saved separately; the public replay explicitly defines both an order 64 quadrature L2 metric and a relative maximum norm. It reproduces the cancellation failure and stable evaluation, without claiming bit-for-bit agreement with that historical pointwise diagnostic.
-
-The Matérn energy is strictly convex with its manufactured unique minimizer. No H2-coercivity claim is used. Transfers in both experiments use measured H1 changes, not validated enclosures, and the quadrature audits do not certify continuum errors.
-
-For the historical unit-scale optimization comparison alone:
-
-```bash
-python experiments/poisson_neumann_2d/unit_scale.py \
-  --output outputs/poisson_unit_scale_rerun --seeds 0 1 2 3 4 \
-  --max-solves 8000 --quadrature-order 32 --block-iterations 40 \
-  --proximity-threshold 0.12 --transfer-tolerance 0.03 --ftol 0 --gtol 0 \
-  --initial-half-gap-min 0.02 --initial-half-gap-max 0.05
-```
-
-The unit-scale target/anchor centres and singleton coefficients also differ from the final scale 0.45 configuration. This historical comparison therefore does not isolate Gaussian scale as the only changed variable. The included records support the observed stalled optimization and its conditioning; they are not included in the main ten-start aggregate.
-
-## Data format
-
-`results.json.gz` files use deterministic gzip (`mtime=0`) to keep complete histories comfortably below GitHub's file-size limit. Readers prefer `results.json` when present and otherwise read `results.json.gz`. No unpacking is needed. `configuration.json`, `h1_errors.json`, `summary.csv`, `gradient_validation.json`, and `paper_table.json` provide compact entry points. Run failures and nontransferring cases have not been filtered out.
+Readers accept uncompressed `results.json` and packaged deterministic `results.json.gz`. Provenance files record generating commands, source hashes and canonical per-run hashes; `reproduce.py --check` verifies the release inventory and all 240 retained runs. Primary raw and appendix stable records occupy separate directories. Source snapshots identify the training representation used for each dataset. Generated outputs go to `outputs/` and do not overwrite publication assets.

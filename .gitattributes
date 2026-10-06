@@ -1,3 +1,5 @@
 # Preserve checksum-verified file bytes on every platform.
 * -text
 *.csv whitespace=cr-at-eol
+# Matplotlib emits insignificant spaces at the ends of SVG path lines.
+*.svg whitespace=-blank-at-eol

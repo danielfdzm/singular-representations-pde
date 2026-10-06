@@ -11,11 +11,24 @@
     18,
     19
   ],
+  "methods": [
+    "ordinary",
+    "restart",
+    "squared_gap",
+    "completion"
+  ],
+  "training_quadrature_order": 32,
+  "evaluation_quadrature_order": 96,
+  "scope": "All ten starts, including partial-transfer and abnormal optimizer returns.",
   "ranges": {
     "ordinary": {
       "error": [
-        1.1691827639838114e-07,
+        1.1691827639838115e-07,
         2.9807133547872126e-06
+      ],
+      "stable_coefficient_norm": [
+        3.5369732241742096,
+        3.538743706996311
       ],
       "weight_norm": [
         43715.72598559775,
@@ -29,15 +42,31 @@
         1003,
         2170
       ],
-      "renormalization_steps": [
+      "transfers": [
         0,
         0
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901338,
+        891.6157834370789
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.772724679403279e-16,
+        6.397053253036665e-16
       ]
     },
-    "finite_restart": {
+    "restart": {
       "error": [
         3.173487130977621e-07,
-        3.0279939579588888e-06
+        3.027993957958889e-06
+      ],
+      "stable_coefficient_norm": [
+        3.5369375466261372,
+        3.538488632961114
       ],
       "weight_norm": [
         206251.7726692225,
@@ -51,9 +80,59 @@
         1092,
         2293
       ],
-      "renormalization_steps": [
+      "transfers": [
         0,
         0
+      ],
+      "restarts": [
+        4,
+        4
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901338,
+        891.6157834370789
+      ],
+      "max_relative_coefficient_stationarity": [
+        3.1000810471615575e-16,
+        6.397053253036665e-16
+      ]
+    },
+    "squared_gap": {
+      "error": [
+        6.719101688241137e-08,
+        3.2736245498312673e-07
+      ],
+      "stable_coefficient_norm": [
+        3.536920144764405,
+        3.53713059651703
+      ],
+      "weight_norm": [
+        636404.90459324,
+        1541105.3428204933
+      ],
+      "min_half_gap": [
+        1e-06,
+        1.0000000004560577e-06
+      ],
+      "solves": [
+        490,
+        869
+      ],
+      "transfers": [
+        0,
+        0
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        93.01653475305993,
+        20195.174666042185
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.928756774298313e-16,
+        7.134966098135327e-16
       ]
     },
     "completion": {
@@ -61,24 +140,257 @@
         6.659917245689402e-08,
         2.4995736007557456e-07
       ],
-      "weight_norm": null,
-      "min_half_gap": null,
+      "stable_coefficient_norm": [
+        3.5369107211328097,
+        3.5369787747294903
+      ],
+      "weight_norm": [
+        3.5369107211328097,
+        3.5369787747294903
+      ],
+      "min_half_gap": [
+        0.0,
+        0.0
+      ],
       "solves": [
         323,
         627
       ],
-      "renormalization_steps": [
+      "transfers": [
         4,
         4
+      ],
+      "restarts": [
+        0,
+        0
+      ],
+      "max_scaled_coefficient_quadratic_condition": [
+        92.66018630901338,
+        891.6157834370789
+      ],
+      "max_relative_coefficient_stationarity": [
+        2.731082835805803e-16,
+        6.397053253036665e-16
       ]
     }
   },
-  "error_metric": "Relative H1 on (-1,1)^2, tensor Gauss-Legendre order96",
-  "coefficient_norm": "Euclidean norm of ordinary-kernel weights; null after completion (displayed as an em dash).",
-  "display_labels": {
-    "weight_norm": "Weight norm",
-    "min_half_gap": "Smallest half-gap",
-    "renormalization_steps": "Renormalization steps"
+  "medians": {
+    "ordinary": {
+      "error": 9.238728709107865e-07,
+      "solves": 1455.5
+    },
+    "restart": {
+      "error": 4.745769718628973e-07,
+      "solves": 1629.0
+    },
+    "squared_gap": {
+      "error": 1.4052732874965896e-07,
+      "solves": 706.0
+    },
+    "completion": {
+      "error": 1.1671092571692793e-07,
+      "solves": 440.5
+    }
   },
-  "null_display": "\u2014"
+  "status_counts": {
+    "ordinary": {
+      "optimizer_converged": 10
+    },
+    "restart": {
+      "optimizer_converged": 10
+    },
+    "squared_gap": {
+      "optimizer_converged": 10
+    },
+    "completion": {
+      "optimizer_converged": 10
+    }
+  },
+  "transferring_subgroup": {
+    "definition": "starts on which completion transfers every pair",
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "ranges": {
+      "ordinary": {
+        "error": [
+          1.1691827639838115e-07,
+          2.9807133547872126e-06
+        ],
+        "stable_coefficient_norm": [
+          3.5369732241742096,
+          3.538743706996311
+        ],
+        "weight_norm": [
+          43715.72598559775,
+          1.315317804607485e+31
+        ],
+        "min_half_gap": [
+          4.8383570368121986e-32,
+          2.8817232395037105e-05
+        ],
+        "solves": [
+          1003,
+          2170
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901338,
+          891.6157834370789
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.772724679403279e-16,
+          6.397053253036665e-16
+        ]
+      },
+      "restart": {
+        "error": [
+          3.173487130977621e-07,
+          3.027993957958889e-06
+        ],
+        "stable_coefficient_norm": [
+          3.5369375466261372,
+          3.538488632961114
+        ],
+        "weight_norm": [
+          206251.7726692225,
+          9.134386250719514e+24
+        ],
+        "min_half_gap": [
+          6.967053652566007e-26,
+          5.1427147309525146e-06
+        ],
+        "solves": [
+          1092,
+          2293
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          4,
+          4
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901338,
+          891.6157834370789
+        ],
+        "max_relative_coefficient_stationarity": [
+          3.1000810471615575e-16,
+          6.397053253036665e-16
+        ]
+      },
+      "squared_gap": {
+        "error": [
+          6.719101688241137e-08,
+          3.2736245498312673e-07
+        ],
+        "stable_coefficient_norm": [
+          3.536920144764405,
+          3.53713059651703
+        ],
+        "weight_norm": [
+          636404.90459324,
+          1541105.3428204933
+        ],
+        "min_half_gap": [
+          1e-06,
+          1.0000000004560577e-06
+        ],
+        "solves": [
+          490,
+          869
+        ],
+        "transfers": [
+          0,
+          0
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          93.01653475305993,
+          20195.174666042185
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.928756774298313e-16,
+          7.134966098135327e-16
+        ]
+      },
+      "completion": {
+        "error": [
+          6.659917245689402e-08,
+          2.4995736007557456e-07
+        ],
+        "stable_coefficient_norm": [
+          3.5369107211328097,
+          3.5369787747294903
+        ],
+        "weight_norm": [
+          3.5369107211328097,
+          3.5369787747294903
+        ],
+        "min_half_gap": [
+          0.0,
+          0.0
+        ],
+        "solves": [
+          323,
+          627
+        ],
+        "transfers": [
+          4,
+          4
+        ],
+        "restarts": [
+          0,
+          0
+        ],
+        "max_scaled_coefficient_quadratic_condition": [
+          92.66018630901338,
+          891.6157834370789
+        ],
+        "max_relative_coefficient_stationarity": [
+          2.731082835805803e-16,
+          6.397053253036665e-16
+        ]
+      }
+    },
+    "medians": {
+      "ordinary": {
+        "error": 9.238728709107865e-07,
+        "solves": 1455.5
+      },
+      "restart": {
+        "error": 4.745769718628973e-07,
+        "solves": 1629.0
+      },
+      "squared_gap": {
+        "error": 1.4052732874965896e-07,
+        "solves": 706.0
+      },
+      "completion": {
+        "error": 1.1671092571692793e-07,
+        "solves": 440.5
+      }
+    }
+  }
 }

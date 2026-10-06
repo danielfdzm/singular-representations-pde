@@ -1,0 +1,58 @@
+{
+  "matern": {
+    "study": "matern",
+    "definition": "The geometry is fixed at the manufactured target, where the continuum\nminimizer is represented exactly, and only the solver's own coefficient fit\nis performed with training quadrature of order q. The relative H1 error of\nthat fit, evaluated with independent higher-order quadrature, is the error\nthat coefficient discretization alone introduces at the target. It is not a\nlower bound on trained errors, since geometry optimization can offset part of\nit, but it sets the scale below which differences between trained states\ncannot be read without higher-order training.",
+    "target_coefficients_error_at_evaluation_orders": {
+      "128": 3.3651334928991377e-16
+    },
+    "evaluation_orders": [
+      128
+    ],
+    "rows": [
+      {
+        "training_order": 64,
+        "relative_coefficient_error": 2.2190225310479296e-08,
+        "relative_h1_error": {
+          "128": 2.3289886470122144e-08
+        },
+        "fit_criterion": "relative_tolerance"
+      },
+      {
+        "training_order": 96,
+        "relative_coefficient_error": 1.2438478249779866e-09,
+        "relative_h1_error": {
+          "128": 5.266044867347686e-10
+        },
+        "fit_criterion": "relative_tolerance"
+      }
+    ]
+  },
+  "poisson": {
+    "study": "poisson",
+    "definition": "The geometry is fixed at the manufactured target, where the continuum\nminimizer is represented exactly, and only the solver's own coefficient fit\nis performed with training quadrature of order q. The relative H1 error of\nthat fit, evaluated with independent higher-order quadrature, is the error\nthat coefficient discretization alone introduces at the target. It is not a\nlower bound on trained errors, since geometry optimization can offset part of\nit, but it sets the scale below which differences between trained states\ncannot be read without higher-order training.",
+    "target_coefficients_error_at_evaluation_orders": {
+      "128": 1.9554134878888978e-16
+    },
+    "evaluation_orders": [
+      128
+    ],
+    "rows": [
+      {
+        "training_order": 32,
+        "relative_coefficient_error": 8.663275090778967e-15,
+        "relative_h1_error": {
+          "128": 2.9538145799369816e-15
+        },
+        "fit_criterion": "rounding_floor"
+      },
+      {
+        "training_order": 64,
+        "relative_coefficient_error": 1.9070282537557842e-14,
+        "relative_h1_error": {
+          "128": 5.046100797690372e-15
+        },
+        "fit_criterion": "rounding_floor"
+      }
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": 2,
+  "configuration": {
+    "output": "outputs/revision_runs/poisson_q64",
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "max_solves": 8000,
+    "quadrature_order": 64,
+    "block_iterations": 40,
+    "proximity_threshold": 0.12,
+    "transfer_tolerance": 0.03,
+    "ftol": 0.0,
+    "gtol": 0.0,
+    "initial_half_gap_min": 0.02,
+    "initial_half_gap_max": 0.05,
+    "methods": {
+      "ordinary": "finite pairs in log h",
+      "restart": "finite pairs in log h; L-BFGS-B restarted when the completion trigger holds, at most once per pair",
+      "squared_gap": "finite pairs in t=h^2, 1e-12<=t<=2.25, no restarts",
+      "completion": "finite pairs in log h; transfer to derivative blocks when the trigger holds; tolerance rechecked after each refit"
+    },
+    "domain": "(-1,1)^2",
+    "equation": "-Laplacian u = f",
+    "boundary": "du/dn = g, nonhomogeneous Neumann, manufactured from u*",
+    "objective": "integral (0.5|grad u|^2 - f u) - boundary g u + (sigma/2)(integral u - M)^2",
+    "sigma": 1.0,
+    "target_mean": -1.1664336816766812,
+    "kernel": "Gaussian exp(-|y|^2/(2 s^2)) with s=0.45; stable pair columns E cosh z and E (t/s^2) sinhc z",
+    "gaussian_scale": 0.45,
+    "multiplicity_budget": 10,
+    "pairing": "4 supplied pairs plus 2 singletons",
+    "geometry_bounds": "centres [-2,2]^2, angles unbounded, 0<h<=1.5 without positive floor",
+    "coefficient_fit": "one linear solve of (S + sigma m m') c = L + sigma M m after column scaling; accepted at residual <= 4 times its rounding floor, otherwise the run stops with status inner_solve_failure",
+    "work_accounting": "one unit per distinct coefficient solve, including line-search probes and post-transfer refits",
+    "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; memory reset only on completion or, for the restart control, at its matched restarts",
+    "transfer": "measured H1 state change at order-64 quadrature; float64, not a validated enclosure",
+    "limitations": "fixed Gaussian scale and supplied pairing; no certified objective gate; quadrature agreement is not validated integration"
+  },
+  "software": {
+    "python": "3.14.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "torch": "2.10.0"
+  },
+  "source_sha256": "74331e80d7bb17f3c0e7c6394d1e201d71837dbaf516bd559403108c64f94c4c",
+  "planned_runs": [
+    {
+      "seed": 10,
+      "method": "ordinary"
+    },
+    {
+      "seed": 10,
+      "method": "restart"
+    },
+    {
+      "seed": 10,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 10,
+      "method": "completion"
+    },
+    {
+      "seed": 11,
+      "method": "ordinary"
+    },
+    {
+      "seed": 11,
+      "method": "restart"
+    },
+    {
+      "seed": 11,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 11,
+      "method": "completion"
+    },
+    {
+      "seed": 12,
+      "method": "ordinary"
+    },
+    {
+      "seed": 12,
+      "method": "restart"
+    },
+    {
+      "seed": 12,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 12,
+      "method": "completion"
+    },
+    {
+      "seed": 13,
+      "method": "ordinary"
+    },
+    {
+      "seed": 13,
+      "method": "restart"
+    },
+    {
+      "seed": 13,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 13,
+      "method": "completion"
+    },
+    {
+      "seed": 14,
+      "method": "ordinary"
+    },
+    {
+      "seed": 14,
+      "method": "restart"
+    },
+    {
+      "seed": 14,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 14,
+      "method": "completion"
+    },
+    {
+      "seed": 15,
+      "method": "ordinary"
+    },
+    {
+      "seed": 15,
+      "method": "restart"
+    },
+    {
+      "seed": 15,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 15,
+      "method": "completion"
+    },
+    {
+      "seed": 16,
+      "method": "ordinary"
+    },
+    {
+      "seed": 16,
+      "method": "restart"
+    },
+    {
+      "seed": 16,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 16,
+      "method": "completion"
+    },
+    {
+      "seed": 17,
+      "method": "ordinary"
+    },
+    {
+      "seed": 17,
+      "method": "restart"
+    },
+    {
+      "seed": 17,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 17,
+      "method": "completion"
+    },
+    {
+      "seed": 18,
+      "method": "ordinary"
+    },
+    {
+      "seed": 18,
+      "method": "restart"
+    },
+    {
+      "seed": 18,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 18,
+      "method": "completion"
+    },
+    {
+      "seed": 19,
+      "method": "ordinary"
+    },
+    {
+      "seed": 19,
+      "method": "restart"
+    },
+    {
+      "seed": 19,
+      "method": "squared_gap"
+    },
+    {
+      "seed": 19,
+      "method": "completion"
+    }
+  ]
+}

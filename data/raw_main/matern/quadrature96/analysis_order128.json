@@ -1,0 +1,712 @@
+{
+  "study": "matern",
+  "quadrature_order": 128,
+  "histories": false,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "methods": [
+    "ordinary",
+    "completion"
+  ],
+  "coefficient_semantics": "actual weights of direct finite translates or completed kernel/derivative blocks",
+  "run_sha256": {
+    "completion:0": "9b1de9c022b7a1b35bbee2183489fb2e87694e5e11b861785e199cd8f2cedd3a",
+    "ordinary:0": "2064600fae4720caa12e3bc34a9b4fa908748f12a6a20a6731f28bb02b9de92c",
+    "completion:1": "04078922984bff9acadfd1ca4674ef8532d9b21482af763840a5c9371677d546",
+    "ordinary:1": "5077b3027d1f797adb3fa711b0eaa90166d70c6fbc616112239832938c26cf54",
+    "completion:2": "8816e6312294946d0e86cd15380c12fbbdc500edf8c3e4633de0aa12184b3371",
+    "ordinary:2": "e93402bf27aa4c1bffbd0689d9bca3475e2c5e0bd9d884db459fd63f80e55fc9",
+    "completion:3": "c5be87dbe8e04c640d503a71774d5b9885cdc010568180d9835b407378e72677",
+    "ordinary:3": "0c52c8099fbd390b2ca8b901891e99f01a1e2620174fc393ff2e5c5d74aa4d7e",
+    "completion:4": "60e6bb42c762023058e7bd68f651c8c7bcd2166656229044281420835749e087",
+    "ordinary:4": "bb0e18d8b00a3e038057cd088abd8bf26ede09a33efcac689054236a6cd49998",
+    "completion:5": "348f205053536944115daac9ae2c7c548b29efe5a0f56ef20d36aae3d5ad1819",
+    "ordinary:5": "7268fadaa42a3fe512463eca3b9207ca15f5061525d8555defccde5d141e8334",
+    "completion:6": "1410f7760612cb4532005b69defdfb9a4886226ca3d67231af425823a6b770fe",
+    "ordinary:6": "9b990f14673e5d369c6cd3a14aa7028217efcb303547b49cc441a56d9d1171d5",
+    "completion:7": "aff926d06fd3296cc7f850e4cbe58c0188fec98cd76fb85fd638a968556f3609",
+    "ordinary:7": "cf68c9172a735ce3546ad38fe07c4b6768a29114c47269c5e28260e09e129a3d",
+    "completion:8": "50656241b469dc4d29a551e833b31a462719187edba844924f692e638d0a719f",
+    "ordinary:8": "4858051ef97a2433f480ec9caca9a73b275ac3e100b328b852f7dcdaebb2f034",
+    "completion:9": "82dccb046ad4a018275b6377b448c521d0f94c4ae58a4e4d1e0c42d0e437e24c",
+    "ordinary:9": "39138371ba4f6a9de8de9bbeb5b7bd6174bc710fa029855aadb0ee46aaffdf6a"
+  },
+  "summary": {
+    "ordinary": {
+      "error_range": [
+        4.631709750824465e-06,
+        0.0004770707106537488
+      ],
+      "median_h1_error": 1.79991796165354e-05,
+      "coefficient_norm_range": [
+        69.89799572183944,
+        2216.676066258796
+      ],
+      "half_gap_range": [
+        0.00036185327915464485,
+        0.033354331627110066
+      ],
+      "solves_range": [
+        146,
+        423
+      ],
+      "median_solves": 207.0,
+      "transfers_range": [
+        0,
+        0
+      ],
+      "completed_pairs_range": [
+        0,
+        0
+      ],
+      "status_counts": {
+        "optimizer_failure": 3,
+        "optimizer_converged": 6,
+        "numerical_failure": 1
+      },
+      "quadratic_error_range": [
+        1.106282681446903e-05,
+        0.0008254782725501527
+      ]
+    },
+    "completion": {
+      "error_range": [
+        1.5408097578119329e-09,
+        0.0004770707106537488
+      ],
+      "median_h1_error": 1.4602591626047792e-08,
+      "coefficient_norm_range": [
+        2.463018979221484,
+        2216.676066258796
+      ],
+      "half_gap_range": [
+        0.0,
+        0.033354331627110066
+      ],
+      "solves_range": [
+        128,
+        423
+      ],
+      "median_solves": 236.5,
+      "transfers_range": [
+        0,
+        2
+      ],
+      "completed_pairs_range": [
+        0,
+        2
+      ],
+      "status_counts": {
+        "optimizer_converged": 10
+      },
+      "quadratic_error_range": [
+        1.3944946339404893e-09,
+        0.0008254782725501527
+      ]
+    }
+  },
+  "final": {
+    "ordinary": [
+      {
+        "seed": 0,
+        "h1_error": 1.568872946093561e-05,
+        "quadratic_error": 3.328404796637879e-05,
+        "coefficient_norm": 102.35678144586944,
+        "minimum_half_gap": 0.00868526138317814,
+        "solves": 210,
+        "status": "optimizer_failure",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 1,
+        "h1_error": 0.0004770707106537488,
+        "quadratic_error": 0.0008254782725501527,
+        "coefficient_norm": 2216.676066258796,
+        "minimum_half_gap": 0.033354331627110066,
+        "solves": 423,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 2,
+        "h1_error": 1.86478876249965e-05,
+        "quadratic_error": 3.9498631591402415e-05,
+        "coefficient_norm": 93.95784662701091,
+        "minimum_half_gap": 0.009468871436709648,
+        "solves": 178,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 3,
+        "h1_error": 4.631709750824465e-06,
+        "quadratic_error": 1.106282681446903e-05,
+        "coefficient_norm": 554.9873467497255,
+        "minimum_half_gap": 0.0014198509448005465,
+        "solves": 255,
+        "status": "optimizer_failure",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 4,
+        "h1_error": 1.928677197822308e-05,
+        "quadratic_error": 4.0225219567036985e-05,
+        "coefficient_norm": 91.18714269955015,
+        "minimum_half_gap": 0.00982422845850464,
+        "solves": 194,
+        "status": "optimizer_failure",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 5,
+        "h1_error": 1.7350471608074297e-05,
+        "quadratic_error": 3.1116314535359325e-05,
+        "coefficient_norm": 1828.9771047220445,
+        "minimum_half_gap": 0.00042500092191855964,
+        "solves": 146,
+        "status": "numerical_failure",
+        "error": {
+          "type": "NumericalFailure",
+          "message": "Swift-Hohenberg quadratic form is ill conditioned: 7709392449949926.0",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/eg75agon/Downloads/clean_submission/code/experiments/matern_swift_hohenberg_2d/experiment.py\", line 744, in run\n    result = minimize(self.objective, vector, jac=True, method=\"L-BFGS-B\", bounds=bounds,\n                      callback=self.accepted,\n                      options={\"maxiter\": self.args.max_solves, \"maxfun\": self.args.max_solves-self.solves,\n                               \"ftol\": self.args.ftol, \"gtol\": self.args.gtol, \"maxls\": 40, \"maxcor\": 12})\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_minimize.py\", line 784, in minimize\n    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,\n                           callback=callback, **options)\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_lbfgsb_py.py\", line 469, in _minimize_lbfgsb\n    f, g = func_and_grad(x)\n           ~~~~~~~~~~~~~^^^\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_differentiable_functions.py\", line 412, in fun_and_grad\n    self._update_fun()\n    ~~~~~~~~~~~~~~~~^^\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_differentiable_functions.py\", line 362, in _update_fun\n    fx = self._wrapped_fun(self.x)\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/_lib/_util.py\", line 603, in __call__\n    fx = self.f(np.copy(x), *self.args)\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_optimize.py\", line 80, in __call__\n    self._compute_if_needed(x, *args)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/opt/miniconda3/lib/python3.13/site-packages/scipy/optimize/_optimize.py\", line 74, in _compute_if_needed\n    fg = self.fun(x, *args)\n  File \"/Users/eg75agon/Downloads/clean_submission/code/experiments/matern_swift_hohenberg_2d/experiment.py\", line 643, in objective\n    result = self.evaluate(vector)\n  File \"/Users/eg75agon/Downloads/clean_submission/code/experiments/matern_swift_hohenberg_2d/experiment.py\", line 601, in evaluate\n    coefficients, fit = fit_coefficients(\n                        ~~~~~~~~~~~~~~~~^\n        values.detach().numpy(), laplacians.detach().numpy(), self.weights, self.force,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        bvalues.detach().numpy(), bnormal.detach().numpy(), self.boundary_weights,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        self.bload_m, self.bload_q)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/eg75agon/Downloads/clean_submission/code/experiments/matern_swift_hohenberg_2d/experiment.py\", line 455, in fit_coefficients\n    raise NumericalFailure(f\"Swift-Hohenberg quadratic form is ill conditioned: {condition}\")\nmatern_original_for_raw_baseline.NumericalFailure: Swift-Hohenberg quadratic form is ill conditioned: 7709392449949926.0\n"
+        },
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 6,
+        "h1_error": 3.478009446931477e-05,
+        "quadratic_error": 7.395399286161061e-05,
+        "coefficient_norm": 69.89799572183944,
+        "minimum_half_gap": 0.012706920367834,
+        "solves": 188,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 7,
+        "h1_error": 2.7430563239072864e-05,
+        "quadratic_error": 5.783346656532378e-05,
+        "coefficient_norm": 77.50854219905742,
+        "minimum_half_gap": 0.011509963838641491,
+        "solves": 219,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 8,
+        "h1_error": 1.0612745615272065e-05,
+        "quadratic_error": 2.5302314778641645e-05,
+        "coefficient_norm": 707.5497888259517,
+        "minimum_half_gap": 0.001102908862823067,
+        "solves": 204,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 9,
+        "h1_error": 8.827880691368174e-06,
+        "quadratic_error": 2.095764474320466e-05,
+        "coefficient_norm": 2149.996245330793,
+        "minimum_half_gap": 0.00036185327915464485,
+        "solves": 334,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      }
+    ],
+    "completion": [
+      {
+        "seed": 0,
+        "h1_error": 1.4331541479506139e-08,
+        "quadratic_error": 2.4603169480080334e-08,
+        "coefficient_norm": 2.4637414170584706,
+        "minimum_half_gap": 0.0,
+        "solves": 201,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 1,
+        "h1_error": 0.0004770707106537488,
+        "quadratic_error": 0.0008254782725501527,
+        "coefficient_norm": 2216.676066258796,
+        "minimum_half_gap": 0.033354331627110066,
+        "solves": 423,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 0,
+        "completed_pairs": 0
+      },
+      {
+        "seed": 2,
+        "h1_error": 8.909769209811377e-09,
+        "quadratic_error": 1.5152071184956455e-08,
+        "coefficient_norm": 2.4637385721826366,
+        "minimum_half_gap": 0.0,
+        "solves": 128,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 3,
+        "h1_error": 5.985607986942687e-09,
+        "quadratic_error": 1.1994903697877064e-08,
+        "coefficient_norm": 2.463742721541473,
+        "minimum_half_gap": 0.0,
+        "solves": 240,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 4,
+        "h1_error": 1.6810744736197146e-09,
+        "quadratic_error": 1.3944946339404893e-09,
+        "coefficient_norm": 2.463737221075843,
+        "minimum_half_gap": 0.0,
+        "solves": 208,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 5,
+        "h1_error": 5.719967116055118e-07,
+        "quadratic_error": 1.1010862462609247e-06,
+        "coefficient_norm": 2.464567825907317,
+        "minimum_half_gap": 0.0,
+        "solves": 233,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 6,
+        "h1_error": 4.878883146488794e-07,
+        "quadratic_error": 9.622384616691896e-07,
+        "coefficient_norm": 2.463018979221484,
+        "minimum_half_gap": 0.0,
+        "solves": 312,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 7,
+        "h1_error": 1.0078968036722857e-06,
+        "quadratic_error": 1.977952694018058e-06,
+        "coefficient_norm": 2.465216782943353,
+        "minimum_half_gap": 0.0,
+        "solves": 312,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 8,
+        "h1_error": 1.5408097578119329e-09,
+        "quadratic_error": 3.1835793120492923e-09,
+        "coefficient_norm": 2.4637385956612214,
+        "minimum_half_gap": 0.0,
+        "solves": 194,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      },
+      {
+        "seed": 9,
+        "h1_error": 1.4873641772589444e-08,
+        "quadratic_error": 2.1952432618273292e-08,
+        "coefficient_norm": 2.463734182357806,
+        "minimum_half_gap": 0.0,
+        "solves": 283,
+        "status": "optimizer_converged",
+        "error": null,
+        "transfers": 2,
+        "completed_pairs": 2
+      }
+    ]
+  },
+  "history_metrics": {
+    "completion:0": {
+      "work": [
+        201
+      ],
+      "h1_error": [
+        1.4331541479506139e-08
+      ],
+      "coefficient_norm": [
+        2.4637414170584706
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.4331541479506139e-08
+      ]
+    },
+    "ordinary:0": {
+      "work": [
+        210
+      ],
+      "h1_error": [
+        1.568872946093561e-05
+      ],
+      "coefficient_norm": [
+        102.35678144586944
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.568872946093561e-05
+      ]
+    },
+    "completion:1": {
+      "work": [
+        423
+      ],
+      "h1_error": [
+        0.0004770707106537488
+      ],
+      "coefficient_norm": [
+        2216.676066258796
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        0.0004770707106537488
+      ]
+    },
+    "ordinary:1": {
+      "work": [
+        423
+      ],
+      "h1_error": [
+        0.0004770707106537488
+      ],
+      "coefficient_norm": [
+        2216.676066258796
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        0.0004770707106537488
+      ]
+    },
+    "completion:2": {
+      "work": [
+        128
+      ],
+      "h1_error": [
+        8.909769209811377e-09
+      ],
+      "coefficient_norm": [
+        2.4637385721826366
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        8.909769209811377e-09
+      ]
+    },
+    "ordinary:2": {
+      "work": [
+        178
+      ],
+      "h1_error": [
+        1.86478876249965e-05
+      ],
+      "coefficient_norm": [
+        93.95784662701091
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.86478876249965e-05
+      ]
+    },
+    "completion:3": {
+      "work": [
+        240
+      ],
+      "h1_error": [
+        5.985607986942687e-09
+      ],
+      "coefficient_norm": [
+        2.463742721541473
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        5.985607986942687e-09
+      ]
+    },
+    "ordinary:3": {
+      "work": [
+        255
+      ],
+      "h1_error": [
+        4.631709750824465e-06
+      ],
+      "coefficient_norm": [
+        554.9873467497255
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        4.631709750824465e-06
+      ]
+    },
+    "completion:4": {
+      "work": [
+        208
+      ],
+      "h1_error": [
+        1.6810744736197146e-09
+      ],
+      "coefficient_norm": [
+        2.463737221075843
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.6810744736197146e-09
+      ]
+    },
+    "ordinary:4": {
+      "work": [
+        194
+      ],
+      "h1_error": [
+        1.928677197822308e-05
+      ],
+      "coefficient_norm": [
+        91.18714269955015
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.928677197822308e-05
+      ]
+    },
+    "completion:5": {
+      "work": [
+        233
+      ],
+      "h1_error": [
+        5.719967116055118e-07
+      ],
+      "coefficient_norm": [
+        2.464567825907317
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        5.719967116055118e-07
+      ]
+    },
+    "ordinary:5": {
+      "work": [
+        146
+      ],
+      "h1_error": [
+        1.7350471608074297e-05
+      ],
+      "coefficient_norm": [
+        1828.9771047220445
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.7350471608074297e-05
+      ]
+    },
+    "completion:6": {
+      "work": [
+        312
+      ],
+      "h1_error": [
+        4.878883146488794e-07
+      ],
+      "coefficient_norm": [
+        2.463018979221484
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        4.878883146488794e-07
+      ]
+    },
+    "ordinary:6": {
+      "work": [
+        188
+      ],
+      "h1_error": [
+        3.478009446931477e-05
+      ],
+      "coefficient_norm": [
+        69.89799572183944
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        3.478009446931477e-05
+      ]
+    },
+    "completion:7": {
+      "work": [
+        312
+      ],
+      "h1_error": [
+        1.0078968036722857e-06
+      ],
+      "coefficient_norm": [
+        2.465216782943353
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.0078968036722857e-06
+      ]
+    },
+    "ordinary:7": {
+      "work": [
+        219
+      ],
+      "h1_error": [
+        2.7430563239072864e-05
+      ],
+      "coefficient_norm": [
+        77.50854219905742
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        2.7430563239072864e-05
+      ]
+    },
+    "completion:8": {
+      "work": [
+        194
+      ],
+      "h1_error": [
+        1.5408097578119329e-09
+      ],
+      "coefficient_norm": [
+        2.4637385956612214
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.5408097578119329e-09
+      ]
+    },
+    "ordinary:8": {
+      "work": [
+        204
+      ],
+      "h1_error": [
+        1.0612745615272065e-05
+      ],
+      "coefficient_norm": [
+        707.5497888259517
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.0612745615272065e-05
+      ]
+    },
+    "completion:9": {
+      "work": [
+        283
+      ],
+      "h1_error": [
+        1.4873641772589444e-08
+      ],
+      "coefficient_norm": [
+        2.463734182357806
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        1.4873641772589444e-08
+      ]
+    },
+    "ordinary:9": {
+      "work": [
+        334
+      ],
+      "h1_error": [
+        8.827880691368174e-06
+      ],
+      "coefficient_norm": [
+        2149.996245330793
+      ],
+      "phase": [
+        "final"
+      ],
+      "running_min_h1_error": [
+        8.827880691368174e-06
+      ]
+    }
+  },
+  "threshold_work": [],
+  "target_coefficient_norm": 2.463736998950984
+}

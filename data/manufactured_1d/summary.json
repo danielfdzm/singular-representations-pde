@@ -1,0 +1,69 @@
+{
+  "problem": "-g''+g=f on R; K(x)=exp(-x^2/2); H1 norm squared=int(v^2+v'^2)",
+  "target": "g_epsilon=K'-epsilon*(K'''+(21/10)*K')/6",
+  "forcing": "f_epsilon=A*K'+(B-A)*K'''-B*K^(5), A=1-7*epsilon/20, B=-epsilon/6",
+  "completed_reference": "u0=K', with two-slot coefficient vector (0,1)",
+  "finite_path": "v=b*(K(x+h)-K(x-h))/(2*h), h=b/(sqrt(2)*R)",
+  "optimization_scope": "For each R, a high-precision stationary minimum in b near 1 of the symmetric cap-active family; no global two-translate minimizer certification.",
+  "perturbed_scope": "At epsilon=.01 the completed reference is a stationary completed state. The robust theorem applies for sufficiently small epsilon, but this numerical epsilon is not certified to lie in that theorem's global neighborhood.",
+  "arithmetic": {
+    "decimal_digits": 80,
+    "integrals": "analytic Gaussian Gram formulas",
+    "interval_certified": false
+  },
+  "q_h1_norm_squared": "0.1440118753860731772179761080214680461023008933099439542",
+  "q_tangent_inner_products": [
+    "0.0",
+    "-1.054219794323052322434857405127001900770996138236850755e-81",
+    "0.0"
+  ],
+  "cases": [
+    {
+      "epsilon": "0",
+      "target_h1_norm": "1.488478187153542077099694234463223285998406543284417998",
+      "completed_h1_error": "0.0",
+      "completed_relative_h1_error": "0.0",
+      "completed_relative_pde_residual": "0.0",
+      "completed_reference_energy": "0.0",
+      "completed_coefficient_norm": "1",
+      "positive_residual_path_limit_R2": "0.0",
+      "boundary_prescribed_path_limit_R4": "0.0519273589132475398622510004885101127772719567223355604",
+      "boundary_symmetric_optimized_limit_R4": "0.01800148442325914715224701350268350576278761166374299427"
+    },
+    {
+      "epsilon": "0.01",
+      "target_h1_norm": "1.488483024699789326233769008935812100615915135353996564",
+      "completed_h1_error": "0.003794889660926562133685211471282608110927948737314290892",
+      "completed_relative_h1_error": "0.002549501470930076403149526467057898795467503674290536376",
+      "completed_relative_pde_residual": "0.003292142663424382047291628092194712116747430796845872976",
+      "completed_reference_energy": "0.000007200593769303658860898805401073402305115044665497197708",
+      "completed_coefficient_norm": "1",
+      "positive_residual_path_limit_R2": "0.0007200593769303658860898805401073402305115044665497197708",
+      "boundary_prescribed_path_limit_R4": "0.0519273589132475398622510004885101127772719567223355604",
+      "boundary_symmetric_optimized_limit_R4": "0.01800148442325914715224701350268350576278761166374299427"
+    }
+  ],
+  "number_of_records": 116,
+  "validation": [
+    {
+      "epsilon": "0",
+      "R": "2",
+      "whole_line_quadrature_relative_difference": "1.095946583513402915497119486054261508283648987491442812e-78"
+    },
+    {
+      "epsilon": "0",
+      "R": "100",
+      "whole_line_quadrature_relative_difference": "2.400978357831370084468543721608891083830704912541101782e-68"
+    },
+    {
+      "epsilon": "0.01",
+      "R": "2",
+      "whole_line_quadrature_relative_difference": "7.293854047800106724623770722124492426740175493709032927e-79"
+    },
+    {
+      "epsilon": "0.01",
+      "R": "100",
+      "whole_line_quadrature_relative_difference": "1.713815291065284718859500810238099602940639535416335829e-72"
+    }
+  ]
+}

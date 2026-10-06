@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "description": "Two-method primary comparison, using ordinary weights until derivative transfer",
+  "generating_inputs": [
+    {
+      "method": "ordinary",
+      "input": "code/outputs/raw_main/matern/results.json",
+      "sha256": "251f6ce134fb5cfd9f98566ca7e5444aa321153d8b6d37e190ffaaff7fa8d9d3",
+      "configuration": {
+        "case": "manufactured_jet",
+        "amplitude": 1.0,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "max_solves": 8000,
+        "training_quadrature_order": 64,
+        "diagnostic_quadrature_order": 96,
+        "initial_half_gap_range": [
+          0.02,
+          0.05
+        ],
+        "methods": [
+          "ordinary",
+          "completion"
+        ],
+        "gap_coordinate": "log",
+        "finite_pair_columns": "direct translates at c+hd,c-hd with ordinary weights",
+        "completed_pair_columns": "direct Phi,-D_dPhi at c with a=w_plus+w_minus,b=h*(w_plus-w_minus)",
+        "coefficient_fit": "original scaled damped Newton, unchanged acceptance/cutoff, no ridge/truncation/stable retry",
+        "optimizer": "original L-BFGS-B ftol0 gtol0 maxcor12 maxls40",
+        "transfer": "original trigger: full gap<=0.05 and measured order64 H1 change<=0.03; checks every40 accepted iterates and after optimizer returns; sequential refits and rechecks",
+        "evaluation": "direct raw finite translates/direct completed derivatives; stable finite-pair reevaluation is passive diagnostic only"
+      },
+      "software": {
+        "python": "3.13.9",
+        "numpy": "2.4.2",
+        "scipy": "1.17.0",
+        "torch": "2.10.0"
+      },
+      "original_run_sha256": {
+        "0": "844e1df3ef125b9fea46ac746a65790e3590b5bed67a0ad9ca9f0d77569961d4",
+        "1": "2985a54b81b784f32ddbac0c94d31009c71a6e38bb742ccd3b346ac203ed0fe0",
+        "2": "ae83f1684c46a0d063dbebe028a320313a90f0f2aaa80666bd35475560777e5c",
+        "3": "c4f96fe01209292019df4cf174516cc1730c9b11e374e082f213a4742184c981",
+        "4": "29c874f73bac8c0323cffe2e66ba9a98f47464c742ddb9fb9907c3f7008405da",
+        "5": "25c300af4cd47f25a8b92bb4ae0da1a5eea0dda54739a08caa60e31be1144465",
+        "6": "486eff56dc9548d5ad4a467f70aed1ecd1504147476f8c9b3e8bdd4ca5ab0ed9",
+        "7": "afef38aeedf3418c17512089e3e75971d0e1cf680a352107dff01f35fde82dff",
+        "8": "09b8983223e1909d0d3289ccbcc5f14cd6bba5258a36db5ac172b242fb34dd2b",
+        "9": "c36c49891f16ed75c87e1c82048c279c83ffed0145f1e92636502fe323bc4b4e"
+      }
+    },
+    {
+      "method": "completion",
+      "input": "code/outputs/raw_main/matern/results.json",
+      "sha256": "251f6ce134fb5cfd9f98566ca7e5444aa321153d8b6d37e190ffaaff7fa8d9d3",
+      "configuration": {
+        "case": "manufactured_jet",
+        "amplitude": 1.0,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "max_solves": 8000,
+        "training_quadrature_order": 64,
+        "diagnostic_quadrature_order": 96,
+        "initial_half_gap_range": [
+          0.02,
+          0.05
+        ],
+        "methods": [
+          "ordinary",
+          "completion"
+        ],
+        "gap_coordinate": "log",
+        "finite_pair_columns": "direct translates at c+hd,c-hd with ordinary weights",
+        "completed_pair_columns": "direct Phi,-D_dPhi at c with a=w_plus+w_minus,b=h*(w_plus-w_minus)",
+        "coefficient_fit": "original scaled damped Newton, unchanged acceptance/cutoff, no ridge/truncation/stable retry",
+        "optimizer": "original L-BFGS-B ftol0 gtol0 maxcor12 maxls40",
+        "transfer": "original trigger: full gap<=0.05 and measured order64 H1 change<=0.03; checks every40 accepted iterates and after optimizer returns; sequential refits and rechecks",
+        "evaluation": "direct raw finite translates/direct completed derivatives; stable finite-pair reevaluation is passive diagnostic only"
+      },
+      "software": {
+        "python": "3.13.9",
+        "numpy": "2.4.2",
+        "scipy": "1.17.0",
+        "torch": "2.10.0"
+      },
+      "original_run_sha256": {
+        "0": "763173b9b55df0820f365ad00740b9eaf9e3f3297da3044b300253b2c47644e1",
+        "1": "a7b626f95a79fbfb2965fe71bd9ca6e9157e8f0a4d46390f759442555c562129",
+        "2": "72f759bd8e67a602d180b35bf60081e5d867b9765e14f42d5521170fbd465afe",
+        "3": "492dcebb5ffa2a24e5ef8b99cb4d3a3eeecc18302f6545fa3e46afa30e895f76",
+        "4": "6fb0f4e1a27d1a90a6d0d91f91cbbfdfe0cb544995269e10c9ad972cee590ec1",
+        "5": "84686856cabe298d86b3d4ab4b63d67052fd49cb7f3d7ff393b245932e0ce542",
+        "6": "a9e2de457a1ad958343500a7c049e214f09bfb0a4a42eb6e21fe7137d850e210",
+        "7": "0d261025a6ecd4a7a49416589b6b869bf3f082f4c67c8e845e7d5ed8af04b826",
+        "8": "e26e55abb3c4844f1168ae1b55e39522814f414c35e4e8eab29e2d6a52f5a01f",
+        "9": "b9b65dcdbd4af6cf5391211ad25979de088855b91b30eddb335aced65c3a5e5d"
+      }
+    }
+  ],
+  "source_sha256": {
+    "experiments/raw_coordinates/matern_completion.py": "197057c0f3ad19aaa346c2897e39cdd9ac82787d3234b9bc8904385d88f2d7a2",
+    "experiments/raw_coordinates/matern_raw.py": "119c88ee69725e622e897d2f52385f2c8ac9ded33eb411e0816cf46038ab7fd3",
+    "experiments/matern_swift_hohenberg_2d/experiment.py": "ac4e76f36bf98b437c0af84060c935fe1928146701015700f6bf1aa69a86dcee",
+    "experiments/matern_swift_hohenberg_2d/matern.py": "17ab936f5f620c8a5df31e5f960ca6ef19082d4b974c2b0ca8ca36654c236993"
+  },
+  "retained_run_sha256": {
+    "0:completion": "763173b9b55df0820f365ad00740b9eaf9e3f3297da3044b300253b2c47644e1",
+    "0:ordinary": "844e1df3ef125b9fea46ac746a65790e3590b5bed67a0ad9ca9f0d77569961d4",
+    "1:completion": "a7b626f95a79fbfb2965fe71bd9ca6e9157e8f0a4d46390f759442555c562129",
+    "1:ordinary": "2985a54b81b784f32ddbac0c94d31009c71a6e38bb742ccd3b346ac203ed0fe0",
+    "2:completion": "72f759bd8e67a602d180b35bf60081e5d867b9765e14f42d5521170fbd465afe",
+    "2:ordinary": "ae83f1684c46a0d063dbebe028a320313a90f0f2aaa80666bd35475560777e5c",
+    "3:completion": "492dcebb5ffa2a24e5ef8b99cb4d3a3eeecc18302f6545fa3e46afa30e895f76",
+    "3:ordinary": "c4f96fe01209292019df4cf174516cc1730c9b11e374e082f213a4742184c981",
+    "4:completion": "6fb0f4e1a27d1a90a6d0d91f91cbbfdfe0cb544995269e10c9ad972cee590ec1",
+    "4:ordinary": "29c874f73bac8c0323cffe2e66ba9a98f47464c742ddb9fb9907c3f7008405da",
+    "5:completion": "84686856cabe298d86b3d4ab4b63d67052fd49cb7f3d7ff393b245932e0ce542",
+    "5:ordinary": "25c300af4cd47f25a8b92bb4ae0da1a5eea0dda54739a08caa60e31be1144465",
+    "6:completion": "a9e2de457a1ad958343500a7c049e214f09bfb0a4a42eb6e21fe7137d850e210",
+    "6:ordinary": "486eff56dc9548d5ad4a467f70aed1ecd1504147476f8c9b3e8bdd4ca5ab0ed9",
+    "7:completion": "0d261025a6ecd4a7a49416589b6b869bf3f082f4c67c8e845e7d5ed8af04b826",
+    "7:ordinary": "afef38aeedf3418c17512089e3e75971d0e1cf680a352107dff01f35fde82dff",
+    "8:completion": "e26e55abb3c4844f1168ae1b55e39522814f414c35e4e8eab29e2d6a52f5a01f",
+    "8:ordinary": "09b8983223e1909d0d3289ccbcc5f14cd6bba5258a36db5ac172b242fb34dd2b",
+    "9:completion": "b9b65dcdbd4af6cf5391211ad25979de088855b91b30eddb335aced65c3a5e5d",
+    "9:ordinary": "c36c49891f16ed75c87e1c82048c279c83ffed0145f1e92636502fe323bc4b4e"
+  },
+  "results_sha256": "7ec38e86be62fc0ba7aa3a750451d538cedf6c5cce78d805ad3306c48a6eb685"
+}

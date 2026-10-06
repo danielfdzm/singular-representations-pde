@@ -10,15 +10,13 @@ authors:
   - family-names: Fernández
     given-names: Daniel
     email: daniel.fernandez@fau.de
-  - family-names: Zuazua
-    given-names: Enrique
-    email: enrique.zuazua@fau.de
 repository-code: https://github.com/danielfdzm/singular-representations-pde
 url: https://github.com/danielfdzm/singular-representations-pde
 abstract: >-
-  Code, recorded numerical trajectories, audits, and publication figures for
-  the paper's tanh collisions, Gaussian precision sweep, Matérn fourth-order
-  problem, and Poisson–Neumann completion experiment.
+  Code, recorded numerical trajectories, and the nine publication figures for
+  the paper's tanh collisions, Gaussian coefficient-cap study, Matérn
+  fourth-order problem, and Poisson–Neumann completion experiment, including
+  the numerical evaluation and coordinate controls reported in Appendix C.
 keywords:
   - neural PDE solvers
   - feature collisions

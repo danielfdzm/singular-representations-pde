@@ -1,0 +1,8 @@
+{
+  "python": "3.14.0",
+  "mpmath": "1.3.0",
+  "numpy": "2.3.5",
+  "script_sha256": "7404b3a17bceb61586fb7f77e9b2e3a93716ac659fc5a1465722061aec6fa8ad",
+  "command": "python code/experiments/manufactured_1d/run.py --output code/data/manufactured_1d --digits 80",
+  "elapsed_seconds": 4.280738958856091
+}

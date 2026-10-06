@@ -1,0 +1,1320 @@
+{
+  "protocol": {
+    "quadrature_order": 96,
+    "error": "relative H1 against the manufactured solution",
+    "threshold_cost": "First recorded initial, accepted, transfer, or final state with error <= threshold; line-search coefficient fits are included in its solve count.",
+    "threshold_scope": "All starts and optimizer statuses are retained. Threshold attainment and successful optimizer termination are distinct. Medians exclude unreached starts and are labelled accordingly.",
+    "history_note": "Training histories store H1 state norms, not target errors. Errors here are independently reevaluated; running minima are separate from returned-state errors.",
+    "conditioning_note": "Recorded maximum condition number of the column-scaled quadratic coefficient matrix; this is neither the nonlinear coefficient Hessian nor the geometry Hessian."
+  },
+  "thresholds": [
+    {
+      "relative_h1_threshold": 0.001,
+      "methods": {
+        "ordinary": {
+          "total_starts": 10,
+          "reached_count": 10,
+          "not_reached_count": 0,
+          "returned_state_meets_threshold_count": 10,
+          "median_solves_among_reaching_starts": 20.0,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 10
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000991208201821925,
+              "returned_error": 1.5569653049630458e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": true,
+              "first_recorded_hit_solves": 30,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008710438652364476,
+              "returned_error": 9.343357416039154e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 21,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008578075324714447,
+              "returned_error": 1.8664279780712967e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 39,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009433053517634011,
+              "returned_error": 3.3227620409183197e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009359562111932883,
+              "returned_error": 1.9363017601979635e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 15,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008045620191883282,
+              "returned_error": 3.240153760227099e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 14,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000875855194566776,
+              "returned_error": 3.5457756097640546e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009779313066531764,
+              "returned_error": 3.1745127041026684e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 19,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0007479152051023387,
+              "returned_error": 7.086289968918158e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009339716119519801,
+              "returned_error": 3.299741863046775e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "restart": {
+          "total_starts": 10,
+          "reached_count": 10,
+          "not_reached_count": 0,
+          "returned_state_meets_threshold_count": 10,
+          "median_solves_among_reaching_starts": 20.0,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 10
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000991208201821925,
+              "returned_error": 1.6536936198570777e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": true,
+              "first_recorded_hit_solves": 30,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008710438652364476,
+              "returned_error": 9.152389105228096e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 21,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008578075324714447,
+              "returned_error": 1.8625403155801785e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 39,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009433053517634011,
+              "returned_error": 2.0924691781459287e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009359562111932883,
+              "returned_error": 5.136214391216064e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 15,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008045620191883282,
+              "returned_error": 6.359075437180638e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 14,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000875855194566776,
+              "returned_error": 2.2944950360328495e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009779313066531764,
+              "returned_error": 1.7399582940001585e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 19,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0007479152051023387,
+              "returned_error": 2.3351008539847303e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009339716119519801,
+              "returned_error": 9.706951449508977e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "squared_gap": {
+          "total_starts": 10,
+          "reached_count": 10,
+          "not_reached_count": 0,
+          "returned_state_meets_threshold_count": 10,
+          "median_solves_among_reaching_starts": 29.5,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 10
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 42,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008027173716921803,
+              "returned_error": 3.550459607287797e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": true,
+              "first_recorded_hit_solves": 33,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009545039321570919,
+              "returned_error": 6.0687844252859486e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 19,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009445885741783168,
+              "returned_error": 2.4955775877737746e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 45,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000896100454229635,
+              "returned_error": 3.20993996344234e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 26,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009916992121038902,
+              "returned_error": 2.2428640888232986e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 39,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000926251525173727,
+              "returned_error": 1.1362514413999672e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 22,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009237324292404841,
+              "returned_error": 3.9987881464435575e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 42,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009149807094770606,
+              "returned_error": 3.685331302596012e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 15,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009171936075250519,
+              "returned_error": 3.275899746778839e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 15,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009154180434391235,
+              "returned_error": 3.39626828211344e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "completion": {
+          "total_starts": 10,
+          "reached_count": 10,
+          "not_reached_count": 0,
+          "returned_state_meets_threshold_count": 10,
+          "median_solves_among_reaching_starts": 20.0,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 10
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000991208201821925,
+              "returned_error": 4.897943177881063e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": true,
+              "first_recorded_hit_solves": 30,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008710438652364476,
+              "returned_error": 3.315043730356731e-05,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 21,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008578075324714447,
+              "returned_error": 3.551497842839352e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 39,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009433053517634011,
+              "returned_error": 2.7618314796717855e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009359562111932883,
+              "returned_error": 3.4908540159118505e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 15,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0008045620191883282,
+              "returned_error": 5.5702609739124e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 14,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.000875855194566776,
+              "returned_error": 3.396817201633287e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 31,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009779313066531764,
+              "returned_error": 3.460436350262175e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 19,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0007479152051023387,
+              "returned_error": 3.467447755300997e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 13,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 0.0009339716119519801,
+              "returned_error": 2.8395016406843026e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        }
+      },
+      "paired_reaching_count": 10,
+      "paired_reaching_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "median_ordinary_to_completion_solves_on_paired_reaching_starts": 1.0
+    },
+    {
+      "relative_h1_threshold": 1e-05,
+      "methods": {
+        "ordinary": {
+          "total_starts": 10,
+          "reached_count": 6,
+          "not_reached_count": 4,
+          "returned_state_meets_threshold_count": 6,
+          "median_solves_among_reaching_starts": 170.0,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 6
+          },
+          "per_start": {
+            "0": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.5569653049630458e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 9.343357416039154e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.8664279780712967e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 167,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.740662413526861e-06,
+              "returned_error": 3.3227620409183197e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.9363017601979635e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 135,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.297565189054577e-06,
+              "returned_error": 3.240153760227099e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 173,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 6.330961670862409e-06,
+              "returned_error": 3.5457756097640546e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 261,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.817416950500189e-06,
+              "returned_error": 3.1745127041026684e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 131,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.726418873129914e-06,
+              "returned_error": 7.086289968918158e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 205,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 7.726660152137306e-06,
+              "returned_error": 3.299741863046775e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "restart": {
+          "total_starts": 10,
+          "reached_count": 5,
+          "not_reached_count": 5,
+          "returned_state_meets_threshold_count": 5,
+          "median_solves_among_reaching_starts": 160,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 5
+          },
+          "per_start": {
+            "0": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.6536936198570777e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 9.152389105228096e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.8625403155801785e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 159,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.666044319306029e-06,
+              "returned_error": 2.0924691781459287e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 226,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.592935407714739e-06,
+              "returned_error": 5.136214391216064e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 160,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.571921104329592e-06,
+              "returned_error": 6.359075437180638e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.2944950360328495e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.7399582940001585e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 131,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.726418873129914e-06,
+              "returned_error": 2.3351008539847303e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 322,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.545266269722926e-06,
+              "returned_error": 9.706951449508977e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "squared_gap": {
+          "total_starts": 10,
+          "reached_count": 9,
+          "not_reached_count": 1,
+          "returned_state_meets_threshold_count": 9,
+          "median_solves_among_reaching_starts": 93,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 9
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 105,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 4.620577744236502e-06,
+              "returned_error": 3.550459607287797e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 6.0687844252859486e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 77,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 7.890093497953367e-06,
+              "returned_error": 2.4955775877737746e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 117,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.563414975230651e-06,
+              "returned_error": 3.20993996344234e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 73,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 7.681976641748173e-06,
+              "returned_error": 2.2428640888232986e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 75,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.422342196237777e-06,
+              "returned_error": 1.1362514413999672e-06,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 83,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.07697863139304e-06,
+              "returned_error": 3.9987881464435575e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 108,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.002424399944866e-06,
+              "returned_error": 3.685331302596012e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 93,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.675090627579537e-06,
+              "returned_error": 3.275899746778839e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 116,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.847713363911949e-06,
+              "returned_error": 3.39626828211344e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "completion": {
+          "total_starts": 10,
+          "reached_count": 9,
+          "not_reached_count": 1,
+          "returned_state_meets_threshold_count": 9,
+          "median_solves_among_reaching_starts": 179,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 9
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 179,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 7.488227878641548e-06,
+              "returned_error": 4.897943177881063e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 3.315043730356731e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 94,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.565928970978615e-06,
+              "returned_error": 3.551497842839352e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 154,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.426279794695738e-06,
+              "returned_error": 2.7618314796717855e-07,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 185,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.695459230788344e-06,
+              "returned_error": 3.4908540159118505e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 149,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.652924468358433e-06,
+              "returned_error": 5.5702609739124e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 217,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.856627995031038e-06,
+              "returned_error": 3.396817201633287e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 285,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 6.814130120123088e-06,
+              "returned_error": 3.460436350262175e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 131,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.726418873129914e-06,
+              "returned_error": 3.467447755300997e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 272,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.056029285101395e-06,
+              "returned_error": 2.8395016406843026e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        }
+      },
+      "paired_reaching_count": 6,
+      "paired_reaching_seeds": [
+        3,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "median_ordinary_to_completion_solves_on_paired_reaching_starts": 0.9109148710702932
+    },
+    {
+      "relative_h1_threshold": 1e-07,
+      "methods": {
+        "ordinary": {
+          "total_starts": 10,
+          "reached_count": 6,
+          "not_reached_count": 4,
+          "returned_state_meets_threshold_count": 6,
+          "median_solves_among_reaching_starts": 207.5,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 6
+          },
+          "per_start": {
+            "0": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.5569653049630458e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 9.343357416039154e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.8664279780712967e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 203,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.849488849952094e-08,
+              "returned_error": 3.3227620409183197e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.9363017601979635e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 175,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.937734870319866e-08,
+              "returned_error": 3.240153760227099e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 212,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 7.542768152588541e-08,
+              "returned_error": 3.5457756097640546e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 298,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.848338410156614e-08,
+              "returned_error": 3.1745127041026684e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 169,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.70630412088455e-08,
+              "returned_error": 7.086289968918158e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 236,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 4.2241337402424935e-08,
+              "returned_error": 3.299741863046775e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "restart": {
+          "total_starts": 10,
+          "reached_count": 1,
+          "not_reached_count": 9,
+          "returned_state_meets_threshold_count": 1,
+          "median_solves_among_reaching_starts": 264,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 1
+          },
+          "per_start": {
+            "0": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.6536936198570777e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 9.152389105228096e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.8625403155801785e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.0924691781459287e-07,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 264,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.225413110140345e-08,
+              "returned_error": 5.136214391216064e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 6.359075437180638e-07,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.2944950360328495e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.7399582940001585e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.3351008539847303e-06,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 9.706951449508977e-06,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "squared_gap": {
+          "total_starts": 10,
+          "reached_count": 7,
+          "not_reached_count": 3,
+          "returned_state_meets_threshold_count": 7,
+          "median_solves_among_reaching_starts": 134,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 7
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 131,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.926483110163872e-08,
+              "returned_error": 3.550459607287797e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 6.0687844252859486e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 134,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.784198817487597e-08,
+              "returned_error": 2.4955775877737746e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": true,
+              "first_recorded_hit_solves": 155,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 6.426671858936539e-08,
+              "returned_error": 3.20993996344234e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.2428640888232986e-06,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 1.1362514413999672e-06,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 104,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 5.4772490576123594e-08,
+              "returned_error": 3.9987881464435575e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 162,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 4.958746627650602e-08,
+              "returned_error": 3.685331302596012e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 104,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.026142802808978e-08,
+              "returned_error": 3.275899746778839e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 140,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.147104638929525e-08,
+              "returned_error": 3.39626828211344e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        },
+        "completion": {
+          "total_starts": 10,
+          "reached_count": 8,
+          "not_reached_count": 2,
+          "returned_state_meets_threshold_count": 8,
+          "median_solves_among_reaching_starts": 200.5,
+          "optimizer_status_counts_all_starts": {
+            "optimizer_converged": 10
+          },
+          "optimizer_status_counts_reaching_starts": {
+            "optimizer_converged": 8
+          },
+          "per_start": {
+            "0": {
+              "reached": true,
+              "first_recorded_hit_solves": 188,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 5.030380184331793e-08,
+              "returned_error": 4.897943177881063e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "1": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 3.315043730356731e-05,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "2": {
+              "reached": true,
+              "first_recorded_hit_solves": 115,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 5.317154156327356e-08,
+              "returned_error": 3.551497842839352e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "3": {
+              "reached": false,
+              "first_recorded_hit_solves": null,
+              "first_recorded_hit_phase": null,
+              "first_recorded_hit_error": null,
+              "returned_error": 2.7618314796717855e-07,
+              "returned_state_meets_threshold": false,
+              "optimizer_status": "optimizer_converged"
+            },
+            "4": {
+              "reached": true,
+              "first_recorded_hit_solves": 197,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 9.506171092744977e-08,
+              "returned_error": 3.4908540159118505e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "5": {
+              "reached": true,
+              "first_recorded_hit_solves": 204,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 5.535783638817414e-08,
+              "returned_error": 5.5702609739124e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "6": {
+              "reached": true,
+              "first_recorded_hit_solves": 291,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 6.003533214392437e-08,
+              "returned_error": 3.396817201633287e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "7": {
+              "reached": true,
+              "first_recorded_hit_solves": 330,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 3.766105302268775e-08,
+              "returned_error": 3.460436350262175e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "8": {
+              "reached": true,
+              "first_recorded_hit_solves": 194,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 3.5750162330197654e-08,
+              "returned_error": 3.467447755300997e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            },
+            "9": {
+              "reached": true,
+              "first_recorded_hit_solves": 328,
+              "first_recorded_hit_phase": "optimization",
+              "first_recorded_hit_error": 8.598882153998778e-08,
+              "returned_error": 2.8395016406843026e-08,
+              "returned_state_meets_threshold": true,
+              "optimizer_status": "optimizer_converged"
+            }
+          }
+        }
+      },
+      "paired_reaching_count": 5,
+      "paired_reaching_seeds": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "median_ordinary_to_completion_solves_on_paired_reaching_starts": 0.8578431372549019
+    }
+  ]
+}

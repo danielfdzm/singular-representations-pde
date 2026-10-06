@@ -1,0 +1,60 @@
+{
+  "quantity": "E_g(R) = inf over all two-atom networks with |w|_2 <= R of J_g - J_g(u_g), u_g = K'",
+  "method": "E_g(R) = inf { J_g(w1 K(.-z1) + w2 K(.-z2)) - J_g(u_g) : w, z in R^2, |w|_2 <= R },",
+  "limits": {
+    "epsilon>0": "R^2 E_g(R) -> C_g = epsilon*||q||^2/2 (Theorem 3.3, b_g = 1, l_g = epsilon*||q||^2)",
+    "epsilon=0": "g in C_2, so Theorem 3.3 does not apply; the symmetric branch gives R^4 E -> ||q||^2/8"
+  },
+  "limit_constants": {
+    "0": "0.01800148442325914715224701350268350576278761166374299427",
+    "0.001": "0.00007200593769303658860898805401073402305115044665497197708",
+    "0.01": "0.0007200593769303658860898805401073402305115044665497197708"
+  },
+  "completed_family_checks": [
+    {
+      "epsilon": "0",
+      "minimizing_centre": "0.0",
+      "coefficients": [
+        "0.0",
+        "1.0"
+      ],
+      "excess_over_u_g": "0.0",
+      "smallest_excess_away_from_centre": "0.01391262582971201610297817854840155850153613819409912466"
+    },
+    {
+      "epsilon": "0.001",
+      "minimizing_centre": "0.0",
+      "coefficients": [
+        "0.0",
+        "1.0"
+      ],
+      "excess_over_u_g": "-4.416777965890303561468688491522096937860561169278449086e-81",
+      "smallest_excess_away_from_centre": "0.01391689052763974707005271721970807868087312395560188156"
+    },
+    {
+      "epsilon": "0.01",
+      "minimizing_centre": "0.0",
+      "coefficients": [
+        "0.0",
+        "1.0"
+      ],
+      "excess_over_u_g": "1.094523561636840280104848482222731015492397060239298716e-81",
+      "smallest_excess_away_from_centre": "0.01395527243347986101921832055189665437770307950335672221"
+    }
+  ],
+  "largest_cap_scaled_over_limit": {
+    "0": "1.000000000073589743593670993589865205128200312480420705",
+    "0.001": "1.000000025036780269451829919120290449843285941434814762",
+    "0.01": "1.000000002536648642796044572740774465299780570329343159"
+  },
+  "maximum_relative_difference_to_symmetric_family": "0.000000000000905226037281481243563498643144444840216711334335286665",
+  "maximum_abs_centre": "0.0",
+  "minimum_weight_norm_over_R": "0.99999999999999988897769753748434595763683319091796875",
+  "minimum_positive_centre_probe_increase": "0.00000001403192620021204856079403533019450689423024414281826466",
+  "arithmetic": {
+    "coarse_grid_digits": "24 + 4*ceil(log10(R))",
+    "refinement_digits": 80,
+    "interval_certified": false
+  },
+  "number_of_records": 87
+}

@@ -1,7 +1,0 @@
-{
-  "scope": "AppendixD.4 unit-scale stalled-optimization observation, closest matching full-gap0.12 and initial-half-gap[0.02,0.05] configuration; seeds0-4, ordinary and completion branches only. This batch is not part of Table2 or Figures9-10.",
-  "source_sha256": "05972611f44faae04b9f54f7947deb50536bb2ab8bdddf73546db2951e1fbefe",
-  "original_results_sha256": "04747e1ec1a7cc020f45b33f04b9bd63c0b8e3d901a4ff491845d047c8faaa9f",
-  "limitation": "The historical unit-scale target/anchor centres and singleton coefficients also differ from the published scale0.45 target; this is not a controlled scale-only comparison.",
-  "public_source_changes": "Only CLI defaults are updated to the included batch (seeds0-4, proximity0.12, initial half-gaps[0.02,0.05]); original solver functions are unchanged."
-}

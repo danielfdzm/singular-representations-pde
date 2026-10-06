@@ -26,6 +26,12 @@ The class is wider than the one used for the fourth-order study: four pairs and
 two singletons, ten multiplicity slots. The energy is quadratic in the
 coefficients, so a coefficient solve is one linear solve rather than a Newton
 loop; the work unit is one distinct coefficient solve.
+
+The methods match the Matérn study: finite optimization in log h
+("ordinary"), completion, a restart control that applies the completion
+trigger but only restarts L-BFGS-B, and finite gaps optimized in t = h^2
+("squared_gap"). Completion rechecks the transfer tolerance for each pair
+after the refits of the pairs transferred before it.
 """
 
 from __future__ import annotations
@@ -258,34 +264,61 @@ class TransferReady(Exception):
     pass
 
 
-class RestartReady(Exception):
-    pass
 
 
 class NumericalFailure(Exception):
     pass
 
 
-def pack_geometry(state):
+class InnerSolveFailure(NumericalFailure):
+    """A coefficient solve missed its residual criterion; its coefficients are not a minimizer."""
+
+    def __init__(self, message, fit):
+        super().__init__(message)
+        self.fit = fit
+
+
+# Methods, as in the Matérn study: the two paper branches and two controls.
+# "restart" restarts L-BFGS-B when the completion trigger holds but keeps the
+# finite pair; "squared_gap" optimizes t = h^2 instead of log h, without restarts.
+METHODS = ("ordinary", "restart", "squared_gap", "completion")
+SQUARED_GAP_FLOOR = 1e-12   # h >= 1e-6; O(t) state change far below every reported error
+# A linear solve is accepted when its residual is at most this multiple of the
+# rounding floor of forming it; the recorded paper solves are far below it.
+ROUNDING_FLOOR_FACTOR = 4.0
+
+
+def gap_coordinate(method):
+    return "squared" if method == "squared_gap" else "log"
+
+
+def pack_geometry(state, coordinate="log"):
+    """Geometry vector and bounds, with every finite gap stored as log h or h^2."""
     vector, bounds = [], []
     for pair in state["pairs"]:
         vector.extend(pair["center"]); bounds.extend([(-2.0, 2.0)]*2)
         vector.append(pair["angle"]); bounds.append((None, None))
         if not pair["completed"]:
-            vector.append(math.log(pair["half_gap"])); bounds.append((None, math.log(1.5)))
+            if coordinate == "squared":
+                vector.append(pair["half_gap"]**2); bounds.append((SQUARED_GAP_FLOOR, 1.5**2))
+            else:
+                vector.append(math.log(pair["half_gap"])); bounds.append((None, math.log(1.5)))
     for centre in state["singletons"]:
         vector.extend(centre); bounds.extend([(-2.0, 2.0)]*2)
     return np.asarray(vector), bounds
 
 
-def unpack_geometry(vector, template):
+def unpack_geometry(vector, template, coordinate="log"):
     state = copy.deepcopy(template)
     cursor = 0
     for pair in state["pairs"]:
         pair["center"] = vector[cursor:cursor+2].tolist()
         pair["angle"] = float(vector[cursor+2]); cursor += 3
         if not pair["completed"]:
-            pair["half_gap"] = float(np.exp(vector[cursor])); cursor += 1
+            if coordinate == "squared":
+                pair["half_gap"] = float(np.sqrt(vector[cursor])); cursor += 1
+            else:
+                pair["half_gap"] = float(np.exp(vector[cursor])); cursor += 1
             if pair["half_gap"] == 0.0:
                 raise NumericalFailure("Finite half-gap underflow: no positive floor was imposed")
     singletons = []
@@ -295,7 +328,7 @@ def unpack_geometry(vector, template):
     return state
 
 
-def _torch_basis(vector, template, points):
+def _torch_basis(vector, template, points, coordinate="log"):
     q = 1.0/(SCALE*SCALE)
     values, gradients, cursor = [], [], 0
     for pair in template["pairs"]:
@@ -303,6 +336,8 @@ def _torch_basis(vector, template, points):
         direction = torch.stack((torch.cos(angle), torch.sin(angle)))
         if pair["completed"]:
             h = vector.new_tensor(0.0)
+        elif coordinate == "squared":
+            h = torch.sqrt(vector[cursor]); cursor += 1
         else:
             h = torch.exp(vector[cursor]); cursor += 1
         r = points-center; t = r @ direction; z = q*h*t
@@ -345,9 +380,15 @@ def fit_coefficients(values, gradients, weights, force,
     alpha = np.linalg.solve(matrix, vector)
     residual = float(np.linalg.norm(matrix @ alpha - vector))
     reference = max(1.0, float(np.linalg.norm(vector)))
+    floor = float(np.linalg.norm(np.finfo(float).eps*(np.abs(matrix) @ np.abs(alpha) + np.abs(vector))))
+    converged = residual <= ROUNDING_FLOOR_FACTOR*floor
     return alpha/scales, {"newton_iterations": 1, "newton_backtracks": 0,
                           "coefficient_stationarity": residual,
                           "relative_coefficient_stationarity": residual/reference,
+                          "relative_rounding_floor": floor/reference,
+                          "converged": converged,
+                          "stationarity_criterion": "rounding_floor" if converged else "not_met",
+                          "failure_reason": None if converged else "linear_residual",
                           "gradient_basis_condition": condition}
 
 
@@ -380,10 +421,10 @@ def diagnostics(state, order):
     raw = []
     for index, pair in enumerate(state["pairs"]):
         a, b = state["coefficients"][2*index:2*index+2]
-        if not pair["completed"]:
+        if not pair["completed"] and pair["half_gap"] > 0:
             h = pair["half_gap"]
             raw.extend((a/2+b/(2*h), a/2-b/(2*h)))
-        else:
+        else:  # completed, or a closed-gap pair at h = 0: kernel/derivative weights
             raw.append(math.hypot(a, b))
     for index in range(NSINGLETONS):
         raw.append(state["coefficients"][2*NPAIRS+index])
@@ -398,7 +439,7 @@ TARGET_MEAN = target_mean()
 
 
 class Solver:
-    def __init__(self, args, seed, method, restart_checkpoint=None):
+    def __init__(self, args, seed, method):
         self.args, self.seed, self.method = args, seed, method
         self.points, self.weights = quadrature(args.quadrature_order)
         (self.boundary_points, self.boundary_weights,
@@ -412,30 +453,11 @@ class Solver:
         self.boundary_weights_t = torch.from_numpy(self.boundary_weights)
         self.neumann_t = torch.from_numpy(self.neumann)
         self.state = initial_state(seed, (args.initial_half_gap_min, args.initial_half_gap_max))
+        self.coordinate = gap_coordinate(method)
         self.solves = self.accepted_steps = self.newton_iterations = 0
         self.cache, self.history, self.transfers, self.blocks = {}, [], [], []
-        self.restart_checkpoint = copy.deepcopy(restart_checkpoint)
-        self.restart_events = []
+        self.restart_events, self.restarted_pairs, self.failed_fits = [], set(), []
 
-    def scheduled_restart_ready(self):
-        """Restart the finite optimizer at the completion branch's first switch."""
-        checkpoint = self.restart_checkpoint
-        if self.method != "finite_restart" or checkpoint is None or self.restart_events:
-            return False
-        if self.solves < checkpoint["solve_count"]:
-            return False
-        actual, _ = pack_geometry(self.state)
-        expected, _ = pack_geometry(checkpoint["before_state"])
-        if self.solves != checkpoint["solve_count"] or not np.array_equal(actual, expected):
-            raise NumericalFailure("Finite restart did not reproduce the saved completion checkpoint exactly")
-        if not np.array_equal(self.state["coefficients"], checkpoint["before_state"]["coefficients"]):
-            raise NumericalFailure("Finite restart checkpoint coefficients disagree")
-        self.restart_events.append({"solve_count": self.solves, "state": copy.deepcopy(self.state),
-                                    "matched_completion_pair": checkpoint["pair_index"],
-                                    "remaining_fit_budget": self.args.max_solves-self.solves,
-                                    "geometry_and_coefficients_agree_exactly": True})
-        self.record("restart", "matched_finite_optimizer_restart")
-        return True
 
     def evaluate(self, vector):
         signature = (tuple(pair["completed"] for pair in self.state["pairs"]),
@@ -446,12 +468,18 @@ class Solver:
             raise WorkLimit
         self.solves += 1
         geometry = torch.tensor(vector, requires_grad=True)
-        values, gradients = _torch_basis(geometry, self.state, self.points_t)
-        bvalues, _ = _torch_basis(geometry, self.state, self.boundary_points_t)
+        values, gradients = _torch_basis(geometry, self.state, self.points_t, self.coordinate)
+        bvalues, _ = _torch_basis(geometry, self.state, self.boundary_points_t, self.coordinate)
         coefficients, fit = fit_coefficients(
             values.detach().numpy(), gradients.detach().numpy(), self.weights, self.force,
             bvalues.detach().numpy(), self.boundary_weights, self.neumann)
         self.newton_iterations += fit["newton_iterations"]
+        if not fit["converged"]:
+            self.failed_fits.append({**fit, "solve_count": self.solves})
+            raise InnerSolveFailure(
+                f"Coefficient solve {self.solves} missed its residual criterion "
+                f"(relative residual {fit['relative_coefficient_stationarity']:.3e})",
+                {**fit, "solve_count": self.solves})
         c = torch.from_numpy(coefficients)
         u = values @ c
         field = torch.einsum("npd,p->nd", gradients, c)
@@ -460,7 +488,7 @@ class Solver:
         mean = torch.sum(self.weights_t*u)
         objective = interior-boundary+0.5*SIGMA*(mean-TARGET_MEAN)**2
         objective.backward()
-        state = unpack_geometry(np.asarray(vector), self.state)
+        state = unpack_geometry(np.asarray(vector), self.state, self.coordinate)
         state["coefficients"] = coefficients.tolist()
         result = {"objective": float(objective.detach()), "gradient": geometry.grad.detach().numpy(),
                   "state": state, "solve_count": self.solves, **fit}
@@ -480,20 +508,38 @@ class Solver:
 
     def eligible_transfers(self):
         return [i for i, pair in enumerate(self.state["pairs"])
-                if not pair["completed"] and 2*pair["half_gap"] <= self.args.proximity_threshold
+                if not pair["completed"] and i not in self.restarted_pairs
+                and 2*pair["half_gap"] <= self.args.proximity_threshold
                 and transfer_bound(self.state, i)["absolute_h1_bound_float64"] <= self.args.transfer_tolerance]
 
     def accepted(self, vector):
         self.state = copy.deepcopy(self.evaluate(vector)["state"])
         self.record("optimization", "accepted_iterate")
         self.accepted_steps += 1
-        if self.scheduled_restart_ready():
-            raise RestartReady
-        if (self.method == "completion" and self.accepted_steps % self.args.block_iterations == 0
+        if (self.method in ("completion", "restart") and self.accepted_steps % self.args.block_iterations == 0
                 and self.eligible_transfers()):
             raise TransferReady
 
+    def attempt_restarts(self):
+        """Restart control: the completion trigger, with a restart and no transfer.
+
+        Each pair may trigger one restart, as it may trigger one transfer. The
+        restart discards the L-BFGS-B memory and keeps the finite state; like
+        the refit after a transfer, re-evaluating it costs at most one solve.
+        """
+        eligible = self.eligible_transfers()
+        for i in eligible:
+            self.restarted_pairs.add(i)
+            self.restart_events.append({"solve_count": self.solves, "accepted_steps": self.accepted_steps,
+                                        "pair_index": i, "state": copy.deepcopy(self.state),
+                                        "measured_h1_change_if_completed": transfer_bound(self.state, i)["measured_h1_state_change"]})
+        if eligible:
+            self.record("restart", "lbfgs_memory_reset")
+        return bool(eligible)
+
     def attempt_transfers(self):
+        if self.method == "restart":
+            return self.attempt_restarts()
         if self.method != "completion":
             return False
         changed = False
@@ -508,13 +554,21 @@ class Solver:
             # when several pairs become eligible together.
             checkpoint_solves = self.solves
             bound = transfer_bound(before, i)
+            # Eligibility was computed before the refits of earlier pairs in
+            # this loop, which change every coefficient. Recheck the tolerance
+            # against the current state before transferring this pair.
+            if bound["absolute_h1_bound_float64"] > self.args.transfer_tolerance:
+                continue
             self.state["pairs"][i].update({"completed": True, "half_gap": 0.0})
-            vector, _ = pack_geometry(self.state)
+            vector, _ = pack_geometry(self.state, self.coordinate)
             try:
                 self.state = copy.deepcopy(self.evaluate(vector)["state"])
             except WorkLimit:
                 self.state = before
                 break
+            except InnerSolveFailure:
+                self.state = before   # return the last fitted state, not the predictor
+                raise
             self.transfers.append({"solve_count": checkpoint_solves,
                                    "refit_solve_count": self.solves, "pair_index": i,
                                    "before_state": before, "after_state": copy.deepcopy(self.state),
@@ -528,12 +582,12 @@ class Solver:
         status, initial = "running", None
         error = None
         try:
-            vector, _ = pack_geometry(self.state)
+            vector, _ = pack_geometry(self.state, self.coordinate)
             self.state = copy.deepcopy(self.evaluate(vector)["state"])
             initial = copy.deepcopy(self.state)
             self.record("initial", "coefficient_solve")
             while self.solves < self.args.max_solves:
-                vector, bounds = pack_geometry(self.state)
+                vector, bounds = pack_geometry(self.state, self.coordinate)
                 before = self.solves
                 result = None
                 try:
@@ -549,13 +603,9 @@ class Solver:
                                         "message": str(result.message), "iterations": int(result.nit)})
                 except TransferReady:
                     self.blocks.append({"start_solve": before, "end_solve": self.solves, "status": "transfer_ready"})
-                except RestartReady:
-                    self.blocks.append({"start_solve": before, "end_solve": self.solves, "status": "matched_finite_restart"})
                 except WorkLimit:
                     self.blocks.append({"start_solve": before, "end_solve": self.solves, "status": "work_limit"})
                     break
-                if result is not None and self.scheduled_restart_ready():
-                    continue
                 transferred = self.attempt_transfers()
                 if not transferred and result is not None and result.success:
                     status = "optimizer_converged"; break
@@ -563,6 +613,10 @@ class Solver:
                     status = "optimizer_failure"; break
                 if before == self.solves:
                     status = "no_new_evaluations"; break
+        except InnerSolveFailure as exc:
+            status = "inner_solve_failure"
+            error = {"type": type(exc).__name__, "message": str(exc), "fit": exc.fit,
+                     "traceback": traceback.format_exc()}
         except Exception as exc:
             status = "numerical_failure"
             error = {"type": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc()}
@@ -570,17 +624,18 @@ class Solver:
         audits = [energy(self.state, order) for order in (64, 96)]
         fitted = list(self.cache.values())
         output = {"seed": self.seed, "method": self.method,
+                  "gap_coordinate": self.coordinate, "training_quadrature_order": self.args.quadrature_order,
                   "initial_state": initial, "final_state": copy.deepcopy(self.state),
-                  "history": self.history, "transfers": self.transfers,
+                  "history": self.history, "transfers": self.transfers, "restart_events": self.restart_events,
                   "optimizer_blocks": self.blocks, "status": status, "error": error,
-                  "restart_events": self.restart_events,
-                  "restart_checkpoint_from_completion": self.restart_checkpoint,
                   "coefficient_solves": self.solves,
                   "final_diagnostics": diagnostics(self.state, self.args.quadrature_order),
                   "relative_strong_residual": relative_residual(self.state, 96),
                   "independent_quadrature": audits,
                   "energy_order64_order96_difference": abs(audits[0]["energy"]-audits[1]["energy"]),
                   "maximum_relative_coefficient_stationarity": max((x["relative_coefficient_stationarity"] for x in fitted), default=None),
+                  "inner_solve_summary": {"fits": len(fitted), "not_met": len(self.failed_fits),
+                                          "maximum_relative_rounding_floor": max((x["relative_rounding_floor"] for x in fitted), default=None)},
                   "maximum_gradient_basis_condition": max((x["gradient_basis_condition"] for x in fitted), default=None),
                   "elapsed_seconds": time.perf_counter()-started}
         print(f"seed={self.seed} {self.method}: {status}; solves={self.solves}; "
@@ -590,11 +645,12 @@ class Solver:
 
 def validate_gradients(args):
     reports = []
-    for completed in (False, True):
-        solver = Solver(args, 1729, "ordinary")
+    for method, completed in (("ordinary", False), ("ordinary", True),
+                              ("squared_gap", False), ("squared_gap", True)):
+        solver = Solver(args, 1729, method)
         if completed:
             solver.state["pairs"][0].update({"completed": True, "half_gap": 0.0})
-        vector, _ = pack_geometry(solver.state)
+        vector, _ = pack_geometry(solver.state, solver.coordinate)
         result = solver.evaluate(vector)
         finite_difference = []
         for i in range(len(vector)):
@@ -607,11 +663,18 @@ def validate_gradients(args):
         error = float(np.max(np.abs(finite_difference-result["gradient"])))
         relative = error/max(1e-10, float(np.max(np.abs(finite_difference))),
                              float(np.max(np.abs(result["gradient"]))))
-        reports.append({"one_completed_pair": completed, "maximum_absolute_error": error,
-                        "relative_maximum_error": relative, "passed": relative < 2e-5})
+        report = {"gap_coordinate": solver.coordinate,
+                  "one_completed_pair": completed, "maximum_absolute_error": error,
+                  "relative_maximum_error": relative, "passed": relative < 2e-5}
+        reports.append(report)
     if not all(x["passed"] for x in reports):
         raise NumericalFailure(f"Geometry envelope-gradient validation failed: {reports}")
     return reports
+
+
+def _run_plan(task):
+    args, plan = task
+    return Solver(args, plan["seed"], plan["method"]).run()
 
 
 def main():
@@ -627,12 +690,15 @@ def main():
     parser.add_argument("--gtol", type=float, default=0.0)
     parser.add_argument("--initial-half-gap-min", type=float, default=0.02)
     parser.add_argument("--initial-half-gap-max", type=float, default=0.05)
-    parser.add_argument("--finite-restart-control", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--methods", nargs="+", default=list(METHODS), choices=METHODS,
+                        help="Methods to run for every start, in this order")
+    parser.add_argument("--jobs", type=int, default=1,
+                        help="Independent single-threaded runs in parallel; records do not depend on it")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Output directory exists; preserve prior results and choose a new path")
     args.output.mkdir(parents=True)
-    configuration = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
+    configuration = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items() if k != "jobs"}
     configuration.update({
         "domain": "(-1,1)^2", "equation": "-Laplacian u = f",
         "boundary": "du/dn = g, nonhomogeneous Neumann, manufactured from u*",
@@ -643,13 +709,19 @@ def main():
         "multiplicity_budget": NSLOTS,
         "pairing": f"{NPAIRS} supplied pairs plus {NSINGLETONS} singletons",
         "geometry_bounds": "centres [-2,2]^2, angles unbounded, 0<h<=1.5 without positive floor",
-        "coefficient_fit": "one linear solve of (S + sigma m m') c = L + sigma M m after column scaling",
+        "coefficient_fit": ("one linear solve of (S + sigma m m') c = L + sigma M m after column scaling; "
+                            f"accepted at residual <= {ROUNDING_FLOOR_FACTOR:g} times its rounding floor, "
+                            "otherwise the run stops with status inner_solve_failure"),
         "work_accounting": "one unit per distinct coefficient solve, including line-search probes and post-transfer refits",
-        "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; history reset only on actual completion",
+        "optimizer": "L-BFGS-B ftol0 gtol0 maxcor12 maxls40; memory reset only on completion or, for the restart control, at its matched restarts",
+        "methods": {"ordinary": "finite pairs in log h",
+                    "restart": "finite pairs in log h; L-BFGS-B restarted when the completion trigger holds, at most once per pair",
+                    "squared_gap": f"finite pairs in t=h^2, {SQUARED_GAP_FLOOR:g}<=t<=2.25, no restarts",
+                    "completion": "finite pairs in log h; transfer to derivative blocks when the trigger holds; tolerance rechecked after each refit"},
         "transfer": "measured H1 state change at order-64 quadrature; float64, not a validated enclosure",
         "limitations": "fixed Gaussian scale and supplied pairing; no certified objective gate; quadrature agreement is not validated integration"})
-    methods = ("ordinary", "completion", "finite_restart") if args.finite_restart_control else ("ordinary", "completion")
-    payload = {"schema_version": 1, "configuration": configuration,
+    methods = tuple(args.methods)
+    payload = {"schema_version": 2, "configuration": configuration,
                "software": {"python": platform.python_version(), "numpy": np.__version__,
                             "scipy": scipy.__version__, "torch": torch.__version__},
                "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -659,13 +731,14 @@ def main():
     (args.output/"source_experiment.py").write_bytes(Path(__file__).read_bytes())
     payload["gradient_validation"] = validate_gradients(args)
     (args.output/"gradient_validation.json").write_text(json.dumps(payload["gradient_validation"], indent=2)+"\n")
-    for plan in payload["planned_runs"]:
-        checkpoint = None
-        if plan["method"] == "finite_restart":
-            run = next(r for r in payload["runs"] if r["method"] == "completion" and r["seed"] == plan["seed"])
-            if run["transfers"]:
-                checkpoint = run["transfers"][0]
-        output = Solver(args, plan["seed"], plan["method"], checkpoint).run()
+    tasks = [(args, plan) for plan in payload["planned_runs"]]
+    if args.jobs > 1:
+        from concurrent.futures import ProcessPoolExecutor
+        pool = ProcessPoolExecutor(max_workers=args.jobs)
+        outputs = pool.map(_run_plan, tasks)
+    else:
+        pool, outputs = None, map(_run_plan, tasks)
+    for output in outputs:
         payload["runs"].append(output)
         (args.output/"results.json").write_text(json.dumps(payload, indent=2, allow_nan=False)+"\n")
         with (args.output/"summary.csv").open("w", newline="") as stream:
@@ -675,6 +748,8 @@ def main():
             for run in payload["runs"]:
                 writer.writerow({k: len(run["transfers"]) if k == "transfers" else
                                  run.get(k, run["final_diagnostics"].get(k)) for k in columns})
+    if pool is not None:
+        pool.shutdown()
 
 
 if __name__ == "__main__":

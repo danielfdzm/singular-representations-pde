@@ -1,14 +1,30 @@
 [
   {
+    "gap_coordinate": "log",
     "one_completed_pair": false,
     "maximum_absolute_error": 2.143900257323139e-08,
     "relative_maximum_error": 9.590873788113172e-09,
     "passed": true
   },
   {
+    "gap_coordinate": "log",
     "one_completed_pair": true,
     "maximum_absolute_error": 2.091245532298558e-08,
     "relative_maximum_error": 9.371117111021799e-09,
+    "passed": true
+  },
+  {
+    "gap_coordinate": "squared",
+    "one_completed_pair": false,
+    "maximum_absolute_error": 2.1438987474198257e-08,
+    "relative_maximum_error": 9.590867033464955e-09,
+    "passed": true
+  },
+  {
+    "gap_coordinate": "squared",
+    "one_completed_pair": true,
+    "maximum_absolute_error": 2.091245487889637e-08,
+    "relative_maximum_error": 9.371116912020202e-09,
     "passed": true
   }
 ]

@@ -1,38 +1,30 @@
 # Singular Parameters and Missing Limits in Neural PDE Solvers
 
-**Daniel Fernández · Enrique Zuazua**
+**Daniel Fernández**
 
-[Experiments](#the-experiments) · [Reproduce the results](REPRODUCING.md) · [All paper figures](figures/paper/) · [Citation](CITATION.cff)
+[Experiments](#the-experiments) · [Reproduce the results](REPRODUCING.md) · [Paper figures](figures/paper/) · [Citation](CITATION.cff)
 
-A neural PDE approximation can become more accurate while its parameters grow without bound. At fixed width, the limiting solution may be smooth and still lie outside the neural model's realization class.
+A neural PDE approximation can become more accurate while its parameters grow without bound. At fixed width, the limiting solution may be smooth and still lie outside the model's realization class.
 
-This paper connects that behaviour to the **closure of the neural parametrisation class**. For deep tanh networks, approaching a missing limit forces parameter escape or hidden-layer degeneracy. For one-dimensional translated-feature models, we characterise the closure through kernel derivatives, counted within the original width. Admitting these limits—**completion**—restores variational attainment under the stated assumptions and provides stable coordinates for computation.
+For one-dimensional translated-feature models, the paper characterizes every weak Sobolev limit with unrestricted centres: recentered clusters converge strongly and escaping clusters vanish weakly. The resulting completed class admits variational minimizers under the stated assumptions. A complementary deep-tanh result identifies parameter escape or hidden-layer degeneracy as necessary routes to missing limits.
 
-<p align="center">
-  <img src="figures/previews/figure_05.png" alt="Gaussian completion: initial configuration, finite checkpoint and completed derivative block." width="920">
-</p>
-
-*Figure 5. Section 4.3 completes an eight-feature Gaussian cluster within the original budget. The transfer is checked in the whole-line H¹ norm before refitting.*
+<p align="center"><img src="figures/previews/figure_03.png" alt="Three Gaussian features collide and approach a derivative block." width="920"></p>
 
 ## The experiments
 
-The repository contains the five numerical studies in the paper, their reported appendix checks, and the two analytical illustrations. Every figure below is the current publication figure.
+The package follows the current paper: nine figures, four numerical studies, and the numerical evaluation and coordinate controls reported in Appendix C.
 
-| Section | Question | Figures | Code and records |
+| Section | Question | Paper figures | Code and records |
 | --- | --- | --- | --- |
-| 4.1 | What happens to parameters as two tanh neurons approach a missing limit? | [3](figures/paper/figure_03.pdf), [4](figures/paper/figure_04.pdf) | [Tanh experiments](docs/experiments_tanh_precision.md#tanh-experiments) |
-| 4.2 | Can stable evaluation recover the accuracy lost when Gaussian centres coalesce? | — | [Precision sweep](docs/experiments_tanh_precision.md#precision-sweep) |
-| 4.3 | Can a whole Gaussian collision be completed within the original feature budget? | [5](figures/paper/figure_05.pdf) | [One-dimensional experiment](docs/experiments_1d.md) |
-| 4.4 | Does completion work for Matérn features on a nonlinear fourth-order PDE? | [6](figures/paper/figure_06.pdf), [7](figures/paper/figure_07.pdf), Table 1 | [Matérn experiment](docs/experiments_2d.md) |
-| 4.5 | Does completion improve accuracy and computational cost in a wider Poisson–Neumann model? | [8](figures/paper/figure_08.pdf), [9](figures/paper/figure_09.pdf), Table 2 | [Poisson–Neumann experiment](docs/experiments_2d.md) |
+| 4.1 | What happens to parameters as tanh neurons approach a missing limit? | [4](figures/paper/figure_04.pdf), [5](figures/paper/figure_05.pdf) | [Tanh experiments](docs/experiments_tanh_precision.md#tanh-experiments) |
+| 4.2 | Does the coefficient-capped excess follow the law of Theorem 3.3? | [6](figures/paper/figure_06.pdf) | [One-dimensional study](docs/manufactured_1d.md) |
+| 4.3 | How does completion affect a wider Poisson–Neumann model? | [7](figures/paper/figure_07.pdf), [8](figures/paper/figure_08.pdf) | [Poisson comparison](docs/experiments_2d.md) |
+| 4.4 | How does completion affect a nonlinear fourth-order Matérn problem? | [9](figures/paper/figure_09.pdf) | [Matérn comparison](docs/experiments_2d.md) |
+| C.6 | How do stable evaluation and coordinate controls affect accuracy? | Numerical results in the text | [Precision sweep](docs/experiments_tanh_precision.md#precision-sweep), [two-dimensional controls](docs/experiments_2d.md#appendix-stable-coordinate-controls) |
 
-The Matérn comparison uses starts 0–9; the Poisson comparison uses starts 10–19. Both compare ordinary finite-gap optimization, completion, and a matched finite restart. The Gaussian study reruns the archived target with a whole-cluster transfer at fixed multiplicity, checked in the whole-line H¹ norm before refitting. Figures 1–2 are [analytical illustrations](docs/illustrations.md).
+The main Matérn and Poisson comparisons each include all ten starts and two methods: standard optimization and completion. Both train finite pairs using ordinary translated-kernel weights and direct kernel evaluation. Completion converts eligible pairs to kernel/derivative blocks and continues optimization. Primary records are in `data/raw_main/`, including higher-order training repetitions. Four-method comparisons using stable finite-pair coordinates are in `data/matern/` and `data/poisson/` for Appendix C.6, including restart and squared-gap controls. Figures 1–3 are [analytical illustrations](docs/illustrations.md).
 
-<p align="center">
-  <img src="figures/previews/figure_08.png" alt="Poisson–Neumann target, finite and completed approximations, feature centres, and spatial errors." width="920">
-</p>
-
-*Figure 8. Finite and completed representations in the Poisson–Neumann experiment. Close pair markers in panel (b) are separated visually; connectors indicate the true centre locations.*
+The four printed tables report Poisson final results (Table 1), Matérn final results (Table 2), work to common error thresholds (Table 3), and higher-order training quadrature (Table 4, Appendix C.3). The [reproduction guide](REPRODUCING.md) maps each table to its generated file. The appendix reports its evaluation and coordinate controls numerically and contains no figures.
 
 ## Quick start
 
@@ -47,14 +39,18 @@ python reproduce.py --figures
 python reproduce.py --tables
 ```
 
-New outputs go into `outputs/`. The nine exact publication PDFs in [`figures/paper/`](figures/paper/) and their [browser previews](figures/previews/) remain available without running any code. The [reproduction guide](REPRODUCING.md) gives individual commands, the recorded environment, and instructions for fresh runs.
+New outputs go into `outputs/`. The nine publication PDFs use their printed figure numbers in `figures/paper/`; [the figure map](figures/manifest.json) lists their manuscript asset names and previews. The [reproduction guide](REPRODUCING.md) gives individual commands and instructions for fresh runs. The check command verifies the release inventory and all 240 recorded two-dimensional runs: 80 primary runs and 160 appendix controls.
 
-Figure 4 preserves a historical run: its original script, publication PDF and rounded logged states are included, but exact unrounded optimizer snapshots are unavailable. Its reproduction command restores the preserved figure; a fresh run is a new numerical realization of the same protocol.
+Figure 5 preserves a historical run: its original script, publication PDF and rounded logged states are included, but exact unrounded optimizer snapshots are unavailable. Its reproduction command restores the preserved figure; a fresh run is a new realization of the same protocol.
 
 ## Reading the results
 
-These are controlled experiments with prescribed targets and pairings. Stable evaluation, admitting limiting states, and finding them through optimization are separate issues. Completion keeps the Matérn coefficients bounded without uniformly improving accuracy; in the reported Poisson runs it improves accuracy on every start and reduces the median number of coefficient solves. The two-dimensional examples illustrate directional collisions, while the exact closure theorem is one-dimensional. The two-dimensional transfer checks use measured quadrature errors. The one-dimensional Gaussian experiment instead uses validated whole-line transfer and objective enclosures.
+The two-dimensional comparisons use manufactured targets, prescribed pairings and target-informed initial anchors. The main solvers refit coefficients at every geometry and then optimize centres, directions and logarithmic half-gaps with L-BFGS-B. Finite-pair coefficient slots contain ordinary weights; transferred slots contain the coefficients of the kernel and its negative directional derivative. Figures 8 and 9 show the norm of these actual stored vectors. Independent NumPy analysis evaluates finite translates and completed derivative blocks directly. Every coefficient fit must meet its stationarity criterion before its envelope gradient is used; failed fits or ill-conditioned quadratic systems stop the run at its last accepted state.
+
+Primary summaries retain all starts, termination statuses and missed accuracy thresholds. Higher-order training can change optimization paths and transfer counts; the Matérn start-1 outlier is retained in both training studies. Successful optimizer termination alone does not establish a small error or an exact reduced gradient. Work-to-error medians apply to starts that reach the common threshold, with misses reported separately. Matérn work counts nonlinear coefficient fits and Poisson work counts linear solves, so counts should be compared within each problem. Appendix C studies stable evaluation, restarts, squared-gap coordinates and training quadrature. These local comparisons do not establish a general performance advantage.
+
+The whole-line one-dimensional study provides a direct bridge to the theoretical setting. A search over two-atom networks under a coefficient cap recovers the predicted constant for two perturbed targets and the faster law at the boundary target. The search does not establish global optimality or certify that the perturbations lie in the theorem's robustness neighbourhood; see [the study guide](docs/manufactured_1d.md). The bounded-domain two-dimensional experiments illustrate directional collisions; the whole-line closure theorem does not establish their closure. Floating-point quadrature and transfer checks are not validated continuum enclosures.
 
 ## Citation and license
 
-Please cite **Singular Parameters and Missing Limits in Neural PDE Solvers**, by Daniel Fernández and Enrique Zuazua, and this repository when using these materials. Machine-readable metadata is in [`CITATION.cff`](CITATION.cff). The existing repository [license](LICENSE) applies.
+Please cite **Singular Parameters and Missing Limits in Neural PDE Solvers**, by Daniel Fernández, and this repository when using these materials. Machine-readable metadata is in [CITATION.cff](CITATION.cff). The repository [license](LICENSE) applies.
