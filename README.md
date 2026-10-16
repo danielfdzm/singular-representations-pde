@@ -2,6 +2,14 @@
 
 **Daniel Fernández**
 
+[![License](https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/danielfdzm/singular-representations-pde)](https://github.com/danielfdzm/singular-representations-pde/commits/main)
+[![GitHub repo size](https://img.shields.io/github/repo-size/danielfdzm/singular-representations-pde)](https://github.com/danielfdzm/singular-representations-pde)
+[![Python 3](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)](requirements.txt)
+[![PyTorch 2.10](https://img.shields.io/badge/PyTorch-2.10-EE4C2C?logo=pytorch&logoColor=white)](requirements.txt)
+[![Reproducible](https://img.shields.io/badge/reproducible-checked%20release-2EA043)](REPRODUCING.md)
+[![Cite](https://img.shields.io/badge/cite-CITATION.cff-blue)](CITATION.cff)
+
 [Experiments](#the-experiments) · [Reproduce the results](REPRODUCING.md) · [Paper figures](figures/paper/) · [Citation](CITATION.cff)
 
 A neural PDE approximation can become more accurate while its parameters grow without bound. At fixed width, the limiting solution may be smooth and still lie outside the model's realization class.
